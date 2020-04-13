@@ -17,6 +17,7 @@ var histoireRouter = require('./routes/histoire');
 var bestiaireRouter = require('./routes/bestiaire');
 var effetsRouter = require('./routes/effets');
 var generateurRouter = require('./routes/generateur');
+var generateurCreaturesRouter = require('./routes/generateurCreatures');
 var fichePersoRouter = require('./routes/fichePerso');
 
 var app = express();
@@ -43,6 +44,7 @@ app.use('/reglesChap6', reglesChap6Router);
 app.use('/histoire', histoireRouter);
 app.use('/bestiaire', bestiaireRouter);
 app.use('/generateur', generateurRouter);
+app.use('/generateurCreatures', generateurCreaturesRouter);
 app.use('/effets', effetsRouter);
 app.use('/fichePerso', fichePersoRouter);
 
