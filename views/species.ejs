@@ -1,0 +1,101 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+
+<body class="code-snippets-visible">
+
+    <div class="container">
+
+        <%- include('header'); -%>
+        <%- include('navbar'); -%>
+
+        <div class="docs-section">
+            <h1 class="docs-header">Générateur de Créatures</h1>  
+            <input type="button" value="Generate" onclick="generateRandomSpecies()">   
+            <br id="species_section">
+            <script>var caracteristics_list = [];</script>
+            <%especes_list.forEach(function(element) { %>
+            <script>
+                var row = { id: "" , : name: "", minSize: "", maxSize: "", description: "", social: "" };
+                row.id = "<%= element.id %>";
+                row.name = "<%= element.name %>";
+                row.minSize = "<%= element.minSize %>";
+                row.maxSize = "<%= element.maxSize %>";
+                row.description = "<%= element.description %>";
+                row.social = "<%= element.social %>";
+                caracteristics_list.push(row);
+            </script>
+            <% }); %>
+        </div>
+
+                <p align="justify" id="paragraphe">   
+                Issue d’une planète appelée Terre, l’humanité est une des éspèces s’étant le plus étendu parmi la galaxie. 
+                Les membres de cette espèce partagent tous un héritage morphologique évident malgré le fait que la diaspora 
+                spatiale ait eu lieu il y a des centaines de milliers d’années. Ainsi, même si avec le temps, différentes 
+                races d’humanoïdes sont apparues, ces derniers ressentent toujours une très forte empathie pour leurs 
+                semblables malgré leurs dissensions. Les spécialistes appellent d’ailleurs ce biais artificiel le « <i>Terlien</i> » 
+                et l’imputent d’une manière générale au fait que l’humanité soit une espèce faible, sans protection physique 
+                naturelle et ayant donc basée sa force sur le lien social et sur l’intelligence. Enfin, les humanoïdes ont 
+                surtout un rythme de reproduction très élevé, ce qui leur a permis, couplée à leurs capacités cognitives 
+                élevées de coloniser rapidement la galaxie. 
+            </p>
+
+    </div>
+
+</body>
+
+<script>
+
+    function generateRandomSpecies() {
+
+        const species_id = Math.floor(Math.random() * 1000);
+
+        var species = { id: species_id, name: "Une nouvelle race", outcomes: new Array()};
+
+        var species_id_set = new Set();
+
+        var species_id = Math.floor(Math.random() * (caracteristics_list.length - 1)) + 1;
+
+        species_id_set.add(species_id);
+        
+        species_id_set.forEach((value) => {
+
+            var outcome = { id: "", name: "", description: "", size: "", social: "" };
+
+            outcome.id = caracteristics_list[value].id;
+            outcome.name = caracteristics_list[value].name;
+            outcome.description = caracteristics_list[value].description;
+            outcome.social = caracteristics_list[value].social;
+            outcome.size = Math.floor(Math.random() * caracteristics_list[value].maxSize + caracteristics_list[value].minSize;
+
+            species.outcomes.push(outcome);
+
+        });
+
+        $('#species_section').after(
+
+            '<table class="u-full-width"><thead><tr>' +
+            '<th><strong>' + species.name + '</strong></th>' +
+            '</tr></thead><tbody id=\"' + species.id + '">'
+
+        );
+
+        species.outcomes.forEach((values) => {
+
+            $('#' + species.id).after(
+
+                '<th><div style="width:20%"> Espèce: </div><td>' + value.name + '</th>' +
+                '<th><div style="width:20%"> size: </div><td>' + value.size + '</th>' +   
+                '<th><div style="width:20%"> social: </div><td>' + value.social + '</th>' +   
+                '<th><div style="width:20%"> description: </div><td>' + value.description + '</th></tr>'
+
+            );
+        });
+
+        $('tbody#' + species.id).after('</tbody></table>');
+
+    };
+
+</script>
+
