@@ -16,6 +16,7 @@ router.get('/', function (req, res) {
 	var QUERY_DANGER = "SELECT * FROM DANGER";
 	var QUERY_SOCIAL = "SELECT * FROM SOCIAL";
 	var QUERY_TAILLE = "SELECT * FROM TAILLE";
+	var QUERY_RACE = "SELECT * FROM RACE";
 
 	async.series({
 
@@ -36,6 +37,11 @@ router.get('/', function (req, res) {
         },
         taille: function(cb){
             db.all(QUERY_TAILLE, function (error, rows){
+                cb(error, rows)
+            })
+        },
+        race: function(cb){
+            db.all(QUERY_RACE, function (error, rows){
                 cb(error, rows)
             })
         }          

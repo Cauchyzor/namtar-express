@@ -19,6 +19,7 @@
             var social_list = [];
             var taille_list = [];   
             var danger_list = [];
+            var race_list = [];
 
         </script>
 
@@ -85,6 +86,21 @@
             </script>
         <% }); %>
 
+        <%table_list.race.forEach(function(race) { %>
+            <script>
+
+                var row = { prefix: "", mid1: "", mid2: "", sufix: "" };
+
+                row.prefix = "<%= race.prefix %>",
+                row.mid1 = "<%= race.mid1 %>",
+                row.mid2 = "<%= race.mid2 %>",
+                row.sufix = "<%= race.sufix %>"
+
+                race_list.push(row);
+
+            </script>
+        <% }); %>
+
         <div class="docs-section">
 
             <h1 class="docs-header">Générateur de Créatures</h1>        
@@ -130,7 +146,7 @@
             <tr>
                 <td>
                     <strong style="float: left; padding-right:10px;">Description:</strong>
-                    <div id="species_description_section"></div>
+                    <div id="species_description_section" align="justify"></div>
             </tr>
             
         </div>
@@ -194,6 +210,25 @@
             document.getElementById('species_social_section').innerHTML = "Solitaire"
 
         }
+
+        var randomNumberPrefix = Math.floor(Math.random() * race_list.length );
+        var randomNumberMid1 = Math.floor(Math.random() * race_list.length );
+        var randomNumberMid2 = Math.floor(Math.random() * race_list.length );
+        var randomNumberSufix = Math.floor(Math.random() * race_list.length );
+
+        var addMid2 = Math.floor(Math.random() * 2 );
+
+        if (addMid2 == 2)
+        {
+            document.getElementById('species_race_section').innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].mid2 + race_list[randomNumberMid2].sufix;
+        }
+        else
+        {
+            document.getElementById('species_race_section').innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].sufix;
+        }
+
+
+        
 
     }
 
