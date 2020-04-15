@@ -17,6 +17,7 @@ var histoireRouter = require('./routes/histoire');
 var effetsRouter = require('./routes/effets');
 var generateurRouter = require('./routes/generateur');
 var fichePersoRouter = require('./routes/fichePerso');
+var createPJRouter = require('./routes/createPJ');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/histoire', histoireRouter);
 app.use('/generateur', generateurRouter);
 app.use('/effets', effetsRouter);
 app.use('/fichePerso', fichePersoRouter);
+app.use('/createPJ', createPJRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
