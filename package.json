@@ -17,14 +17,15 @@
   },
   "homepage": "https://github.com/cauchyp/NamtarWebApp#readme",
   "dependencies": {
-    "skeleton-css": "^2.0.4",
+    "async": "^3.2.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "http-errors": "~1.6.3",
+    "minimist": ">=0.2.1",
     "morgan": "~1.9.1",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "sqlite3": "^4.0.6",
-    "minimist": ">=0.2.1"
+    "skeleton-css": "^2.0.4",
+    "sqlite3": "^4.0.6"
   }
 }

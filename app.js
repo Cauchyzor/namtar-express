@@ -15,7 +15,6 @@ var reglesChap6Router = require('./routes/reglesChap6');
 var histoireRouter = require('./routes/histoire');
 var bestiaireRouter = require('./routes/bestiaire');
 var effetsRouter = require('./routes/effets');
-var especesRouter = require('./routes/especes');
 var generateurRouter = require('./routes/generateur');
 var speciesRouter = require('./routes/species');
 var fichePersoRouter = require('./routes/fichePerso');
@@ -46,7 +45,6 @@ app.use('/bestiaire', bestiaireRouter);
 app.use('/generateur', generateurRouter);
 app.use('/species', speciesRouter);
 app.use('/effets', effetsRouter);
-app.use('/especes', especesRouter);
 app.use('/fichePerso', fichePersoRouter);
 
 // catch 404 and forward to error handler

@@ -13,24 +13,53 @@
 
         <script>
 
-            var row = [ "id" , "name", "minSize", "maxSize", "description", "social" ];
-            var caracteristics_list = [row];
+            var row1 = [ "id" , "name", "minSize", "maxSize", "description", "social", "minDangerosity", "maxDangerosity", "maxSocialSize" ];
+            var caracteristics_list = [row1];
 
-            var row = [ "gouvernment" ];
-            gouvernment_list = [row];
+            var row2 = [ "id" , "name", "masculin", "definition" ];
+            var social_list = [row2];
 
-            var row = [ "lvl" ];
-            lvl_list = [row];      
+            var row3 = [ "id", "name" ];
+            var danger_list = [row3];
+
+            var row4 = [ "id", "name", "before", "accord" ];
+            var taille_list = [row4];            
 
         </script>
 
-        <%especes_list.forEach(function(element) { %>
+        <%table_list.espece.forEach(function(element) { %>
             <script>
                 var row = [];
-                row.push("<%= element.id %>","<%= element.name %>","<%= element.minSize %>","<%= element.maxSize %>","<%= element.description %>","<%= element.social %>");
+                row.push("<%= element.id %>","<%= element.name %>","<%= element.minSize %>","<%= element.maxSize %>","<%= element.description %>","<%= element.social %>","<%= element.minDangerosity %>","<%= element.maxDangerosity %>","<%= element.maxSocialSize %>");
                 caracteristics_list.push(row);
             </script>
         <% }); %>
+
+        <%table_list.social.forEach(function(element) { %>
+            <script>
+                var row = [];
+                row.push("<%= element.id %>","<%= element.name %>","<%= element.masculin %>","<%= element.definition %>");
+                social_list.push(row);
+            </script>
+        <% }); %>
+
+        <%table_list.danger.forEach(function(element) { %>
+            <script>
+                var row = [];
+                row.push("<%= element.id %>","<%= element.name %>");
+                danger_list.push(row);
+            </script>
+        <% }); %>
+
+        <%table_list.taille.forEach(function(element) { %>
+            <script>
+                var row = [];
+                row.push("<%= element.id %>","<%= element.name %>","<%= element.before %>","<%= element.accord %>");
+                taille_list.push(row);
+            </script>
+        <% }); %>
+
+
 
         <div class="docs-section">
 
@@ -41,27 +70,31 @@
                 <input type="button" value="Generate" onclick="generateRandomSpecies()">
             </form>
 
-
             <table class="u-full-width"><thead><tr>
 
             <tr><td><strong style="float: left; padding-right:10px;">Éspèce:</strong><div id="species_name_section"></div> </strong></tr>
         
-            <tr><td><strong style="float: left; padding-right:10px;">Race:</strong> A completer </tr>
+            <tr><td><strong style="float: left; padding-right:10px;">Race:</strong> </tr>
 
             <tr><td><strong style="float: left; padding-right:10px;">Dangerosité:</strong> <div id="species_dangerosity_section"></div> </tr>
 
             <tr><td><strong style="float: left; padding-right:2px;">Taille</strong><div style="float: left; padding-right:2px;">(m)</div><strong style="float: left; padding-right:10px;">:</strong> <div style="float: left; padding-right:10px;" id="species_size_section" style="float: left; padding-right:8px;"></tr>
 
-            <tr><td><strong style="float: left; padding-right:10px;">Social:</strong> <div id="species_social_section"></div> </tr>
+            <tr><td><strong style="float: left; padding-right:10px;">Société:</strong> <div id="species_social_section"></div> </tr>
 
             <tr><td><strong style="float: left; padding-right:10px;">Description:</strong> <div id="species_description_section"></div> </tr>
             
-
         </div>
+
 
     </div>
 
 </body>
+
+
+
+
+
 
 <script>
 
@@ -76,12 +109,52 @@
 
             document.getElementById('species_size_section').innerHTML = (Math.floor(Math.random() * (max - min)) + min)/100;
 
-            document.getElementById('species_social_section').innerHTML = caracteristics_list[randomNumber][5];
             document.getElementById('species_description_section').innerHTML = caracteristics_list[randomNumber][4];
 
-            var randomNumberDangerosity = Math.floor(Math.random() * lvl_list.length ) + 1;
+            min = Math.ceil(caracteristics_list[randomNumber][6]);
+            max = Math.floor(caracteristics_list[randomNumber][7]);
 
-            document.getElementById('species_dangerosity_section').innerHTML = lvl_list[randomNumber][0];
+            var dangerValue = (Math.floor(Math.random() * (max - min)) + min);
+             
+            document.getElementById('species_dangerosity_section').innerHTML =  danger_list[dangerValue][1];
+
+            if (caracteristics_list[randomNumber][5] == 1) {
+
+                var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumber][8] ) + 1;
+                var randomNumberSocial = Math.floor(Math.random() * social_list.length ) + 1;
+
+                if ( taille_list[randomNumberTaille][2] == 1 )
+                {
+                    if ( social_list[randomNumberSocial][2] == 1 )
+                    {
+                        document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille][1] + " " + social_list[randomNumberSocial][1];
+                    }
+                    else
+                    {
+                        document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille][1] + taille_list[randomNumberTaille][3] + " " + social_list[randomNumberSocial][1];
+                    }
+                    
+                }
+                else
+                {
+                    if ( social_list[randomNumberSocial][2] == 1 )
+                    {
+                        document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial][1] + " " + taille_list[randomNumberTaille][1];
+                    }
+                    else
+                    {
+                        document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial][1] + " " + taille_list[randomNumberTaille][1] + taille_list[randomNumberTaille][3];
+                    }
+                    
+                }
+
+                
+                
+            } else {
+
+                document.getElementById('species_social_section').innerHTML = "Solitaire"
+
+            }
 
         }
 
