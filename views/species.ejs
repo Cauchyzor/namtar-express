@@ -1,7 +1,9 @@
 <!--HEAD -->
+
 <%- include('head'); -%>
 
 <!-- BODY -->
+
 <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 <body class="code-snippets-visible">
@@ -13,149 +15,186 @@
 
         <script>
 
-            var row1 = [ "id" , "name", "minSize", "maxSize", "description", "social", "minDangerosity", "maxDangerosity", "maxSocialSize" ];
-            var caracteristics_list = [row1];
-
-            var row2 = [ "id" , "name", "masculin", "definition" ];
-            var social_list = [row2];
-
-            var row3 = [ "id", "name" ];
-            var danger_list = [row3];
-
-            var row4 = [ "id", "name", "before", "accord" ];
-            var taille_list = [row4];            
+            var caracteristics_list = [];
+            var social_list = [];
+            var taille_list = [];   
+            var danger_list = [];
 
         </script>
 
-        <%table_list.espece.forEach(function(element) { %>
+        <%table_list.espece.forEach(function(espece) { %>
             <script>
-                var row = [];
-                row.push("<%= element.id %>","<%= element.name %>","<%= element.minSize %>","<%= element.maxSize %>","<%= element.description %>","<%= element.social %>","<%= element.minDangerosity %>","<%= element.maxDangerosity %>","<%= element.maxSocialSize %>");
+
+                var row = { id: "", name: "", minSize: "", maxSize: "", description: "", social: "", minDangerosity: "", maxDangerosity: "", maxSocialSize: "" };
+
+                row.id = "<%= espece.id %>";
+                row.name = "<%= espece.name %>";
+                row.minSize = "<%= espece.minSize %>";
+                row.maxSize = "<%= espece.maxSize %>";
+                row.description = "<%= espece.description %>";
+                row.social = "<%= espece.social %>";
+                row.minDangerosity = "<%= espece.minDangerosity %>";
+                row.maxDangerosity = "<%= espece.maxDangerosity %>";
+                row.maxSocialSize = "<%= espece.maxSocialSize %>";
+
                 caracteristics_list.push(row);
+
             </script>
         <% }); %>
 
-        <%table_list.social.forEach(function(element) { %>
+        <%table_list.social.forEach(function(social) { %>
             <script>
-                var row = [];
-                row.push("<%= element.id %>","<%= element.name %>","<%= element.masculin %>","<%= element.definition %>");
+
+                var row = { id: "", name: "", masculin: "", definition: "" };
+
+                row.id = "<%= social.id %>",
+                row.name = "<%= social.name %>",
+                row.masculin = "<%= social.masculin %>",
+                row.definition = "<%= social.definition %>"
+
                 social_list.push(row);
+
             </script>
         <% }); %>
 
-        <%table_list.danger.forEach(function(element) { %>
+        <%table_list.danger.forEach(function(danger) { %>
             <script>
-                var row = [];
-                row.push("<%= element.id %>","<%= element.name %>");
+
+                var row = { id: "", name: "" };
+
+                row.id = "<%= danger.id %>",
+                row.name = "<%= danger.name %>",
+
                 danger_list.push(row);
+
             </script>
         <% }); %>
 
-        <%table_list.taille.forEach(function(element) { %>
+        <%table_list.taille.forEach(function(taille) { %>
             <script>
-                var row = [];
-                row.push("<%= element.id %>","<%= element.name %>","<%= element.before %>","<%= element.accord %>");
+
+                var row = { id: "", name: "", before: "", accord: "" };
+
+                row.id = "<%= taille.id %>",
+                row.name = "<%= taille.name %>",
+                row.before = "<%= taille.before %>",
+                row.accord = "<%= taille.accord %>"
+
                 taille_list.push(row);
+
             </script>
         <% }); %>
-
-
 
         <div class="docs-section">
 
             <h1 class="docs-header">Générateur de Créatures</h1>        
 
             <form method="POST" id="generateRandomSpell">
-                <!--input type="text" placeholder="Set quote of the day" name="skill" /-->
                 <input type="button" value="Generate" onclick="generateRandomSpecies()">
             </form>
 
             <table class="u-full-width"><thead><tr>
 
-            <tr><td><strong style="float: left; padding-right:10px;">Éspèce:</strong><div id="species_name_section"></div> </strong></tr>
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Éspèce:</strong>
+                    <div id="species_name_section"></div>
+            </tr>
         
-            <tr><td><strong style="float: left; padding-right:10px;">Race:</strong> </tr>
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Race:</strong>
+                    <div id="species_race_section"></div>
+            </tr>
 
-            <tr><td><strong style="float: left; padding-right:10px;">Dangerosité:</strong> <div id="species_dangerosity_section"></div> </tr>
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Dangerosité:</strong>
+                    <div id="species_dangerosity_section"></div>
+            </tr>
 
-            <tr><td><strong style="float: left; padding-right:2px;">Taille</strong><div style="float: left; padding-right:2px;">(m)</div><strong style="float: left; padding-right:10px;">:</strong> <div style="float: left; padding-right:10px;" id="species_size_section" style="float: left; padding-right:8px;"></tr>
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:2px;">Taille</strong>
+                    <div style="float: left; padding-right:2px;">(m)</div>
+                    <strong style="float: left; padding-right:10px;">:</strong>
+                    <div style="float: left; padding-right:10px;" id="species_size_section" style="float: left; padding-right:8px;"></div>
+            </tr>
 
-            <tr><td><strong style="float: left; padding-right:10px;">Société:</strong> <div id="species_social_section"></div> </tr>
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Société:</strong>
+                    <div id="species_social_section"></div>
+            </tr>
 
-            <tr><td><strong style="float: left; padding-right:10px;">Description:</strong> <div id="species_description_section"></div> </tr>
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Description:</strong>
+                    <div id="species_description_section"></div>
+            </tr>
             
         </div>
-
 
     </div>
 
 </body>
 
-
-
-
-
-
 <script>
 
-        function generateRandomSpecies() {
+    function generateRandomSpecies() {
 
-            var randomNumber = Math.floor(Math.random() * caracteristics_list.length ) + 1;
+        var randomNumber = Math.floor(Math.random() * caracteristics_list.length );
 
-            document.getElementById('species_name_section').innerHTML = caracteristics_list[randomNumber][1];
+        document.getElementById('species_name_section').innerHTML = caracteristics_list[randomNumber].name;
 
-            var min = Math.ceil(caracteristics_list[randomNumber][2]);
-            var max = Math.floor(caracteristics_list[randomNumber][3]);
+        var min = Math.ceil(caracteristics_list[randomNumber].minSize);
+        var max = Math.floor(caracteristics_list[randomNumber].maxSize);
 
-            document.getElementById('species_size_section').innerHTML = (Math.floor(Math.random() * (max - min)) + min)/100;
+        document.getElementById('species_size_section').innerHTML = (Math.floor(Math.random() * (max - min)) + min)/100;
 
-            document.getElementById('species_description_section').innerHTML = caracteristics_list[randomNumber][4];
+        document.getElementById('species_description_section').innerHTML = caracteristics_list[randomNumber].description;
 
-            min = Math.ceil(caracteristics_list[randomNumber][6]);
-            max = Math.floor(caracteristics_list[randomNumber][7]);
+        min = Math.ceil(caracteristics_list[randomNumber].minDangerosity);
+        max = Math.floor(caracteristics_list[randomNumber].maxDangerosity);
 
-            var dangerValue = (Math.floor(Math.random() * (max - min)) + min);
+        var dangerValue = (Math.floor(Math.random() * (max - min)) + min);
              
-            document.getElementById('species_dangerosity_section').innerHTML =  danger_list[dangerValue][1];
+        document.getElementById('species_dangerosity_section').innerHTML =  danger_list[dangerValue].name;
 
-            if (caracteristics_list[randomNumber][5] == 1) {
+        if (caracteristics_list[randomNumber].social == 1) {
 
-                var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumber][8] ) + 1;
-                var randomNumberSocial = Math.floor(Math.random() * social_list.length ) + 1;
+            var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumber].maxSocialSize );
+            var randomNumberSocial = Math.floor(Math.random() * social_list.length );
 
-                if ( taille_list[randomNumberTaille][2] == 1 )
+            if ( taille_list[randomNumberTaille].before == 1 )
+            {
+                if ( social_list[randomNumberSocial].masculin == 1 )
                 {
-                    if ( social_list[randomNumberSocial][2] == 1 )
-                    {
-                        document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille][1] + " " + social_list[randomNumberSocial][1];
-                    }
-                    else
-                    {
-                        document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille][1] + taille_list[randomNumberTaille][3] + " " + social_list[randomNumberSocial][1];
-                    }
-                    
+                    document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille].name + " " + social_list[randomNumberSocial].name;
                 }
                 else
                 {
-                    if ( social_list[randomNumberSocial][2] == 1 )
-                    {
-                        document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial][1] + " " + taille_list[randomNumberTaille][1];
-                    }
-                    else
-                    {
-                        document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial][1] + " " + taille_list[randomNumberTaille][1] + taille_list[randomNumberTaille][3];
-                    }
-                    
-                }
-
-                
-                
-            } else {
-
-                document.getElementById('species_social_section').innerHTML = "Solitaire"
-
+                    document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord + " " + social_list[randomNumberSocial].name;
+                }            
             }
+            else
+            {
+                if ( social_list[randomNumberSocial].masculin == 1 )
+                {
+                    document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name;
+                }
+                else
+                {
+                    document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord;
+                }         
+            }
+             
+        } else {
+
+            document.getElementById('species_social_section').innerHTML = "Solitaire"
 
         }
+
+    }
 
 </script>
