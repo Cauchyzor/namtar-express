@@ -1,0 +1,274 @@
+<!--HEAD -->
+
+<%- include('head'); -%>
+
+<!-- BODY -->
+
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<body class="code-snippets-visible">
+
+    <div class="container">
+
+        <%- include('header'); -%>
+        <%- include('navbar'); -%>
+
+        <script>
+
+            var caracteristics_list = [];
+            var social_list = [];
+            var taille_list = [];   
+            var danger_list = [];
+            var race_list = [];
+
+        </script>
+
+        <%table_list.espece.forEach(function(espece) { %>
+            <script>
+
+                var row = { id: "", name: "", minSize: "", maxSize: "", description: "", social: "", minDangerosity: "", maxDangerosity: "", maxSocialSize: "", minColor: "", maxColor: "", minSat: "", maxSat: "", minLum: "", maxLum: "" };
+
+                row.id = "<%= espece.id %>";
+                row.name = "<%= espece.name %>";
+                row.minSize = "<%= espece.minSize %>";
+                row.maxSize = "<%= espece.maxSize %>";
+                row.description = "<%= espece.description %>";
+                row.social = "<%= espece.social %>";
+                row.minDangerosity = "<%= espece.minDangerosity %>";
+                row.maxDangerosity = "<%= espece.maxDangerosity %>";
+                row.maxSocialSize = "<%= espece.maxSocialSize %>";
+                row.minColor = "<%= espece.minColor %>";
+                row.maxColor = "<%= espece.maxColor %>";
+                row.minSat = "<%= espece.minSat %>";
+                row.maxSat = "<%= espece.maxSat %>";
+                row.minLum = "<%= espece.minLum %>";
+                row.maxLum = "<%= espece.maxLum %>";
+
+                caracteristics_list.push(row);
+
+            </script>
+        <% }); %>
+
+        <%table_list.social.forEach(function(social) { %>
+            <script>
+
+                var row = { id: "", name: "", masculin: "", definition: "" };
+
+                row.id = "<%= social.id %>";
+                row.name = "<%= social.name %>";
+                row.masculin = "<%= social.masculin %>";
+                row.definition = "<%= social.definition %>";
+
+                social_list.push(row);
+
+            </script>
+        <% }); %>
+
+        <%table_list.danger.forEach(function(danger) { %>
+            <script>
+
+                var row = { id: "", name: "" };
+
+                row.id = "<%= danger.id %>";
+                row.name = "<%= danger.name %>";
+
+                danger_list.push(row);
+
+            </script>
+        <% }); %>
+
+        <%table_list.taille.forEach(function(taille) { %>
+            <script>
+
+                var row = { id: "", name: "", before: "", accord: "" };
+
+                row.id = "<%= taille.id %>";
+                row.name = "<%= taille.name %>";
+                row.before = "<%= taille.before %>";
+                row.accord = "<%= taille.accord %>";
+
+                taille_list.push(row);
+
+            </script>
+        <% }); %>
+
+        <%table_list.race.forEach(function(race) { %>
+            <script>
+
+                var row = { prefix: "", mid1: "", mid2: "", sufix: "" };
+
+                row.prefix = "<%= race.prefix %>"
+                row.mid1 = "<%= race.mid1 %>"
+                row.mid2 = "<%= race.mid2 %>"
+                row.sufix = "<%= race.sufix %>"
+
+                race_list.push(row);
+
+            </script>
+        <% }); %>
+
+        <div class="docs-section">
+
+            <h1 class="docs-header">Générateur de Créatures</h1>        
+
+            <form method="POST" id="generateRandomSpell">
+                <input type="button" value="Generate" onclick="generateRandomSpecies()">
+            </form>
+
+            <table class="u-full-width"><thead><tr>
+
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Éspèce:</strong>
+                    <div id="species_name_section"></div>
+            </tr>
+        
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Race:</strong>
+                    <div id="species_race_section"></div>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Dangerosité:</strong>
+                    <div id="species_dangerosity_section"></div>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:2px;">Taille</strong>
+                    <div style="float: left; padding-right:2px;">(m)</div>
+                    <strong style="float: left; padding-right:10px;">:</strong>
+                    <div style="float: left; padding-right:10px;" id="species_size_section" style="float: left; padding-right:8px;"></div>
+            </tr>      
+
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Couleur:</strong>
+                    <div id="species_color_square" style="width:20px; margin-left:72px; height:20px; border:1px solid #000;"></div>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong  style="float: left; padding-right:10px;">Société:</strong>
+                    <div class="needADescription" id="species_social_section"></div>
+                    <div class="descriptionText" id="socialDescriptionText" style="position: fixed;"></div>     
+            </tr>
+
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Description:</strong>
+                    <div id="species_description_section" align="justify"></div>
+            </tr>
+            
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+    var socialDescriptionText = document.getElementById("socialDescriptionText");
+
+    window.onload = function(){
+  
+        var x, y;
+
+        socialDescriptionText.innerHTML = " " ;
+  
+        window.addEventListener('mousemove', function(event){
+
+            x = event.clientX;
+            y = event.clientY; 
+
+            if ( typeof x !== 'undefined' ){
+
+                socialDescriptionText.style.left = x + 10 +  "px";
+                socialDescriptionText.style.top = y + 10 +  "px";
+                socialDescriptionText.style.height= "22px";
+                socialDescriptionText.style.border = "1px solid #000";
+                socialDescriptionText.style.backgroundColor = "white";
+
+            }
+
+        }, false);
+
+    }
+
+    function generateRandomSpecies() {
+
+        var species_name_section = document.getElementById('species_name_section');
+        var species_size_section = document.getElementById('species_size_section');
+        var species_description_section = document.getElementById('species_description_section');
+        var species_dangerosity_section = document.getElementById('species_dangerosity_section');
+        var species_social_section = document.getElementById('species_social_section');
+        var species_race_section = document.getElementById('species_race_section');
+        var colorSquare = document.getElementById('species_color_square');
+
+        var min = "";
+        var max = "";
+
+        var randomNumberEspece = Math.floor(Math.random() * caracteristics_list.length );
+
+        species_name_section.innerHTML = caracteristics_list[randomNumberEspece].name;
+
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minSize);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxSize);
+        var taille = (Math.floor(Math.random() * (max - min)) + min) / 100;
+        species_size_section.innerHTML = taille;
+
+        species_description_section.innerHTML = caracteristics_list[randomNumberEspece].description;
+
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minDangerosity);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxDangerosity);
+        var niveauDanger = (Math.floor(Math.random() * (max - min)) + min);
+        species_dangerosity_section.innerHTML =  danger_list[niveauDanger].name;
+
+        var randomNumberPrefix = Math.floor(Math.random() * race_list.length );
+        var randomNumberMid1 = Math.floor(Math.random() * race_list.length );
+        var randomNumberMid2 = Math.floor(Math.random() * race_list.length );
+        var randomNumberSufix = Math.floor(Math.random() * race_list.length );
+        var addMid2 = Math.floor(Math.random() * 10 );
+        if (addMid2 > 7) { species_race_section.innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].mid2 + race_list[randomNumberSufix].sufix; }
+        else { species_race_section.innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberSufix].sufix; }
+
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minColor);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxColor);
+        var colorValue = (Math.floor(Math.random() * (max - min)) + min);
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minSat);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxSat);
+        var satValue = (Math.floor(Math.random() * (max - min)) + min);
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minLum);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxLum);
+        var lumValue = (Math.floor(Math.random() * (max - min)) + min);
+        colorSquare.style.backgroundColor = "hsl(" + colorValue + ", " + satValue + "%, " + lumValue + "%)";
+
+        if (caracteristics_list[randomNumberEspece].social == 1) {
+            var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumberEspece].maxSocialSize );
+            var randomNumberSocial = Math.floor(Math.random() * social_list.length );          
+            if ( taille_list[randomNumberTaille].before == 1 ) {
+                if ( social_list[randomNumberSocial].masculin == 1 ) {
+                    species_social_section.innerHTML = taille_list[randomNumberTaille].name + " " + social_list[randomNumberSocial].name;
+                } else {
+                    species_social_section.innerHTML = taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord + " " + social_list[randomNumberSocial].name;
+                }            
+            } else {
+                if ( social_list[randomNumberSocial].masculin == 1 ) {
+                    species_social_section.innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name;
+                } else {
+                    species_social_section.innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord;
+                }         
+            }
+            socialDescriptionText.innerHTML = social_list[randomNumberSocial].definition ;
+            socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";        
+        } else {
+            species_social_section.innerHTML = "Solitaire";
+            socialDescriptionText.innerHTML = "Cette creature vit seule." ;
+            socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";  
+        }
+
+    }
+
+</script>

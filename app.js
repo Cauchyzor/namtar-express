@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var reglesChap1Router = require('./routes/reglesChap1');
@@ -17,6 +16,7 @@ var histoireRouter = require('./routes/histoire');
 var bestiaireRouter = require('./routes/bestiaire');
 var effetsRouter = require('./routes/effets');
 var generateurRouter = require('./routes/generateur');
+var speciesRouter = require('./routes/species');
 var fichePersoRouter = require('./routes/fichePerso');
 var createPJRouter = require('./routes/createPJ');
 
@@ -44,6 +44,7 @@ app.use('/reglesChap6', reglesChap6Router);
 app.use('/histoire', histoireRouter);
 app.use('/bestiaire', bestiaireRouter);
 app.use('/generateur', generateurRouter);
+app.use('/species', speciesRouter);
 app.use('/effets', effetsRouter);
 app.use('/fichePerso', fichePersoRouter);
 app.use('/createPJ', createPJRouter);
