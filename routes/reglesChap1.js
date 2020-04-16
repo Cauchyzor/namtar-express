@@ -4,6 +4,8 @@ var sqlite3 = require('sqlite3').verbose();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  
+  var QUERY_STRING = "SELECT * FROM APTITUDES";
   var db = new sqlite3.Database('spellGenerator.db', (err) => {
     if (err) {
       return console.error(err.message);
@@ -11,7 +13,7 @@ router.get('/', function (req, res, next) {
     console.log('Connected to the in-memory SQlite database.');
   });
 
-  db.all("SELECT * FROM COMPETENCES", function (err, rows) {
+  db.all(QUERY_STRING, function (err, rows) {
     res.render('reglesChap1.ejs', { aptitudeList: rows });
   });
 
