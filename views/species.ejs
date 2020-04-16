@@ -26,7 +26,7 @@
         <%table_list.espece.forEach(function(espece) { %>
             <script>
 
-                var row = { id: "", name: "", minSize: "", maxSize: "", description: "", social: "", minDangerosity: "", maxDangerosity: "", maxSocialSize: "" };
+                var row = { id: "", name: "", minSize: "", maxSize: "", description: "", social: "", minDangerosity: "", maxDangerosity: "", maxSocialSize: "", minColor: "", maxColor: "", minSat: "", maxSat: "", minLum: "", maxLum: "" };
 
                 row.id = "<%= espece.id %>";
                 row.name = "<%= espece.name %>";
@@ -37,6 +37,12 @@
                 row.minDangerosity = "<%= espece.minDangerosity %>";
                 row.maxDangerosity = "<%= espece.maxDangerosity %>";
                 row.maxSocialSize = "<%= espece.maxSocialSize %>";
+                row.minColor = "<%= espece.minColor %>";
+                row.maxColor = "<%= espece.maxColor %>";
+                row.minSat = "<%= espece.minSat %>";
+                row.maxSat = "<%= espece.maxSat %>";
+                row.minLum = "<%= espece.minLum %>";
+                row.maxLum = "<%= espece.maxLum %>";
 
                 caracteristics_list.push(row);
 
@@ -48,10 +54,10 @@
 
                 var row = { id: "", name: "", masculin: "", definition: "" };
 
-                row.id = "<%= social.id %>",
-                row.name = "<%= social.name %>",
-                row.masculin = "<%= social.masculin %>",
-                row.definition = "<%= social.definition %>"
+                row.id = "<%= social.id %>";
+                row.name = "<%= social.name %>";
+                row.masculin = "<%= social.masculin %>";
+                row.definition = "<%= social.definition %>";
 
                 social_list.push(row);
 
@@ -63,8 +69,8 @@
 
                 var row = { id: "", name: "" };
 
-                row.id = "<%= danger.id %>",
-                row.name = "<%= danger.name %>",
+                row.id = "<%= danger.id %>";
+                row.name = "<%= danger.name %>";
 
                 danger_list.push(row);
 
@@ -76,10 +82,10 @@
 
                 var row = { id: "", name: "", before: "", accord: "" };
 
-                row.id = "<%= taille.id %>",
-                row.name = "<%= taille.name %>",
-                row.before = "<%= taille.before %>",
-                row.accord = "<%= taille.accord %>"
+                row.id = "<%= taille.id %>";
+                row.name = "<%= taille.name %>";
+                row.before = "<%= taille.before %>";
+                row.accord = "<%= taille.accord %>";
 
                 taille_list.push(row);
 
@@ -91,9 +97,9 @@
 
                 var row = { prefix: "", mid1: "", mid2: "", sufix: "" };
 
-                row.prefix = "<%= race.prefix %>",
-                row.mid1 = "<%= race.mid1 %>",
-                row.mid2 = "<%= race.mid2 %>",
+                row.prefix = "<%= race.prefix %>"
+                row.mid1 = "<%= race.mid1 %>"
+                row.mid2 = "<%= race.mid2 %>"
                 row.sufix = "<%= race.sufix %>"
 
                 race_list.push(row);
@@ -135,6 +141,12 @@
                     <div style="float: left; padding-right:2px;">(m)</div>
                     <strong style="float: left; padding-right:10px;">:</strong>
                     <div style="float: left; padding-right:10px;" id="species_size_section" style="float: left; padding-right:8px;"></div>
+            </tr>      
+
+            <tr>
+                <td>
+                    <strong style="float: left; padding-right:10px;">Couleur:</strong>
+                    <div id="species_color_square" style="width:20px; margin-left:72px; height:20px; border:1px solid #000;"></div>
             </tr>
 
             <tr>
@@ -227,8 +239,24 @@
             document.getElementById('species_race_section').innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].sufix;
         }
 
+        min = Math.ceil(caracteristics_list[randomNumber].minColor);
+        max = Math.floor(caracteristics_list[randomNumber].maxColor);
 
-        
+        var colorValue = (Math.floor(Math.random() * (max - min)) + min);
+
+        min = Math.ceil(caracteristics_list[randomNumber].minSat);
+        max = Math.floor(caracteristics_list[randomNumber].maxSat);
+
+        var satValue = (Math.floor(Math.random() * (max - min)) + min);
+
+        min = Math.ceil(caracteristics_list[randomNumber].minLum);
+        max = Math.floor(caracteristics_list[randomNumber].maxLum);
+
+        var lumValue = (Math.floor(Math.random() * (max - min)) + min);
+
+        var colorSquare = document.getElementById("species_color_square");
+
+        colorSquare.style.backgroundColor = "hsl(" + colorValue + ", " + satValue + "%, " + lumValue + "%)";
 
     }
 
