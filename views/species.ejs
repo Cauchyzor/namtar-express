@@ -151,8 +151,9 @@
 
             <tr>
                 <td>
-                    <strong style="float: left; padding-right:10px;">Société:</strong>
-                    <div id="species_social_section"></div>
+                    <strong  style="float: left; padding-right:10px;">Société:</strong>
+                    <div class="needADescription" id="species_social_section"></div>
+                    <div class="descriptionText" id="socialDescriptionText" style="position: fixed;"></div>     
             </tr>
 
             <tr>
@@ -169,94 +170,104 @@
 
 <script>
 
+    var socialDescriptionText = document.getElementById("socialDescriptionText");
+
+    window.onload = function(){
+  
+        var x, y;
+
+        socialDescriptionText.innerHTML = " " ;
+  
+        window.addEventListener('mousemove', function(event){
+
+            x = event.clientX;
+            y = event.clientY; 
+
+            if ( typeof x !== 'undefined' ){
+
+                socialDescriptionText.style.left = x + 10 +  "px";
+                socialDescriptionText.style.top = y + 10 +  "px";
+                socialDescriptionText.style.height= "22px";
+                socialDescriptionText.style.border = "1px solid #000";
+                socialDescriptionText.style.backgroundColor = "white";
+
+            }
+
+        }, false);
+
+    }
+
     function generateRandomSpecies() {
 
-        var randomNumber = Math.floor(Math.random() * caracteristics_list.length );
+        var species_name_section = document.getElementById('species_name_section');
+        var species_size_section = document.getElementById('species_size_section');
+        var species_description_section = document.getElementById('species_description_section');
+        var species_dangerosity_section = document.getElementById('species_dangerosity_section');
+        var species_social_section = document.getElementById('species_social_section');
+        var species_race_section = document.getElementById('species_race_section');
+        var colorSquare = document.getElementById('species_color_square');
 
-        document.getElementById('species_name_section').innerHTML = caracteristics_list[randomNumber].name;
+        var min = "";
+        var max = "";
 
-        var min = Math.ceil(caracteristics_list[randomNumber].minSize);
-        var max = Math.floor(caracteristics_list[randomNumber].maxSize);
+        var randomNumberEspece = Math.floor(Math.random() * caracteristics_list.length );
 
-        document.getElementById('species_size_section').innerHTML = (Math.floor(Math.random() * (max - min)) + min)/100;
+        species_name_section.innerHTML = caracteristics_list[randomNumberEspece].name;
 
-        document.getElementById('species_description_section').innerHTML = caracteristics_list[randomNumber].description;
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minSize);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxSize);
+        var taille = (Math.floor(Math.random() * (max - min)) + min) / 100;
+        species_size_section.innerHTML = taille;
 
-        min = Math.ceil(caracteristics_list[randomNumber].minDangerosity);
-        max = Math.floor(caracteristics_list[randomNumber].maxDangerosity);
+        species_description_section.innerHTML = caracteristics_list[randomNumberEspece].description;
 
-        var dangerValue = (Math.floor(Math.random() * (max - min)) + min);
-             
-        document.getElementById('species_dangerosity_section').innerHTML =  danger_list[dangerValue].name;
-
-        if (caracteristics_list[randomNumber].social == 1) {
-
-            var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumber].maxSocialSize );
-            var randomNumberSocial = Math.floor(Math.random() * social_list.length );
-
-            if ( taille_list[randomNumberTaille].before == 1 )
-            {
-                if ( social_list[randomNumberSocial].masculin == 1 )
-                {
-                    document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille].name + " " + social_list[randomNumberSocial].name;
-                }
-                else
-                {
-                    document.getElementById('species_social_section').innerHTML = taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord + " " + social_list[randomNumberSocial].name;
-                }            
-            }
-            else
-            {
-                if ( social_list[randomNumberSocial].masculin == 1 )
-                {
-                    document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name;
-                }
-                else
-                {
-                    document.getElementById('species_social_section').innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord;
-                }         
-            }
-             
-        } else {
-
-            document.getElementById('species_social_section').innerHTML = "Solitaire"
-
-        }
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minDangerosity);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxDangerosity);
+        var niveauDanger = (Math.floor(Math.random() * (max - min)) + min);
+        species_dangerosity_section.innerHTML =  danger_list[niveauDanger].name;
 
         var randomNumberPrefix = Math.floor(Math.random() * race_list.length );
         var randomNumberMid1 = Math.floor(Math.random() * race_list.length );
         var randomNumberMid2 = Math.floor(Math.random() * race_list.length );
         var randomNumberSufix = Math.floor(Math.random() * race_list.length );
+        var addMid2 = Math.floor(Math.random() * 10 );
+        if (addMid2 > 7) { species_race_section.innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].mid2 + race_list[randomNumberSufix].sufix; }
+        else { species_race_section.innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberSufix].sufix; }
 
-        var addMid2 = Math.floor(Math.random() * 2 );
-
-        if (addMid2 == 2)
-        {
-            document.getElementById('species_race_section').innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].mid2 + race_list[randomNumberMid2].sufix;
-        }
-        else
-        {
-            document.getElementById('species_race_section').innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].sufix;
-        }
-
-        min = Math.ceil(caracteristics_list[randomNumber].minColor);
-        max = Math.floor(caracteristics_list[randomNumber].maxColor);
-
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minColor);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxColor);
         var colorValue = (Math.floor(Math.random() * (max - min)) + min);
-
-        min = Math.ceil(caracteristics_list[randomNumber].minSat);
-        max = Math.floor(caracteristics_list[randomNumber].maxSat);
-
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minSat);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxSat);
         var satValue = (Math.floor(Math.random() * (max - min)) + min);
-
-        min = Math.ceil(caracteristics_list[randomNumber].minLum);
-        max = Math.floor(caracteristics_list[randomNumber].maxLum);
-
+        min = Math.ceil(caracteristics_list[randomNumberEspece].minLum);
+        max = Math.floor(caracteristics_list[randomNumberEspece].maxLum);
         var lumValue = (Math.floor(Math.random() * (max - min)) + min);
-
-        var colorSquare = document.getElementById("species_color_square");
-
         colorSquare.style.backgroundColor = "hsl(" + colorValue + ", " + satValue + "%, " + lumValue + "%)";
+
+        if (caracteristics_list[randomNumberEspece].social == 1) {
+            var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumberEspece].maxSocialSize );
+            var randomNumberSocial = Math.floor(Math.random() * social_list.length );          
+            if ( taille_list[randomNumberTaille].before == 1 ) {
+                if ( social_list[randomNumberSocial].masculin == 1 ) {
+                    species_social_section.innerHTML = taille_list[randomNumberTaille].name + " " + social_list[randomNumberSocial].name;
+                } else {
+                    species_social_section.innerHTML = taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord + " " + social_list[randomNumberSocial].name;
+                }            
+            } else {
+                if ( social_list[randomNumberSocial].masculin == 1 ) {
+                    species_social_section.innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name;
+                } else {
+                    species_social_section.innerHTML = social_list[randomNumberSocial].name + " " + taille_list[randomNumberTaille].name + taille_list[randomNumberTaille].accord;
+                }         
+            }
+            socialDescriptionText.innerHTML = social_list[randomNumberSocial].definition ;
+            socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";        
+        } else {
+            species_social_section.innerHTML = "Solitaire";
+            socialDescriptionText.innerHTML = "Cette creature vit seule." ;
+            socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";  
+        }
 
     }
 

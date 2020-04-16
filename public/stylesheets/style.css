@@ -115,6 +115,25 @@
     display: none;
 }
 
+.shrink img {
+    transition: 1s ease;
+}
+
+.shrink img:hover{
+    -webkit-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    transform: scale(1.5);
+    transition: 1s ease;
+}
+
+.needADescription:hover + .descriptionText {
+    display: block;
+}
+
+.descriptionText{
+    display: none;
+}
+
 /* Larger than phone */
 
 @media (min-width: 550px) {
