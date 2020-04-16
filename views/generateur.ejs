@@ -34,18 +34,15 @@
 <script>
 
     function generateRandomSkill() {
-
         const max_effect_power = 4;
         const max_distinct_effect = 2;
         const skill_id = Math.floor(Math.random() * 1000);
         var skill = { id: skill_id, name: "Random Skill", outcomes: new Array(), total_cost: 0 };
-
         var distinct_effect_id_set = new Set();
         while (distinct_effect_id_set.size < max_distinct_effect) {
             var effect_id = Math.floor(Math.random() * (effect_list.length - 1)) + 1;
             distinct_effect_id_set.add(effect_id);
         };
-
         distinct_effect_id_set.forEach((value) => {
             var outcome = { name: "", power: "", description: "", cost: "" };
             outcome.name = effect_list[value].name;
@@ -54,11 +51,9 @@
             outcome.cost = effect_list[value].cost;
             skill.outcomes.push(outcome);
         });
-
         skill.outcomes.forEach((values) => {
             skill.total_cost = skill.total_cost + (values.cost * values.power);
         });
-
         $('#skills_section').after(
             '<table class="u-full-width"><thead><tr>' +
             '<th><strong>' + skill.name + '</strong></th>' +
@@ -73,8 +68,6 @@
         });
         $('tbody#' + skill.id).after('</tbody></table>');
     };
-
     function deleteRandomSkill() {
-
     }
 </script>
