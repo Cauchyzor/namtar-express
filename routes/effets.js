@@ -4,6 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 router.get('/', function (req, res, next) {
 
+  var QUERY_STRING = "SELECT * FROM MARKS";
   var db = new sqlite3.Database('spellGenerator.db', (err) => {
     if (err) {
       return console.error(err.message);
@@ -11,7 +12,7 @@ router.get('/', function (req, res, next) {
     console.log('Connected to the in-memory SQlite database.');
   });
 
-  db.all("SELECT * FROM MARKS", function (err, rows) {
+  db.all(QUERY_STRING, function (err, rows) {
     res.render('effets', { effets: rows });
   });
 

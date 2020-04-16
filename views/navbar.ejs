@@ -34,7 +34,18 @@
             </li>
             <li class="navbar-item"><a class="navbar-link" href="/bestiaire">Bestiaire</a></li>
             <li class="navbar-item"><a class="navbar-link" href="/generateur">Générateur de Competences</a></li>
-            <li class="navbar-item"><a class="navbar-link" href="/fichePerso">Fiche Personnage</a>
+            <li class="navbar-item">
+                <a class="navbar-link" href="/fichePerso" data-popover="#NavPopoverPJ">Personnages</a>
+                <div id="NavPopoverPJ" class="popover">
+                    <ul class="popover-list">
+                        <li class="popover-item">
+                            <a class="popover-link" href="/fichePerso">Fiches Personnages</a>
+                        </li>
+                        <li class="popover-item">
+                            <a class="popover-link" href="/createPJ">Creer un Personnage</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </div>
