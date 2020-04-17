@@ -35,7 +35,7 @@
                     <% tables.characteristics.forEach(function(element) {%>
                     <div class="two columns">
                         <label for="<%= element.key %>"><%= element.name %></label>
-                        <input type="number" min="0" max="3" name="char_<%= element.key %>" value="2">
+                        <input type="number" min="0" max="3" name="char_<%= element.characteristic_code %>" value="2">
                     </div>
                     <%  }); %>
                 </div>
@@ -60,7 +60,7 @@
                             <td><%= element.name %></td>
                             <td><%= element.characteristic %></td>
                             <td><%= element.description %></td>
-                            <td><input type="number" min="0" max="3" name="apt_<%= element.key %>" value="0">
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
                             <td>
                         </tr>
                         <% }
@@ -86,7 +86,7 @@
                             <td><%= element.name %></td>
                             <td><%= element.characteristic %></td>
                             <td><%= element.description %></td>
-                            <td><input type="number" min="0" max="3" name="apt_<%= element.key %>" value="0">
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
                             <td>
                         </tr>
                         <% }
@@ -111,7 +111,7 @@
                             <td><%= element.name %></td>
                             <td><%= element.characteristic %></td>
                             <td><%= element.description %></td>
-                            <td><input type="number" min="0" max="3" name="apt_<%= element.key %>" value="0">
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
                             <td>
                         </tr>
                         <% }
@@ -136,7 +136,7 @@
                             <td><%= element.name %></td>
                             <td><%= element.characteristic %></td>
                             <td><%= element.description %></td>
-                            <td><input type="number" min="0" max="3" name="apt_<%= element.key %>" value="0">
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
                             <td>
                         </tr>
                         <% }

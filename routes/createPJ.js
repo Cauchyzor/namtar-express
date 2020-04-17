@@ -14,7 +14,6 @@ router.get('/', function (req, res, next) {
     console.log('Connected to the in-memory SQlite database.');
   });
 
-
   async.series({
     aptitudes: function (cb) {
       db.all(QUERY_APTITUDES, function (error, rows) {
@@ -73,8 +72,8 @@ router.post('/', function (req, res, next) {
   var placeholders_apt = data_aptitudes.map((key) => data_aptitudes[0].map((key) => '?').join(',')).join('),(');
 
   var QUERY_STRING_PJ = 'INSERT INTO CHARACTERS (' + keys_list_pj.join(',') + ') VALUES (' + placeholders_pj + ')';
-  var QUERY_STRING_CHAR = 'INSERT INTO CHARACTER_CHARACTERISTICS (character_id, characteristics, rank) VALUES (' + placeholders_char + ')';
-  var QUERY_STRING_APT = 'INSERT INTO CHARACTER_APTITUDES (character_id, aptitude, rank) VALUES (' + placeholders_apt + ')';
+  var QUERY_STRING_CHAR = 'INSERT INTO CHARACTER_CHARACTERISTICS (character_id, characteristic_code, rank) VALUES (' + placeholders_char + ')';
+  var QUERY_STRING_APT = 'INSERT INTO CHARACTER_APTITUDES (character_id, aptitude_code, rank) VALUES (' + placeholders_apt + ')';
   var query_list = [
     [QUERY_STRING_APT, data_aptitudes.join(',').split(',')],
     [QUERY_STRING_CHAR, data_characteristics.join(',').split(',')],
