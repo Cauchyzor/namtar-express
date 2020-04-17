@@ -67,6 +67,7 @@ router.post('/', function (req, res, next) {
     }
   }
 
+  // Generate Query depending of database values and key collected
   var placeholders_pj = keys_list_pj.map((key) => '?').join(',');
   var placeholders_char = data_characteristics.map((key) => data_characteristics[0].map((key) => '?').join(',')).join('),(');
   var placeholders_apt = data_aptitudes.map((key) => data_aptitudes[0].map((key) => '?').join(',')).join('),(');
@@ -79,7 +80,6 @@ router.post('/', function (req, res, next) {
     [QUERY_STRING_CHAR, data_characteristics.join(',').split(',')],
     [QUERY_STRING_PJ, values_list_pj]
   ];
-
   var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
       return console.error(err.message);
@@ -87,17 +87,8 @@ router.post('/', function (req, res, next) {
     console.log('Connected to the in-memory SQlite database.');
   });
 
-  // db.run(QUERY_STRING_PJ, values_list_pj, function (err) {
-  //   console.log(QUERY_STRING_PJ);
-  //   console.log(values_list_pj);
-  //   if (err) {
-  //     res.render('error', { message: err.message, error: err });
-  //     return console.error(err.message);
-  //   }
-  //   console.log(`Rows inserted ${this.changes}`);
-  // });
-  // res.status(200).send('Personnage créé !')
 
+  // Update database
   query_list.forEach(function (query) {
 
     db.run(query["0"], query["1"], function (err) {
