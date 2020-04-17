@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 
   var QUERY_APTITUDES = "SELECT * FROM APTITUDES";
   var QUERY_CHARACTERISTICS = "SELECT * FROM CHARACTERISTICS";
-  var db = new sqlite3.Database('spellGenerator.db', (err) => {
+  var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -80,7 +80,7 @@ router.post('/', function (req, res, next) {
     [QUERY_STRING_PJ, values_list_pj]
   ];
 
-  var db = new sqlite3.Database('spellGenerator.db', (err) => {
+  var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
