@@ -10,138 +10,144 @@
         <%- include('header'); -%>
         <%- include('navbar'); -%>
 
-
-
-            <form action="/createPJ" method="POST">
-                <div class="docs-section">
-                    <h1 class="docs-header">Création de personnage</h1>
-                    <div class="row">
-                        <div class="six columns">
-                            <label for="name">Nom</label>
-                            <input class="u-full-width" type="text" name="name">
-                        </div>
-                        <div class="six columns">
-                            <label for="specie">Espèce</label>
-                            <input class="u-full-width" type="text" name="specie">
-                        </div>
+        <form action="/createPJ" method="POST">
+            <div class="docs-section">
+                <h1 class="docs-header">Création de personnage</h1>
+                <div class="row">
+                    <div class="six columns">
+                        <label for="name">Nom</label>
+                        <input class="u-full-width" type="text" name="pj_name" required>
                     </div>
-                    <div class="row">
-                        <label for="biography">Bio</label>
-                        <textarea class="u-full-width" type="text" name="biography"></textarea>
+                    <div class="six columns">
+                        <label for="specie">Espèce</label>
+                        <input class="u-full-width" type="text" name="pj_specie"required>
                     </div>
                 </div>
-                <div class="docs-section">
-                    <h1 class="docs-header">Caracteristiques</h1>
-
-                    <div class="row">
-                        <div class="two columns">
-                            <label for="vigor">Vigueur</label>
-                            <input type="number" min="0" max="3" name="brawn" value="2">
-                        </div>
-                        <div class="two columns">
-                            <label for="agility">Agilité</label>
-                            <input type="number" min="0" max="3" name="agility" value="2">
-                        </div>
-                        <div class="two columns">
-                            <label for="intelligence">Intelligence</label>
-                            <input type="number" min="0" max="3" name="intellect" value="2">
-                        </div>
-                        <div class="two columns">
-                            <label for="cunning">Ruse</label>
-                            <input type="number" min="0" max="3" name="cunning" value="2">
-                        </div>
-                        <div class="two columns">
-                            <label for="will">Volonté</label>
-                            <input type="number" min="0" max="3" name="willpower" value="2">
-                        </div>
-                        <div class="two columns">
-                            <label for="presence">Presence</label>
-                            <input type="number" min="0" max="3" name="presence" value="2">
-                        </div>
-                    </div>
+                <div class="row">
+                    <label for="biography">Bio</label>
+                    <textarea class="u-full-width" type="text" name="pj_biography"></textarea>
                 </div>
-                <div class="docs-section">
-                    <h1 class="docs-header">Aptitudes</h1>
-                    <label>Combats</label>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Carac.</th>
-                                <th>Description</th>
-                                <th>Rang</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% 
-                    aptitudeList.forEach(function(element) {
-                      if(element.type=='combat') {%>
-                            <tr>
-                                <td><%= element.name %></td>
-                                <td><%= element.characteristic %></td>
-                                <td><%= element.description %></td>
-                                <td><input type="number" min="0" max="3" name="<%= element.key %>" value="0">
-                                <td>
-                            </tr>
-                            <% }
+            </div>
+            <div class="docs-section">
+                <h1 class="docs-header">Caracteristiques</h1>
+
+                <div class="row">
+                    <% tables.characteristics.forEach(function(element) {%>
+                    <div class="two columns">
+                        <label for="<%= element.key %>"><%= element.name %></label>
+                        <input type="number" min="0" max="3" name="char_<%= element.characteristic_code %>" value="2">
+                    </div>
+                    <%  }); %>
+                </div>
+            </div>
+            <div class="docs-section">
+                <h1 class="docs-header">Aptitudes</h1>
+                <label>Général</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Carac.</th>
+                            <th>Description</th>
+                            <th>Rang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                    tables.aptitudes.forEach(function(element) {
+                      if(element.type=='general') {%>
+                        <tr>
+                            <td><%= element.name %></td>
+                            <td><%= element.characteristic %></td>
+                            <td><%= element.description %></td>
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
+                            <td>
+                        </tr>
+                        <% }
                   }); %>
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                    <table>
-                        <label>Utilitaire</label>
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Carac.</th>
-                                <th>Description</th>
-                                <th>Rang</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% aptitudeList.forEach(function(element) {
+                <label>Combats</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Carac.</th>
+                            <th>Description</th>
+                            <th>Rang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                    tables.aptitudes.forEach(function(element) {
+                      if(element.type=='combat') {%>
+                        <tr>
+                            <td><%= element.name %></td>
+                            <td><%= element.characteristic %></td>
+                            <td><%= element.description %></td>
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
+                            <td>
+                        </tr>
+                        <% }
+                  }); %>
+                    </tbody>
+                </table>
+
+                <table>
+                    <label>Utilitaire</label>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Carac.</th>
+                            <th>Description</th>
+                            <th>Rang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tables.aptitudes.forEach(function(element) {
                         if(element.type=='utilitaire') {%>
-                            <tr>
-                                <td><%= element.name %></td>
-                                <td><%= element.characteristic %></td>
-                                <td><%= element.description %></td>
-                                <td><input type="number" min="0" max="3" name="<%= element.key %>" value="0">
-                                <td>
-                            </tr>
-                            <% }
+                        <tr>
+                            <td><%= element.name %></td>
+                            <td><%= element.characteristic %></td>
+                            <td><%= element.description %></td>
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
+                            <td>
+                        </tr>
+                        <% }
                     }); %>
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                    <table>
-                        <label>Sociale</label>
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Carac.</th>
-                                <th>Description</th>
-                                <th>Rang</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% aptitudeList.forEach(function(element) {
+                <table>
+                    <label>Social</label>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Carac.</th>
+                            <th>Description</th>
+                            <th>Rang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tables.aptitudes.forEach(function(element) {
                         if(element.type=='sociale') {%>
-                            <tr>
-                                <td><%= element.name %></td>
-                                <td><%= element.characteristic %></td>
-                                <td><%= element.description %></td>
-                                <td><input type="number" min="0" max="3" name="<%= element.key %>" value="0">
-                                <td>
-                            </tr>
-                            <% }
+                        <tr>
+                            <td><%= element.name %></td>
+                            <td><%= element.characteristic %></td>
+                            <td><%= element.description %></td>
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
+                            <td>
+                        </tr>
+                        <% }
                     }); %>
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
 
-                <input class="button-primary" type="submit" value="Submit">
+            <input class="button-primary" type="submit" value="Submit">
 
-            </form>
+        </form>
 
     </div>
 </body>

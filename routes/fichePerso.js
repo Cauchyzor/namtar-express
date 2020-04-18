@@ -1,20 +1,42 @@
 var express = require('express');
 var router = express.Router();
 var sqlite3 = require('sqlite3').verbose();
+var async = require('async');
 
-/* GET home page. */
 router.get('/', function (req, res, next) {
 
-  var QUERY_STRING = "SELECT * FROM APTITUDES";
-  var db = new sqlite3.Database('spellGenerator.db', (err) => {
+  var QUERY_CHARACTER = "SELECT * FROM CHARACTERS";
+  var QUERY_APTITUDES = "SELECT * FROM CHARACTER_APTITUDES JOIN APTITUDES ON CHARACTER_APTITUDES.aptitude_code = APTITUDES.aptitude_code";
+  var QUERY_CHARACTERISTICS = "SELECT * FROM CHARACTER_CHARACTERISTICS JOIN CHARACTERISTICS ON CHARACTER_CHARACTERISTICS.characteristic_code = CHARACTERISTICS.characteristic_code";
+
+  var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
     console.log('Connected to the in-memory SQlite database.');
   });
 
-  db.all(QUERY_STRING, function (err, rows) {
-    res.render('fichePerso.ejs', { aptitudeList: rows });
+
+  async.series({
+    characters: function (cb) {
+      db.all(QUERY_CHARACTER, function (error, rows) {
+        cb(error, rows);
+      })
+    },
+    aptitudes: function (cb) {
+      db.all(QUERY_APTITUDES, function (error, rows) {
+        cb(error, rows);
+      })
+    },
+    characteristics: function (cb) {
+      db.all(QUERY_CHARACTERISTICS, function (error, rows) {
+        cb(error, rows)
+      })
+    }
+  }, function (error, rows) {
+    if (!error) {
+      res.render('fichePerso', { tables: rows });
+    }
   });
 
   // close the database connection

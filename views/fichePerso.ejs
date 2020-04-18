@@ -10,113 +10,142 @@
     <%- include('header'); -%>
     <%- include('navbar'); -%>
 
-    <div class="docs-section">
-      <h1 class="docs-header">Monsieur Lambda</h1>
 
+    <% 
+    tables.characters.forEach(function(pj){
+      var pj_charac_set = [];
+      var pj_apt_set=[];
+
+      tables.characteristics.forEach(function(set){
+        if(set.character_id==pj.name){
+          pj_charac_set.push(set);
+        };
+      });
+
+      tables.aptitudes.forEach(function(set){
+        if(set.character_id==pj.name){
+          pj_apt_set.push(set);
+        };
+      });
+      %>
+
+    <div class="docs-section">
       <div class="row">
         <div class="two columns"><strong>Nom</strong></div>
-        <div class="four columns">Monsieur Lambda</div>
-        <div class="two columns"><strong>Nom (Joueur)</strong></div>
-        <div class="four columns">Jean Michel</div>
-      </div>
-      <div class="row">
+        <div class="four columns">
+          <td><%= pj.name %></td>
+        </div>
         <div class="two columns"><strong>Espèce</strong></div>
-        <div class="four columns">Humain</div>
-        <div class="two columns"><strong>Age</strong></div>
-        <div class="four columns">30</div>
-      </div>
-      <div class="row">
-        <div class="two columns">
-          <h1>2</h1>
-        </div>
-        <div class="two columns">
-          <h1>2</h1>
-        </div>
-        <div class="two columns">
-          <h1>2</h1>
-        </div>
-        <div class="two columns">
-          <h1>2</h1>
-        </div>
-        <div class="two columns">
-          <h1>2</h1>
-        </div>
-        <div class="two columns">
-          <h1>2</h1>
+        <div class="four columns">
+          <td><%= pj.specie %></td>
         </div>
       </div>
       <div class="row">
-        <div class="two columns"><strong>Vigueur</strong></div>
-        <div class="two columns"><strong>Agilité</strong></div>
-        <div class="two columns"><strong>Intelligence</strong></div>
-        <div class="two columns"><strong>Ruse</strong></div>
-        <div class="two columns"><strong>Volonté</strong></div>
-        <div class="two columns"><strong>Présence</strong></div>
+        <div class="two columns"><strong>Bio</strong></div>
+        <div class="ten columns">
+          <td><%= pj.biography %></td>
+        </div>
       </div>
-      <div class="row twelve columns">
-        <table class="three columns">
+
+      <div class="row">
+        <% pj_charac_set.forEach(function(characteristic){ %>
+        <h1 class="two columns"><%= characteristic.rank %></h1>
+        <% }); %>
+      </div>
+      <div class="row">
+        <% pj_charac_set.forEach(function(characteristic){ %>
+        <label class="two columns"><%= characteristic.characteristic_name %></label>
+        <% }); %>
+      </div>
+
+      <div class="row">
+        <table class="six columns">
           <thead>
             <tr>
-              <th>Nom</th>
+              <th>Aptitude</th>
               <th>Carac.</th>
               <th>Rang</th>
             </tr>
           </thead>
+          <% pj_apt_set.forEach(function(aptitudes){ 
+            if(aptitudes.type=='general'){ %>
           <tbody>
-            <% 
-            aptitudeList.forEach(function(element) {
-              if(element.type=='combat') {%>
             <tr>
-              <td><%= element.name %></td>
-              <td><%= element.characteristic %></td>
-              <td>0</td>
+              <td><%= aptitudes.aptitude_name %></td>
+              <td><%= aptitudes.characteristic_code %></td>
+              <td><%= aptitudes.rank %></td>
             </tr>
-            <% }
-          }); %>
           </tbody>
+          <% }
+         }); %>
         </table>
-        <table class="three columns">
+        <table class="six columns">
           <thead>
             <tr>
-              <th>Nom</th>
+              <th>Aptitude</th>
               <th>Carac.</th>
               <th>Rang</th>
             </tr>
           </thead>
+          <% pj_apt_set.forEach(function(aptitudes){ 
+            if(aptitudes.type=='combat'){ %>
           <tbody>
-            <% aptitudeList.forEach(function(element) {
-                if(element.type=='utilitaire') {%>
             <tr>
-              <td><%= element.name %></td>
-              <td><%= element.characteristic %></td>
-              <td>0</td>
+              <td><%= aptitudes.aptitude_name %></td>
+              <td><%= aptitudes.characteristic_code %></td>
+              <td><%= aptitudes.rank %></td>
             </tr>
-            <% }
-            }); %>
           </tbody>
-        </table>
-        <table class="three columns">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Carac.</th>
-              <th>Rang</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% aptitudeList.forEach(function(element) {
-                if(element.type=='sociale') {%>
-            <tr>
-              <td><%= element.name %></td>
-              <td><%= element.characteristic %></td>
-              <td>0</td>
-            </tr>
-            <% }
-            }); %>
-          </tbody>
+          <% }
+         }); %>
         </table>
       </div>
+      <div class="row">
+        <table class="six columns">
+          <thead>
+            <tr>
+              <th>Aptitude</th>
+              <th>Carac.</th>
+              <th>Rang</th>
+            </tr>
+          </thead>
+          <% pj_apt_set.forEach(function(aptitudes){ 
+            if(aptitudes.type=='utilitaire'){ %>
+          <tbody>
+            <tr>
+              <td><%= aptitudes.aptitude_name %></td>
+              <td><%= aptitudes.characteristic_code %></td>
+              <td><%= aptitudes.rank %></td>
+            </tr>
+          </tbody>
+          <% }
+         }); %>
+        </table>
+        <table class="three columns">
+          <thead>
+            <tr>
+              <th>Aptitude</th>
+              <th>Carac.</th>
+              <th>Rang</th>
+            </tr>
+          </thead>
+          <% pj_apt_set.forEach(function(aptitudes){ 
+            if(aptitudes.type=='sociale'){ %>
+          <tbody>
+            <tr>
+              <td><%= aptitudes.aptitude_name %></td>
+              <td><%= aptitudes.characteristic_code %></td>
+              <td><%= aptitudes.rank %></td>
+            </tr>
+          </tbody>
+          <% }
+         }); %>
+        </table>
+      </div>
+      
     </div>
+    <% }); %>
 
   </div>
+
 </body>
