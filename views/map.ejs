@@ -1,0 +1,231 @@
+<!--HEAD -->
+
+<%- include('head'); -%>
+
+<!-- BODY -->
+
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<body class="code-snippets-visible">
+
+    <div class="container">
+
+        <%- include('header'); -%>
+        <%- include('navbar'); -%>
+
+        <script>
+
+            var map_list = [];
+
+        </script>
+
+        <%table_list.carte.forEach(function(carte) { %>
+            <script>
+
+                var row = { id: "", name: "", minColor: "", maxColor: "", minSat: "", maxSat: "", minLum: "", maxLum: "" };
+
+                row.id = "<%= carte.id %>";
+                row.name = "<%= carte.name %>";
+                row.minColor = "<%= carte.minColor %>";
+                row.maxColor = "<%= carte.maxColor %>";
+                row.minSat = "<%= carte.minSat %>";
+                row.maxSat = "<%= carte.maxSat %>";
+                row.minLum = "<%= carte.minLum %>";
+                row.maxLum = "<%= carte.maxLum %>";
+
+                map_list.push(row);
+
+            </script>
+        <% }); %>
+
+        <div class="docs-section">
+
+            <h1 class="docs-header">Générateur de carte d'escarmouche</h1>    
+
+            <div>
+            	<p style="display: inline; padding-right:8px;">Biome :</p>
+				<select id="biomeSelector" style="display: inline;">
+						<option value="none" selected>-- Select --</option>
+						<option value="plain">Plaine</option>
+						<option value="forest">Forêt</option>
+						<option value="desert">Désert</option>
+						<option value="rocheux">Rocheux</option>					
+						<option value="underground">Souterrain</option>
+						<option value="urban">Urbain</option>
+				</select>
+				<p style="display: inline; padding-left:10px; padding-right:8px;">Relief :</p>
+				<select id="reliefSelector" style="display: inline;">
+						<option value="none" selected>-- Select --</option>
+						<option value=0>Plat</option>
+						<option value=1>Faible</option>
+						<option value=3>Moyen</option>
+						<option value=5>Important</option>
+				</select>
+				<p style="display: inline; padding-left:10px; padding-right:8px;">Eau :</p>
+				<select id="waterSelector" style="display: inline;">
+						<option value="none" selected>-- Select --</option>
+						<option value=0>Absent</option>
+						<option value=3>Petit</option>
+						<option value=12>Moyen</option>
+						<option value=22>Grand</option>
+				</select>
+				<!--<p style="display: inline; padding-left:10px; padding-right:8px;">Arbre :</p>
+				<select id="objectSelector" style="display: inline;">
+						<option value="none" selected> Select </option>
+						<option value=1>Absent</option>
+						<option value=2>Petit</option>
+						<option value=3>Moyen</option>
+						<option value=4>Grand</option>
+				</select>-->
+			</div>
+
+            <form method="POST" id="generateRandomMap">
+                <input type="button" value="Generer" onclick="generateRandomMap()">
+            </form>
+
+            <div id="map"></div>
+            
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+
+	var map = document.getElementById('map');
+
+	var pixelSize = 30;
+    var mapSize = 20; 
+
+    function generateRandomMap() {
+
+
+    	var biomeSelector = document.getElementById("biomeSelector");
+		var biome = biomeSelector.options[biomeSelector.selectedIndex].value;
+
+		var waterSelector = document.getElementById("waterSelector");
+		var water = waterSelector.options[waterSelector.selectedIndex].value;
+
+		var reliefSelector = document.getElementById("reliefSelector");
+		var relief = reliefSelector.options[reliefSelector.selectedIndex].value;		
+
+		if(biome == "none" || water == "none" || relief == "none")
+		{
+			return; 
+		}
+
+		// Refief generation routine :
+
+		var reliefList = new Array(relief);
+
+		for (i=0; i<=relief; i++){
+			reliefList[i] = new Array(3);
+			if(i==0){
+				for (j=0; j<3; j++){
+					var position = { x: "", y: "", radius: "" };				
+					position.x = Math.floor(Math.random() * mapSize );
+					position.y = Math.floor(Math.random() * mapSize );
+					position.radius = (Math.floor(Math.random() * (10 - 5 )) + 5 );
+					reliefList[i][j] = position;
+				}
+			}else{
+				for (j=0; j<3; j++){
+					var position = { x: "", y: "", radius: "" };				
+					position.x = reliefList[i-1][j].x;// + Math.floor(Math.random() * mapSize );
+					position.y = reliefList[i-1][j].y;// + Math.floor(Math.random() * mapSize );
+					position.radius = (Math.floor(Math.random() * (reliefList[i-1][j].radius - 5 )) + 5 );
+					reliefList[i][j] = position;
+				}
+			}
+		}
+
+    	// Fill the map with basics pixels based on the biome selected :
+
+    	var mapMatrix = new Array(mapSize);
+    	for (var i = 0; i < mapSize; i++)
+		{
+ 			mapMatrix[i] = new Array(mapSize);
+ 			for (var j = 0; j < mapSize; j++)
+			{
+				var pixel = { element: "", colorH: "", colorS: "", colorL: "", level: "" };
+
+				if( biome == "plain" ){pixel.element="grass"; pixel.colorH=97; pixel.colorS=52; pixel.colorL=55; pixel.level=0;}
+				if( biome == "forest" ){pixel.element="forestGrass"; pixel.colorH=96; pixel.colorS=38; pixel.colorL=27; pixel.level=0;}
+				if( biome == "desert" ){pixel.element="sand"; pixel.colorH=45; pixel.colorS=35; pixel.colorL=63; pixel.level=0;}
+				if( biome == "rocheux" ){pixel.element="rock"; pixel.colorH=35; pixel.colorS=60; pixel.colorL=37; pixel.level=0;}
+				if( biome == "underground" ){pixel.element="dirt"; pixel.colorH=29; pixel.colorS=28; pixel.colorL=23; pixel.level=0;}
+				if( biome == "urban" ){pixel.element="asphalte"; pixel.colorH=0; pixel.colorS=0; pixel.colorL=55; pixel.level=0;}
+
+				for (k=0;k<relief;k++){
+					for (l=0;l<3;l++){
+						var distance = Math.sqrt(Math.pow(i-(reliefList[k][l].x),2)+Math.pow(j-(reliefList[k][l].y),2));
+						if( distance < reliefList[k][l].radius)
+						{
+							pixel.colorL += 3;
+							pixel.level += 1;
+							break;
+						}
+					}
+				}
+
+				mapMatrix[i][j] = pixel;
+			}
+		}
+
+    	// Water pixel generation :
+
+    	var max = water;
+    	var min = water-10;
+    	if(min<0){min=0};
+
+    	var randomNumberWaterPixel = (Math.floor(Math.random() * (max - min )) + min );
+
+    	var waterPixelPositionList = new Array(randomNumberWaterPixel);
+    	for (var i = 0; i < randomNumberWaterPixel; i++)
+		{
+			var position = { x: "", y: "" };
+			position.x = Math.floor(Math.random() * mapSize );
+    		position.y = Math.floor(Math.random() * mapSize );
+    		waterPixelPositionList[i] = position;
+    		mapMatrix[position.x][position.y].element = "water";
+    		mapMatrix[position.x][position.y].colorH = 202;
+    		mapMatrix[position.x][position.y].colorS = 71;
+    		mapMatrix[position.x][position.y].colorL = 56;
+
+    		for (j=0; j<=relief; j++){
+    			if(mapMatrix[position.x][position.y].level>j){mapMatrix[position.x][position.y].colorL += 5;}
+    		}
+    		
+		}
+
+    	/*for (let waterPixel = 0; waterPixel < randomNumberWaterPixel; waterPixel++) {
+			for (x=-1; x<=1; x++){
+    			for (y=-1; y<=1; y++){
+    				if( x == 0 && y == 0){
+    				} else {
+    					if(waterPixelPositionList[waterPixel].x+x >= 0 && waterPixelPositionList[waterPixel].y+y >= 0 && waterPixelPositionList[waterPixel].x+x < mapSize && waterPixelPositionList[waterPixel].y+y < mapSize){
+    						if(mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].element != "water"){
+    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].element = "sand";
+    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].colorH = 45;
+    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].colorS = 35;
+    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].colorL = 63;
+    						}
+    					}
+    				}
+    			}    			
+    		}
+    	}*/
+
+    	// Drawing the map :
+
+    	map.innerHTML = "";
+    	for (let mapXPixel = 0; mapXPixel < mapSize; mapXPixel++) {
+    		for (let mapYPixel = 0; mapYPixel < mapSize; mapYPixel++) {
+    			map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + mapMatrix[mapXPixel][mapYPixel].colorH + ", " + mapMatrix[mapXPixel][mapYPixel].colorS + "%, " + mapMatrix[mapXPixel][mapYPixel].colorL + "%); top: " + (380 + (mapYPixel * pixelSize)) + "px; left: " + (mapXPixel * pixelSize) + "px; \"></div>";
+    		}
+    	}
+
+    }
+
+</script>
