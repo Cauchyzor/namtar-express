@@ -29,24 +29,31 @@
       });
       %>
 
-    <div class="docs-section">
-      <div class="row">
-        <div class="two columns"><strong>Nom</strong></div>
-        <div class="four columns">
-          <td><%= pj.name %></td>
-        </div>
-        <div class="two columns"><strong>Espèce</strong></div>
-        <div class="four columns">
-          <td><%= pj.specie %></td>
-        </div>
-      </div>
-      <div class="row">
-        <div class="two columns"><strong>Bio</strong></div>
-        <div class="ten columns">
-          <td><%= pj.biography %></td>
-        </div>
-      </div>
 
+    <div id="<%= pj.name %>">
+			<br>
+
+      <div class="row">
+        <div class="four columns">
+          <img class="value-img" src="images/pixabay_default_avatar.png" width="230" height="230" ;>
+        </div>
+
+        <div class="eight columns">
+          <div class="row">
+            <label class="two columns">Nom</label>
+            <div class="ten columns"><%= pj.name %></div>
+          </div>
+          <div class="row">
+            <label class="two columns">Espèces</label>
+            <div class="ten columns"><%= pj.specie %></div>
+          </div>
+          <div class="row">
+            <label class="two columns"><strong>Bio</strong></label>
+            <p class="ten columns"><%= pj.biography %></p>
+          </div>
+        </div>
+
+      </div>
       <div class="row">
         <% pj_charac_set.forEach(function(characteristic){ %>
         <h1 class="two columns"><%= characteristic.rank %></h1>
@@ -142,8 +149,12 @@
          }); %>
         </table>
       </div>
-      
+
     </div>
+
+    <br>
+    <br>
+    
     <% }); %>
 
   </div>
