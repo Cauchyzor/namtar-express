@@ -19,6 +19,7 @@ var generateurRouter = require('./routes/generateur');
 var speciesRouter = require('./routes/species');
 var fichePersoRouter = require('./routes/fichePerso');
 var createPJRouter = require('./routes/createPJ');
+var selectionPJRouter = require('./routes/selectionPJ');
 var competencesRouter = require('./routes/competences');
 
 var app = express();
@@ -49,6 +50,7 @@ app.use('/species', speciesRouter);
 app.use('/effets', effetsRouter);
 app.use('/fichePerso', fichePersoRouter);
 app.use('/createPJ', createPJRouter);
+app.use('/selectionPJ', selectionPJRouter);
 app.use('/competences', competencesRouter);
 
 // catch 404 and forward to error handler

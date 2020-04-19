@@ -1,0 +1,46 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+
+<body class="code-snippets-visible">
+
+  <div class="container">
+
+    <%- include('header'); -%>
+    <%- include('navbar'); -%>
+
+
+    <% 
+    characters.forEach(function(pj){
+      %>
+
+
+    <div class="docs-section row" id="<%= pj.name %>">
+      <div class="two columns">
+        <img class="value-img" src="images/pixabay_default_avatar.png" width="100" height="100" ;>
+      </div>
+
+      <div class="four columns">
+        <div class="row">
+          <label>Nom</label>
+          <p><%= pj.name %></p>
+        </div>
+        <div class="row">
+          <label>Espèces</label>
+          <p><%= pj.specie %></p>
+        </div>
+      </div>
+      <div class="six columns">
+        <div class="row">
+          <label><strong>Bio</strong></label>
+          <p><%= pj.biography %></p>
+        </div>
+      </div>
+    </div>
+
+    <% }); %>
+
+  </div>
+
+</body>
