@@ -11,27 +11,7 @@
     <%- include('navbar'); -%>
 
 
-    <% 
-    tables.characters.forEach(function(pj){
-      var pj_charac_set = [];
-      var pj_apt_set=[];
-
-      tables.characteristics.forEach(function(set){
-        if(set.character_id==pj.name){
-          pj_charac_set.push(set);
-        };
-      });
-
-      tables.aptitudes.forEach(function(set){
-        if(set.character_id==pj.name){
-          pj_apt_set.push(set);
-        };
-      });
-      %>
-
-
-    <div id="<%= pj.name %>">
-			<br>
+    <div class="docs-section">
 
       <div class="row">
         <div class="four columns">
@@ -41,26 +21,26 @@
         <div class="eight columns">
           <div class="row">
             <label class="two columns">Nom</label>
-            <div class="ten columns"><%= pj.name %></div>
+            <div class="ten columns"><%= tables.characters[0].name %></div>
           </div>
           <div class="row">
             <label class="two columns">Espèces</label>
-            <div class="ten columns"><%= pj.specie %></div>
+            <div class="ten columns"><%= tables.characters[0].specie %></div>
           </div>
           <div class="row">
             <label class="two columns"><strong>Bio</strong></label>
-            <p class="ten columns"><%= pj.biography %></p>
+            <p class="ten columns"><%= tables.characters[0].biography %></p>
           </div>
         </div>
 
       </div>
       <div class="row">
-        <% pj_charac_set.forEach(function(characteristic){ %>
+        <% tables.characteristics.forEach(function(characteristic){ %>
         <h1 class="two columns"><%= characteristic.rank %></h1>
         <% }); %>
       </div>
       <div class="row">
-        <% pj_charac_set.forEach(function(characteristic){ %>
+        <% tables.characteristics.forEach(function(characteristic){ %>
         <label class="two columns"><%= characteristic.characteristic_name %></label>
         <% }); %>
       </div>
@@ -74,13 +54,13 @@
               <th>Rang</th>
             </tr>
           </thead>
-          <% pj_apt_set.forEach(function(aptitudes){ 
-            if(aptitudes.type=='general'){ %>
+          <% tables.aptitudes.forEach(function(aptitude){ 
+            if(aptitude.type=='general'){ %>
           <tbody>
             <tr>
-              <td><%= aptitudes.aptitude_name %></td>
-              <td><%= aptitudes.characteristic_code %></td>
-              <td><%= aptitudes.rank %></td>
+              <td><%= aptitude.aptitude_name %></td>
+              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
           <% }
@@ -94,13 +74,13 @@
               <th>Rang</th>
             </tr>
           </thead>
-          <% pj_apt_set.forEach(function(aptitudes){ 
-            if(aptitudes.type=='combat'){ %>
+          <% tables.aptitudes.forEach(function(aptitude){ 
+            if(aptitude.type=='combat'){ %>
           <tbody>
             <tr>
-              <td><%= aptitudes.aptitude_name %></td>
-              <td><%= aptitudes.characteristic_code %></td>
-              <td><%= aptitudes.rank %></td>
+              <td><%= aptitude.aptitude_name %></td>
+              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
           <% }
@@ -116,13 +96,13 @@
               <th>Rang</th>
             </tr>
           </thead>
-          <% pj_apt_set.forEach(function(aptitudes){ 
-            if(aptitudes.type=='utilitaire'){ %>
+          <% tables.aptitudes.forEach(function(aptitude){ 
+            if(aptitude.type=='utilitaire'){ %>
           <tbody>
             <tr>
-              <td><%= aptitudes.aptitude_name %></td>
-              <td><%= aptitudes.characteristic_code %></td>
-              <td><%= aptitudes.rank %></td>
+              <td><%= aptitude.aptitude_name %></td>
+              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
           <% }
@@ -136,13 +116,13 @@
               <th>Rang</th>
             </tr>
           </thead>
-          <% pj_apt_set.forEach(function(aptitudes){ 
-            if(aptitudes.type=='sociale'){ %>
+          <% tables.aptitudes.forEach(function(aptitude){ 
+            if(aptitude.type=='sociale'){ %>
           <tbody>
             <tr>
-              <td><%= aptitudes.aptitude_name %></td>
-              <td><%= aptitudes.characteristic_code %></td>
-              <td><%= aptitudes.rank %></td>
+              <td><%= aptitude.aptitude_name %></td>
+              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
           <% }
@@ -151,11 +131,6 @@
       </div>
 
     </div>
-
-    <br>
-    <br>
-    
-    <% }); %>
 
   </div>
 
