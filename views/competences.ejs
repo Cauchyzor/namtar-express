@@ -1,0 +1,39 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<body class="code-snippets-visible">
+
+  <div class="container">
+    <%- include('header'); -%>
+    <%- include('navbar'); -%>
+
+    <div class="docs-section">
+
+      <h1 class="docs-header">Tables des Competences</h1>
+
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Coût</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% skills.forEach(function(skill) { %>
+          <tr>
+            <td><img src="images/skills/<%= skill.skill_code %>.jpg" style="float: left; padding-right:20px; padding-bottom:20px;"></td>
+            <td><%= skill.skill_name %></td>
+            <td><%= skill.skill_type %></td>
+            <td><%= skill.skill_description %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
