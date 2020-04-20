@@ -265,8 +265,9 @@
             socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";        
         } else {
             species_social_section.innerHTML = "Solitaire";
-            socialDescriptionText.innerHTML = "Cette creature vit seule." ;
-            socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";  
+            var solitaireDefinition = "Cette creature vit seule."
+            socialDescriptionText.innerHTML = solitaireDefinition ;
+            socialDescriptionText.style.width = solitaireDefinition.offsetWidth + 10 + "px";  
         }
 
     }
