@@ -12,12 +12,12 @@ router.get('/', function (req, res) {
 		}
 	});
 
-	var QUERY_CARTE = "SELECT * FROM CARTE";
+	var QUERY_NAME = "SELECT * FROM NAME";
 
 	async.series({
 
-		carte: function(cb) {
-            db.all(QUERY_CARTE, function (error, rows){
+		name: function(cb) {
+            db.all(QUERY_NAME, function (error, rows){
                 cb(error, rows);
             })
         }

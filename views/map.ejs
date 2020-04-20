@@ -13,31 +13,6 @@
         <%- include('header'); -%>
         <%- include('navbar'); -%>
 
-        <script>
-
-            var map_list = [];
-
-        </script>
-
-        <%table_list.carte.forEach(function(carte) { %>
-            <script>
-
-                var row = { id: "", name: "", minColor: "", maxColor: "", minSat: "", maxSat: "", minLum: "", maxLum: "" };
-
-                row.id = "<%= carte.id %>";
-                row.name = "<%= carte.name %>";
-                row.minColor = "<%= carte.minColor %>";
-                row.maxColor = "<%= carte.maxColor %>";
-                row.minSat = "<%= carte.minSat %>";
-                row.maxSat = "<%= carte.maxSat %>";
-                row.minLum = "<%= carte.minLum %>";
-                row.maxLum = "<%= carte.maxLum %>";
-
-                map_list.push(row);
-
-            </script>
-        <% }); %>
-
         <div class="docs-section">
 
             <h1 class="docs-header">Générateur de carte d'escarmouche</h1>    
@@ -96,7 +71,11 @@
 	var map = document.getElementById('map');
 
 	var pixelSize = 30;
-    var mapSize = 20; 
+    var mapSize = 20;
+
+    var mapMatrix = new Array(mapSize);
+
+    var relief;
 
     function generateRandomMap() {
 
@@ -108,7 +87,7 @@
 		var water = waterSelector.options[waterSelector.selectedIndex].value;
 
 		var reliefSelector = document.getElementById("reliefSelector");
-		var relief = reliefSelector.options[reliefSelector.selectedIndex].value;		
+		relief = reliefSelector.options[reliefSelector.selectedIndex].value;		
 
 		if(biome == "none" || water == "none" || relief == "none")
 		{
@@ -132,23 +111,22 @@
 			}else{
 				for (j=0; j<3; j++){
 					var position = { x: "", y: "", radius: "" };				
-					position.x = reliefList[i-1][j].x;// + Math.floor(Math.random() * mapSize );
-					position.y = reliefList[i-1][j].y;// + Math.floor(Math.random() * mapSize );
+					position.x = reliefList[i-1][j].x;
+					position.y = reliefList[i-1][j].y;
 					position.radius = (Math.floor(Math.random() * (reliefList[i-1][j].radius - 5 )) + 5 );
 					reliefList[i][j] = position;
 				}
 			}
 		}
 
-    	// Fill the map with basics pixels based on the biome selected :
-
-    	var mapMatrix = new Array(mapSize);
+    	// Fill the map with basics pixels based on the biome selected and the relief:
+    	
     	for (var i = 0; i < mapSize; i++)
 		{
  			mapMatrix[i] = new Array(mapSize);
  			for (var j = 0; j < mapSize; j++)
 			{
-				var pixel = { element: "", colorH: "", colorS: "", colorL: "", level: "" };
+				var pixel = { element: "", colorH: "", colorS: "", colorL: "", level: 0 };
 
 				if( biome == "plain" ){pixel.element="grass"; pixel.colorH=97; pixel.colorS=52; pixel.colorL=55; pixel.level=0;}
 				if( biome == "forest" ){pixel.element="forestGrass"; pixel.colorH=96; pixel.colorS=38; pixel.colorL=27; pixel.level=0;}
@@ -182,40 +160,17 @@
     	var randomNumberWaterPixel = (Math.floor(Math.random() * (max - min )) + min );
 
     	var waterPixelPositionList = new Array(randomNumberWaterPixel);
+
     	for (var i = 0; i < randomNumberWaterPixel; i++)
 		{
 			var position = { x: "", y: "" };
+
 			position.x = Math.floor(Math.random() * mapSize );
     		position.y = Math.floor(Math.random() * mapSize );
-    		waterPixelPositionList[i] = position;
-    		mapMatrix[position.x][position.y].element = "water";
-    		mapMatrix[position.x][position.y].colorH = 202;
-    		mapMatrix[position.x][position.y].colorS = 71;
-    		mapMatrix[position.x][position.y].colorL = 56;
 
-    		for (j=0; j<=relief; j++){
-    			if(mapMatrix[position.x][position.y].level>j){mapMatrix[position.x][position.y].colorL += 5;}
-    		}
-    		
-		}
+    		recursivelyGenerateWater(position.x, position.y, 0);
 
-    	/*for (let waterPixel = 0; waterPixel < randomNumberWaterPixel; waterPixel++) {
-			for (x=-1; x<=1; x++){
-    			for (y=-1; y<=1; y++){
-    				if( x == 0 && y == 0){
-    				} else {
-    					if(waterPixelPositionList[waterPixel].x+x >= 0 && waterPixelPositionList[waterPixel].y+y >= 0 && waterPixelPositionList[waterPixel].x+x < mapSize && waterPixelPositionList[waterPixel].y+y < mapSize){
-    						if(mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].element != "water"){
-    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].element = "sand";
-    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].colorH = 45;
-    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].colorS = 35;
-    							mapMatrix[waterPixelPositionList[waterPixel].x+x][waterPixelPositionList[waterPixel].y+y].colorL = 63;
-    						}
-    					}
-    				}
-    			}    			
-    		}
-    	}*/
+    	}
 
     	// Drawing the map :
 
@@ -226,6 +181,52 @@
     		}
     	}
 
+    }
+
+    function recursivelyGenerateWater(xPixel, yPixel, spreading) {
+
+    	if (mapMatrix[xPixel][yPixel].element != "water")
+    	{
+    	    mapMatrix[xPixel][yPixel].element = "water";
+    		mapMatrix[xPixel][yPixel].colorH = 202;
+    		mapMatrix[xPixel][yPixel].colorS = 71;
+    		mapMatrix[xPixel][yPixel].colorL = 78 - ( relief - mapMatrix[xPixel][yPixel].level ) * 3 ;	
+
+			for(let x=-1; x<=1; x++){
+    			for(let y=-1; y<=1; y++){
+    				if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
+    					if((mapMatrix[xPixel+x][yPixel+y].level < mapMatrix[xPixel][yPixel].level) && (x == 0 | y == 0)){
+    						recursivelyGenerateWater(xPixel+x, yPixel+y, 0);
+    					}
+    				}
+    			}
+    		}
+
+    		if(spreading == 0){
+    			for(let x=-1; x<=1; x++){
+    				for(let y=-1; y<=1; y++){			
+    					if(x == 0 | x == 0){
+    						if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
+    							if(mapMatrix[xPixel+x][yPixel+y].level == mapMatrix[xPixel][yPixel].level){
+    								recursivelyGenerateWater(xPixel+x, yPixel+y, 1);
+    							}
+    						}							
+    					}
+    					else
+    					{
+    						var randomNumberWaterDiffusion = (Math.floor(Math.random() * 10));
+    						if(randomNumberWaterDiffusion <= 3){
+    							if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
+    								if(mapMatrix[xPixel+x][yPixel+y].level == mapMatrix[xPixel][yPixel].level){
+    									recursivelyGenerateWater(xPixel+x, yPixel+y, 1);
+    								}
+    							}	
+    						}
+    					}
+    				}
+    			} 
+    		}
+    	}   				
     }
 
 </script>
