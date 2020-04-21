@@ -4,7 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 
 var async = require('async');
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res) {
 
 	var db = new sqlite3.Database('speciesGenerator.db', (err) => {
 		if (err) {
@@ -12,29 +12,22 @@ router.get('/', function(req, res, next) {
 		}
 	});
 
-	var QUERY_ESPECE = "SELECT * FROM ESPECE";
-	var QUERY_RACE = "SELECT * FROM RACE";
+	var QUERY_NAME = "SELECT * FROM NAME";
 
 	async.series({
 
-		espece: function(cb) {
-            db.all(QUERY_ESPECE, function (error, rows){
+		name: function(cb) {
+            db.all(QUERY_NAME, function (error, rows){
                 cb(error, rows);
-            })
-        },
-        race: function(cb){
-            db.all(QUERY_RACE, function (error, rows){
-                cb(error, rows)
             })
         }
     	
 	}, function(error, rows) {
 		if (!error) {
-			res.render('bestiaire', {table_list: rows});
+			res.render('map', {table_list: rows});
 		}
 
     });
-
 
 });
 

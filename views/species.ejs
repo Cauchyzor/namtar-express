@@ -111,8 +111,8 @@
 
             <h1 class="docs-header">Générateur de Créatures</h1>        
 
-            <form method="POST" id="generateRandomSpell">
-                <input type="button" value="Generate" onclick="generateRandomSpecies()">
+            <form method="POST" id="generateRandomSpecies">
+                <input type="button" value="Generer" onclick="generateRandomSpecies()">
             </form>
 
             <table class="u-full-width"><thead><tr>
@@ -172,6 +172,8 @@
 
     var socialDescriptionText = document.getElementById("socialDescriptionText");
 
+    // Function for small information box placement
+
     window.onload = function(){
   
         var x, y;
@@ -187,9 +189,6 @@
 
                 socialDescriptionText.style.left = x + 10 +  "px";
                 socialDescriptionText.style.top = y + 10 +  "px";
-                socialDescriptionText.style.height= "22px";
-                socialDescriptionText.style.border = "1px solid #000";
-                socialDescriptionText.style.backgroundColor = "white";
 
             }
 
@@ -212,19 +211,29 @@
 
         var randomNumberEspece = Math.floor(Math.random() * caracteristics_list.length );
 
+        // Species name :
+
         species_name_section.innerHTML = caracteristics_list[randomNumberEspece].name;
+
+        // Creature size :
 
         min = Math.ceil(caracteristics_list[randomNumberEspece].minSize);
         max = Math.floor(caracteristics_list[randomNumberEspece].maxSize);
         var taille = (Math.floor(Math.random() * (max - min)) + min) / 100;
         species_size_section.innerHTML = taille;
 
+        // Species description :
+
         species_description_section.innerHTML = caracteristics_list[randomNumberEspece].description;
+
+        // Creature dangerosity :
 
         min = Math.ceil(caracteristics_list[randomNumberEspece].minDangerosity);
         max = Math.floor(caracteristics_list[randomNumberEspece].maxDangerosity);
         var niveauDanger = (Math.floor(Math.random() * (max - min)) + min);
         species_dangerosity_section.innerHTML =  danger_list[niveauDanger].name;
+
+        // Race name :
 
         var randomNumberPrefix = Math.floor(Math.random() * race_list.length );
         var randomNumberMid1 = Math.floor(Math.random() * race_list.length );
@@ -233,6 +242,8 @@
         var addMid2 = Math.floor(Math.random() * 10 );
         if (addMid2 > 7) { species_race_section.innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberMid2].mid2 + race_list[randomNumberSufix].sufix; }
         else { species_race_section.innerHTML = race_list[randomNumberPrefix].prefix + race_list[randomNumberMid1].mid1 + race_list[randomNumberSufix].sufix; }
+
+        // Skin color :
 
         min = Math.ceil(caracteristics_list[randomNumberEspece].minColor);
         max = Math.floor(caracteristics_list[randomNumberEspece].maxColor);
@@ -244,6 +255,8 @@
         max = Math.floor(caracteristics_list[randomNumberEspece].maxLum);
         var lumValue = (Math.floor(Math.random() * (max - min)) + min);
         colorSquare.style.backgroundColor = "hsl(" + colorValue + ", " + satValue + "%, " + lumValue + "%)";
+
+        // Race social :
 
         if (caracteristics_list[randomNumberEspece].social == 1) {
             var randomNumberTaille = Math.floor(Math.random() * caracteristics_list[randomNumberEspece].maxSocialSize );
@@ -265,8 +278,9 @@
             socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";        
         } else {
             species_social_section.innerHTML = "Solitaire";
-            socialDescriptionText.innerHTML = "Cette creature vit seule." ;
-            socialDescriptionText.style.width = social_list[randomNumberSocial].definition.offsetWidth + 10 + "px";  
+            var solitaireDefinition = "Cette creature vit seule."
+            socialDescriptionText.innerHTML = solitaireDefinition ;
+            socialDescriptionText.style.width = solitaireDefinition.offsetWidth + 10 + "px";  
         }
 
     }
