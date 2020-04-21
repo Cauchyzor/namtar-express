@@ -132,6 +132,9 @@ p {
 
 .needADescription:hover + .descriptionText {
     display: block;
+    height: 22px;
+    border: 1px solid #000;
+    background-color: white;
 }
 
 .descriptionText{
