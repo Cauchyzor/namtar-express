@@ -129,7 +129,19 @@
          }); %>
         </table>
       </div>
+    </div>
 
+    <div class=docs-section>
+      <h1 class="docs-header">Compétences</h1>
+      <% tables.skills.forEach(function(skill){ %>
+      <div class="row">
+        <div class="two columns"><img src="images/skills/<%= skill.skill_code %>.jpg" style="float: left;
+          padding-right:20px; padding-bottom:20px;"></div>
+        <div class="two columns"><%= skill.skill_name %></div>
+        <div class="two columns"><%= skill.skill_type %></div>
+        <div class="six columns"><%= skill.skill_description %></div>
+      </div>
+      <% }); %>
     </div>
 
   </div>
