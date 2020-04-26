@@ -5,7 +5,7 @@ var async = require('async');
 
 router.get('/', function (req, res, next) {
 
-  var QUERY_APTITUDES = "SELECT * FROM APTITUDES";
+  var QUERY_APTITUDES = "SELECT * FROM APTITUDES ORDER BY type";
   var QUERY_CHARACTERISTICS = "SELECT * FROM CHARACTERISTICS";
   var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
