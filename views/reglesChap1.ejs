@@ -161,11 +161,11 @@
           </tr>
         </thead>
         <tbody>
-          <% aptitudeList.forEach(function(element) { %>
+          <% aptitudes.forEach(function(aptitude) { %>
           <tr>
-            <td><%= element.name %></td>
-            <td><%= element.characteristic %></td>
-            <td><%= element.description %></td>
+            <td><%= aptitude.aptitude_name %></td>
+            <td><%= aptitude.characteristic_code %></td>
+            <td><%= aptitude.description %></td>
           </tr>
           <% }); %>
         </tbody>
