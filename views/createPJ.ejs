@@ -66,6 +66,29 @@
                     </tbody>
                 </table>
             </div>
+            <div class="docs-section">
+                <h1 class="docs-header">Compétences</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tables.skills.forEach(function(element) {%>
+                        <tr>
+                            <td><input type="checkbox" name="skl_<%= element.skill_code %>"></td>
+                            <td><%= element.skill_name %></td>
+                            <td><%= element.skill_type %></td>
+                            <td><%= element.skill_description %></td>
+                        </tr>
+                        <%  }); %>
+                    </tbody>
+                </table>
+            </div>
 
             <input class="button-primary" type="submit" value="Submit">
 

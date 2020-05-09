@@ -7,6 +7,7 @@ router.get('/', function (req, res, next) {
 
   var QUERY_APTITUDES = "SELECT * FROM APTITUDES ORDER BY type";
   var QUERY_CHARACTERISTICS = "SELECT * FROM CHARACTERISTICS";
+  var QUERY_SKILLS = "SELECT * FROM SKILLS";
   var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
       return console.error(err.message);
@@ -22,6 +23,11 @@ router.get('/', function (req, res, next) {
     },
     characteristics: function (cb) {
       db.all(QUERY_CHARACTERISTICS, function (error, rows) {
+        cb(error, rows)
+      })
+    },
+    skills: function (cb) {
+      db.all(QUERY_SKILLS, function (error, rows) {
         cb(error, rows)
       })
     }
@@ -49,7 +55,9 @@ router.post('/', function (req, res, next) {
   var values_list_pj = [];
   var data_characteristics = [];
   var data_aptitudes = [];
+  var data_skill = [];
 
+  // console.log(req.body);
   //create PJ id for unicity on BD
   var character_id = req.body['pj_name'].trim().toLowerCase().replace(" ", "_");
   keys_list_pj.push('character_id');
@@ -60,29 +68,38 @@ router.post('/', function (req, res, next) {
       // Extract pj info
       keys_list_pj.push(key.substring(3));
       values_list_pj.push(value);
-
     } else if (key.startsWith('char_')) {
       // Extract Characteristics info
       data_characteristics.push([character_id, key.substring(5), value]);
-
     } else if (key.startsWith('apt_')) {
       // Extract aptitudes info
       data_aptitudes.push([character_id, key.substring(4), value]);
+    } else if (key.startsWith('skl_')) {
+      // Extract aptitudes info
+      data_skill.push([character_id, key.substring(4)]);
     }
   }
+
+  // console.log(data_characteristics);
+  // console.log(data_aptitudes);
+  // console.log(data_skill);
 
   // Generate Query depending of database values and key collected
   var placeholders_pj = keys_list_pj.map((key) => '?').join(',');
   var placeholders_char = data_characteristics.map((key) => data_characteristics[0].map((key) => '?').join(',')).join('),(');
   var placeholders_apt = data_aptitudes.map((key) => data_aptitudes[0].map((key) => '?').join(',')).join('),(');
+  var placeholders_skl = data_skill.map((key) => data_skill[0].map((key) => '?').join(',')).join('),(');
 
   var QUERY_STRING_PJ = 'INSERT INTO CHARACTERS (' + keys_list_pj.join(',') + ') VALUES (' + placeholders_pj + ')';
   var QUERY_STRING_CHAR = 'INSERT INTO CHARACTER_CHARACTERISTICS (character_id, characteristic_code, rank) VALUES (' + placeholders_char + ')';
   var QUERY_STRING_APT = 'INSERT INTO CHARACTER_APTITUDES (character_id, aptitude_code, rank) VALUES (' + placeholders_apt + ')';
+  var QUERY_STRING_SKILL = 'INSERT INTO CHARACTER_SKILLS (character_id, skill_code) VALUES (' + placeholders_skl + ')';
+
   var query_list = [
     [QUERY_STRING_PJ, values_list_pj],
     [QUERY_STRING_CHAR, data_characteristics.join(',').split(',')],
-    [QUERY_STRING_APT, data_aptitudes.join(',').split(',')]
+    [QUERY_STRING_APT, data_aptitudes.join(',').split(',')],
+    [QUERY_STRING_SKILL, data_skill.join(',').split(',')]
   ];
   var db = new sqlite3.Database('characterManagment.db', (err) => {
     if (err) {
@@ -106,6 +123,7 @@ router.post('/', function (req, res, next) {
     });
 
   });
+
 
   // close the database connection
   db.close((err) => {
