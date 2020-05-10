@@ -57,7 +57,6 @@ router.post('/', function (req, res, next) {
   var data_aptitudes = [];
   var data_skill = [];
 
-  // console.log(req.body);
   //create PJ id for unicity on BD
   var character_id = req.body['pj_name'].trim().toLowerCase().replace(" ", "_");
   keys_list_pj.push('character_id');
@@ -79,10 +78,6 @@ router.post('/', function (req, res, next) {
       data_skill.push([character_id, key.substring(4)]);
     }
   }
-
-  // console.log(data_characteristics);
-  // console.log(data_aptitudes);
-  // console.log(data_skill);
 
   // Generate Query depending of database values and key collected
   var placeholders_pj = keys_list_pj.map((key) => '?').join(',');
