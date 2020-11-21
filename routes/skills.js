@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('competences', { skills: rows });
+    res.render('skills', { skills: rows });
   });
 
   // close the database connection

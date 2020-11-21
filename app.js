@@ -21,7 +21,7 @@ var mapRouter = require('./routes/map');
 var characterRouter = require('./routes/character');
 var createPJRouter = require('./routes/createPJ');
 var selectionPJRouter = require('./routes/selectionPJ');
-var competencesRouter = require('./routes/competences');
+var skillsRouter = require('./routes/skills');
 
 var app = express();
 
@@ -53,7 +53,7 @@ app.use('/effets', effetsRouter);
 app.use('/character', characterRouter);
 app.use('/createPJ', createPJRouter);
 app.use('/selectionPJ', selectionPJRouter);
-app.use('/competences', competencesRouter);
+app.use('/skills', skillsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
