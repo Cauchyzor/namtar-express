@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('effets', { effets: rows });
+    res.render('effects', { effects: rows });
   });
 
   // close the database connection
