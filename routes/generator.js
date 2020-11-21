@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('generateur', { skill: "AJAX is great!", effects_list: rows });
+    res.render('generator', { skill: "AJAX is great!", effects_list: rows });
   });
 
   db.close((err) => {
