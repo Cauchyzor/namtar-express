@@ -44,7 +44,7 @@ router.get('/', function (req, res, next) {
     }
   }, function (error, rows) {
     if (!error) {
-      res.render('fichePerso', { tables: rows });
+      res.render('character', { tables: rows });
     } else {
       console.log(error);
     }
