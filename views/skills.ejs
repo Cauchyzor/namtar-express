@@ -27,10 +27,10 @@
           <% skills.forEach(function(skill) { %>
           <tr>
             <!--TODO: Afficher les image en fond derriere le texte. Utiliser des codes couleurs pour trier les competences-->
-            <td><img src="images/skills/<%= skill.skill_code %>.jpg" style="float: left; padding-right:20px; padding-bottom:20px;"></td>
-            <td><%= skill.skill_name %></td>
-            <td><%= skill.skill_type %></td>
-            <td><%= skill.skill_description %></td>
+            <td><img src="images/skills/<%= skill.name %>.jpg" style="float: left; padding-right:20px; padding-bottom:20px;"></td>
+            <td><%= skill.name %></td>
+            <td><%= skill.type %></td>
+            <td><%= skill.description %></td>
           </tr>
           <% }); %>
         </tbody>

@@ -5,11 +5,9 @@ var async = require('async');
 
 router.get('/', function (req, res, next) {
 
-  var QUERY_STRING = "SELECT * FROM CHARACTERS ORDER BY name";
-  // var QUERY_APTITUDES = "SELECT * FROM CHARACTER_APTITUDES JOIN APTITUDES ON CHARACTER_APTITUDES.aptitude_code = APTITUDES.aptitude_code";
-  // var QUERY_CHARACTERISTICS = "SELECT * FROM CHARACTER_CHARACTERISTICS JOIN CHARACTERISTICS ON CHARACTER_CHARACTERISTICS.characteristic_code = CHARACTERISTICS.characteristic_code";
+  var QUERY_STRING = "SELECT * FROM character ORDER BY name";
 
-  var db = new sqlite3.Database('characterManagment.db', (err) => {
+  var db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
