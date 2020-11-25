@@ -1,0 +1,37 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+
+<body class="code-snippets-visible">
+
+  <div class="container">
+
+    <%- include('header'); -%>
+    <%- include('navbar'); -%>
+
+
+    <% games.forEach(function(game){%>
+
+
+    <div class="docs-section row" id="<%= game.id %>">
+
+      <div class="four columns">
+        <p><%= game.name %></p>
+      </div>
+      <div class="two columns">
+        <p><%= game.creation_date %></p>
+      </div>
+      <div class="two columns">
+        <p><%= game.last_modification_date %></p>
+      </div>
+      <div class="two columns">
+        <a class="button" href="/game?game_id=<%= game.id %>">Ouvrir la fiche</a>
+      </div>
+    </div>
+
+    <% }); %>
+
+  </div>
+
+</body>

@@ -22,6 +22,8 @@ var characterRouter = require('./routes/character');
 var createPJRouter = require('./routes/createPJ');
 var selectionPJRouter = require('./routes/selectionPJ');
 var skillsRouter = require('./routes/skills');
+var gameSelectionRouter = require('./routes/gameSelection');
+var gameRouter = require('./routes/game');
 
 var app = express();
 
@@ -54,6 +56,8 @@ app.use('/character', characterRouter);
 app.use('/createPJ', createPJRouter);
 app.use('/selectionPJ', selectionPJRouter);
 app.use('/skills', skillsRouter);
+app.use('/gameSelection', gameSelectionRouter);
+app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
