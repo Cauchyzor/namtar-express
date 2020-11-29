@@ -5,16 +5,16 @@ last_modification_date TEXT,
 PRIMARY KEY(username));
 
 
-CREATE TABLE coment (
+CREATE TABLE comment (
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 content TEXT NOT NULL,
 creation_date TEXT NOT NULL,
 last_modification_date TEXT,
 state_id INTEGER NOT NULL,
-poster_username TEXT NOT NULL,CONSTRAINT "state-coment"
+poster_username TEXT NOT NULL,CONSTRAINT "state-comment"
 FOREIGN KEY (state_id)
 REFERENCES state(id)
-,CONSTRAINT "poster-coment"
+,CONSTRAINT "poster-comment"
 FOREIGN KEY (poster_username)
 REFERENCES poster(username)
 ON DELETE No action
