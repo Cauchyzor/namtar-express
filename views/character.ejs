@@ -11,6 +11,7 @@
     <%- include('navbar'); -%>
 
 
+    <!-- TODO : Remanier le layout pour avoir une ficher compact et minimaliste-->
     <div class="docs-section">
 
       <div class="row">
@@ -25,7 +26,7 @@
           </div>
           <div class="row">
             <label class="two columns">Espèces</label>
-            <div class="ten columns"><%= tables.characters[0].specie %></div>
+            <div class="ten columns"><%= tables.characters[0].species %></div>
           </div>
           <div class="row">
             <label class="two columns"><strong>Bio</strong></label>
@@ -55,11 +56,11 @@
             </tr>
           </thead>
           <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='general'){ %>
+            if(aptitude.type=='Général'){ %>
           <tbody>
             <tr>
               <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.characteristic_name %></td>
               <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
@@ -75,11 +76,11 @@
             </tr>
           </thead>
           <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='combat'){ %>
+            if(aptitude.type=='Combat'){ %>
           <tbody>
             <tr>
               <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.characteristic_name %></td>
               <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
@@ -97,11 +98,11 @@
             </tr>
           </thead>
           <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='utilitaire'){ %>
+            if(aptitude.type=='Utilitaire'){ %>
           <tbody>
             <tr>
               <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.characteristic_name %></td>
               <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
@@ -117,11 +118,11 @@
             </tr>
           </thead>
           <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='sociale'){ %>
+            if(aptitude.type=='Social'){ %>
           <tbody>
             <tr>
               <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_code %></td>
+              <td><%= aptitude.characteristic_name %></td>
               <td><%= aptitude.rank %></td>
             </tr>
           </tbody>
@@ -138,8 +139,8 @@
         <div class="two columns"><img src="images/skills/<%= skill.skill_code %>.jpg" style="float: left;
           padding-right:20px; padding-bottom:20px;"></div>
         <div class="two columns"><%= skill.skill_name %></div>
-        <div class="two columns"><%= skill.skill_type %></div>
-        <div class="six columns"><%= skill.skill_description %></div>
+        <div class="two columns"><%= skill.type %></div>
+        <div class="six columns"><%= skill.description %></div>
       </div>
       <% }); %>
     </div>

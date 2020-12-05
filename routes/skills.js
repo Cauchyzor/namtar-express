@@ -2,11 +2,10 @@ var express = require('express');
 var router = express.Router();
 var sqlite3 = require('sqlite3').verbose();
 
-/* GET home page. */
 router.get('/', function (req, res, next) {
-  
-  var QUERY_STRING = "SELECT * FROM APTITUDES";
-  var db = new sqlite3.Database('characterManagment.db', (err) => {
+
+  var QUERY_STRING = "SELECT * FROM skill ORDER BY type";
+  var db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -14,7 +13,7 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('reglesChap1.ejs', { aptitudes: rows });
+    res.render('skills', { skills: rows });
   });
 
   // close the database connection

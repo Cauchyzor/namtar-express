@@ -1,13 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var sqlite3 = require('sqlite3').verbose();
-var async = require('async');
 
 router.get('/', function (req, res, next) {
 
-  var QUERY_STRING = "SELECT * FROM character ORDER BY name";
+  var QUERY_STRING = "SELECT * FROM game;"
 
-  var db = new sqlite3.Database('character.db', (err) => {
+  console.log(req.query);
+  console.log(QUERY_STRING);
+
+  var db = new sqlite3.Database('game.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -15,7 +17,7 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('selectionPJ', { characters : rows });
+    res.render('gameSelection', { games: rows });
   });
 
 

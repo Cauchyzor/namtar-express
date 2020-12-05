@@ -4,8 +4,8 @@ var sqlite3 = require('sqlite3').verbose();
 
 router.get('/', function (req, res, next) {
 
-  var QUERY_STRING = "SELECT * FROM SKILLS ORDER BY skill_type";
-  var db = new sqlite3.Database('characterManagment.db', (err) => {
+  var QUERY_STRING = "SELECT * FROM mark";
+  var db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('competences', { skills: rows });
+    res.render('effects', { effects: rows });
   });
 
   // close the database connection

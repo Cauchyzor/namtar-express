@@ -6,22 +6,24 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var reglesChap1Router = require('./routes/reglesChap1');
-var reglesChap2Router = require('./routes/reglesChap2');
-var reglesChap3Router = require('./routes/reglesChap3');
-var reglesChap4Router = require('./routes/reglesChap4');
-var reglesChap5Router = require('./routes/reglesChap5');
-var reglesChap6Router = require('./routes/reglesChap6');
-var histoireRouter = require('./routes/histoire');
-var bestiaireRouter = require('./routes/bestiaire');
-var effetsRouter = require('./routes/effets');
-var generateurRouter = require('./routes/generateur');
+var rulesChap1Router = require('./routes/rulesChap1');
+var rulesChap2Router = require('./routes/rulesChap2');
+var rulesChap3Router = require('./routes/rulesChap3');
+var rulesChap4Router = require('./routes/rulesChap4');
+var rulesChap5Router = require('./routes/rulesChap5');
+var rulesChap6Router = require('./routes/rulesChap6');
+var historyRouter = require('./routes/history');
+var bestiaryRouter = require('./routes/bestiary');
+var effectsRouter = require('./routes/effects');
+var generatorRouter = require('./routes/generator');
 var speciesRouter = require('./routes/species');
 var mapRouter = require('./routes/map');
-var fichePersoRouter = require('./routes/fichePerso');
+var characterRouter = require('./routes/character');
 var createPJRouter = require('./routes/createPJ');
 var selectionPJRouter = require('./routes/selectionPJ');
-var competencesRouter = require('./routes/competences');
+var skillsRouter = require('./routes/skills');
+var gameSelectionRouter = require('./routes/gameSelection');
+var gameRouter = require('./routes/game');
 
 var app = express();
 
@@ -38,22 +40,24 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/reglesChap1', reglesChap1Router);
-app.use('/reglesChap2', reglesChap2Router);
-app.use('/reglesChap3', reglesChap3Router);
-app.use('/reglesChap4', reglesChap4Router);
-app.use('/reglesChap5', reglesChap5Router);
-app.use('/reglesChap6', reglesChap6Router);
-app.use('/histoire', histoireRouter);
-app.use('/bestiaire', bestiaireRouter);
-app.use('/generateur', generateurRouter);
+app.use('/rulesChap1', rulesChap1Router);
+app.use('/rulesChap2', rulesChap2Router);
+app.use('/rulesChap3', rulesChap3Router);
+app.use('/rulesChap4', rulesChap4Router);
+app.use('/rulesChap5', rulesChap5Router);
+app.use('/rulesChap6', rulesChap6Router);
+app.use('/history', historyRouter);
+app.use('/bestiary', bestiaryRouter);
+app.use('/generator', generatorRouter);
 app.use('/species', speciesRouter);
 app.use('/map', mapRouter);
-app.use('/effets', effetsRouter);
-app.use('/fichePerso', fichePersoRouter);
+app.use('/effects', effectsRouter);
+app.use('/character', characterRouter);
 app.use('/createPJ', createPJRouter);
 app.use('/selectionPJ', selectionPJRouter);
-app.use('/competences', competencesRouter);
+app.use('/skills', skillsRouter);
+app.use('/gameSelection', gameSelectionRouter);
+app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

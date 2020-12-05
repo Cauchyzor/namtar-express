@@ -20,7 +20,7 @@
                     </div>
                     <div class="six columns">
                         <label for="specie">Espèce</label>
-                        <input class="u-full-width" type="text" name="pj_specie" required>
+                        <input class="u-full-width" type="text" name="pj_species" required>
                     </div>
                 </div>
                 <div class="row">
@@ -35,7 +35,7 @@
                     <% tables.characteristics.forEach(function(element) {%>
                     <div class="two columns">
                         <label for="<%= element.key %>"><%= element.name %></label>
-                        <input type="number" min="0" max="3" name="char_<%= element.characteristic_code %>" value="2">
+                        <input type="number" min="0" max="3" name="char_<%= element.name %>" value="2">
                     </div>
                     <%  }); %>
                 </div>
@@ -56,10 +56,10 @@
                         <% tables.aptitudes.forEach(function(element) { %>
                         <tr>
                             <td><%= element.type %></td>
-                            <td><%= element.aptitude_name %></td>
-                            <td><%= element.characteristic_code %></td>
+                            <td><%= element.name %></td>
+                            <td><%= element.characteristic_name %></td>
                             <td><%= element.description %></td>
-                            <td><input type="number" min="0" max="3" name="apt_<%= element.aptitude_code %>" value="0">
+                            <td><input type="number" min="0" max="3" name="apt_<%= element.name %>" value="0">
                             <td>
                         </tr>
                         <%  }); %>

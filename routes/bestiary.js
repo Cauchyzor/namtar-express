@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
     	
 	}, function(error, rows) {
 		if (!error) {
-			res.render('bestiaire', {table_list: rows});
+			res.render('bestiary', {table_list: rows});
 		}
 
     });

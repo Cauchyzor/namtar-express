@@ -1,0 +1,31 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<body class="code-snippets-visible">
+    <style>
+        .state_block {
+            border: 1px solid #E1E1E1;
+            border-radius: 5px;
+            padding: 5%;
+        }
+    </style>
+    <div class="container">
+
+        <%- include('header'); -%>
+        <%- include('navbar'); -%>
+        <div class="docs-section row">
+            <h1 class="docs-header">Game status</h1>
+
+            <% states.forEach(function(state) { %>
+            <div class="state_block">
+                <h2><%= state.name %></h2>
+                <p><%= state.description %></p>
+            </div>
+            <% }); %>
+
+        </div>
+    </div>
+</body>
