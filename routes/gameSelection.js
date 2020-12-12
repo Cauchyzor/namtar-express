@@ -1,15 +1,15 @@
-var express = require('express');
-var router = express.Router();
-var sqlite3 = require('sqlite3').verbose();
+const express = require('express');
+const router = express.Router();
+const sqlite3 = require('sqlite3').verbose();
 
 router.get('/', function (req, res, next) {
 
-  var QUERY_STRING = "SELECT * FROM game;"
+  let QUERY_STRING = "SELECT * FROM game;"
 
   console.log(req.query);
   console.log(QUERY_STRING);
 
-  var db = new sqlite3.Database('game.db', (err) => {
+  let db = new sqlite3.Database('game.db', (err) => {
     if (err) {
       return console.error(err.message);
     }

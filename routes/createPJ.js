@@ -1,16 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var sqlite3 = require('sqlite3').verbose();
-var async = require('async');
+const express = require('express');
+const router = express.Router();
+const sqlite3 = require('sqlite3').verbose();
+const async = require('async');
 
 // TODO : implementer la gestion d'erreur
 // TODO : L'operation post envoir un req.bofy avec 5* la même information => comprendre et corriger si besoin
 
 router.get('/', function (req, res, next) {
 
-  var QUERY_APTITUDES = "SELECT * FROM aptitude ORDER BY type";
-  var QUERY_CHARACTERISTICS = "SELECT * FROM characteristic";
-  var db = new sqlite3.Database('character.db', (err) => {
+  let QUERY_APTITUDES = "SELECT * FROM aptitude ORDER BY type";
+  let QUERY_CHARACTERISTICS = "SELECT * FROM characteristic";
+  let db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -53,14 +53,14 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
 
-  var keys_list_pj = [];
-  var values_list_pj = [];
-  var data_characteristics = [];
-  var data_aptitudes = [];
-  var data_skill = [];
+  let keys_list_pj = [];
+  let values_list_pj = [];
+  let data_characteristics = [];
+  let data_aptitudes = [];
+  let data_skill = [];
 
   //create PJ id for unicity on BD
-  var character_name = req.body['pj_name'].trim().toLowerCase().replace(" ", "_");
+  let character_name = req.body['pj_name'].trim().toLowerCase().replace(" ", "_");
 
   for (let [key, value] of Object.entries(req.body)) {
     if (key.startsWith('pj_')) {
@@ -78,21 +78,21 @@ router.post('/', function (req, res, next) {
   }
 
   // Generate Query depending of database values and key collected
-  var placeholders_pj = keys_list_pj.map((key) => '?').join(',');
-  var placeholders_char = data_characteristics.map((key) => data_characteristics[0].map((key) => '?').join(',')).join('),(');
-  var placeholders_apt = data_aptitudes.map((key) => data_aptitudes[0].map((key) => '?').join(',')).join('),(');
-  var placeholders_skl = data_skill.map((key) => data_skill[0].map((key) => '?').join(',')).join('),(');
+  let placeholders_pj = keys_list_pj.map((key) => '?').join(',');
+  let placeholders_char = data_characteristics.map((key) => data_characteristics[0].map((key) => '?').join(',')).join('),(');
+  let placeholders_apt = data_aptitudes.map((key) => data_aptitudes[0].map((key) => '?').join(',')).join('),(');
+  let placeholders_skl = data_skill.map((key) => data_skill[0].map((key) => '?').join(',')).join('),(');
 
-  var QUERY_STRING_PJ = 'INSERT INTO character (' + keys_list_pj.join(',') + ') VALUES (' + placeholders_pj + ')';
-  var QUERY_STRING_CHAR = 'INSERT INTO character_characteristic_set (character_name, characteristic_name, rank) VALUES (' + placeholders_char + ')';
-  var QUERY_STRING_APT = 'INSERT INTO character_aptitude_set (character_name, aptitude_name, rank) VALUES (' + placeholders_apt + ')';
-  var query_list = [
+  let QUERY_STRING_PJ = 'INSERT INTO character (' + keys_list_pj.join(',') + ') VALUES (' + placeholders_pj + ')';
+  let QUERY_STRING_CHAR = 'INSERT INTO character_characteristic_set (character_name, characteristic_name, rank) VALUES (' + placeholders_char + ')';
+  let QUERY_STRING_APT = 'INSERT INTO character_aptitude_set (character_name, aptitude_name, rank) VALUES (' + placeholders_apt + ')';
+  let query_list = [
     [QUERY_STRING_PJ, values_list_pj],
     [QUERY_STRING_CHAR, data_characteristics.join(',').split(',')],
     [QUERY_STRING_APT, data_aptitudes.join(',').split(',')],
     [QUERY_STRING_SKILL, data_skill.join(',').split(',')]
   ];
-  var db = new sqlite3.Database('character.db', (err) => {
+  let db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
