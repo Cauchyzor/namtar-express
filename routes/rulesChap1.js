@@ -1,12 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var sqlite3 = require('sqlite3').verbose();
+const express = require('express');
+const router = express.Router();
+const sqlite3 = require('sqlite3').verbose();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  
-  var QUERY_STRING = "SELECT * FROM aptitude";
-  var db = new sqlite3.Database('character.db', (err) => {
+  const QUERY_STRING = 'SELECT * FROM aptitude';
+  const db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -14,6 +13,8 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
+    if (err) { console.log(err.stack); }
+
     res.render('rulesChap1.ejs', { aptitudes: rows });
   });
 

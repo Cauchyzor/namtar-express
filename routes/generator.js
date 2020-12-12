@@ -1,18 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var sqlite3 = require('sqlite3').verbose();
+const express = require('express');
+const router = express.Router();
+const sqlite3 = require('sqlite3').verbose();
 
 router.get('/', function (req, res) {
-
-  var QUERY_STRING = "SELECT * FROM mark;";
-  var db = new sqlite3.Database('character.db', (err) => {
+  const QUERY_STRING = 'SELECT * FROM mark;';
+  const db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    res.render('generator', { skill: "AJAX is great!", effects_list: rows });
+    if (err) { console.log(err.stack); }
+    res.render('generator', { skill: 'AJAX is great!', effects_list: rows });
   });
 
   db.close((err) => {
