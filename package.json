@@ -4,7 +4,7 @@
   "description": "Squelette pour furture JdR en WebApp",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon node ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "http-errors": "~1.6.3",
     "minimist": ">=0.2.1",
     "morgan": "~1.9.1",
+    "nodemon": "^2.0.6",
     "skeleton-css": "^2.0.4",
     "sqlite3": "^4.2.0"
   }
