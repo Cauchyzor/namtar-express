@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
   let QUERY_CHARACTER = "SELECT * FROM character WHERE name='" + req.query.name + "'";
   let QUERY_APTITUDES = "SELECT rank , character_name, aptitude_name, description, type, characteristic_name ,species, biography FROM character_aptitude_set JOIN aptitude ON aptitude.name = character_aptitude_set.aptitude_name JOIN character ON character.name = character_aptitude_set.character_name WHERE character.name='" + req.query.name + "'";
   let QUERY_CHARACTERISTICS = "SELECT rank , character_name, description, characteristic_name ,species, biography FROM character_characteristic_set JOIN character ON character.name = character_characteristic_set.character_name JOIN characteristic ON characteristic.name = character_characteristic_set.characteristic_name WHERE character.name='" + req.query.name + "'";
-  let QUERY_SKIILS = "SELECT character_name, skill_name, type, description FROM character_skill_set JOIN skill ON skill.name = character_skill_set.skill_name JOIN character ON character.name = character_skill_set.character_name WHERE character_name='" + req.query.name + "'";
+  let QUERY_SKILLS = "SELECT character_name, skill_name, type, description FROM character_skill_set JOIN skill ON skill.name = character_skill_set.skill_name JOIN character ON character.name = character_skill_set.character_name WHERE character_name='" + req.query.name + "'";
 
   console.log(QUERY_CHARACTER);
   console.log(QUERY_APTITUDES);
