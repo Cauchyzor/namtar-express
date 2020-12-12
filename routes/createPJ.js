@@ -7,8 +7,10 @@ const async = require('async');
 // TODO : L'operation post envoir un req.bofy avec 5* la même information => comprendre et corriger si besoin
 
 router.get('/', function (req, res, next) {
-  const QUERY_APTITUDES = 'SELECT * FROM aptitude ORDER BY type';
-  const QUERY_CHARACTERISTICS = 'SELECT * FROM characteristic';
+  const SELECT_APTITUDES = 'SELECT * FROM aptitude ORDER BY type';
+  const SELECT_CHARACTERISTICS = 'SELECT * FROM characteristic';
+  const SELECT_SKILLS = 'SELECT * FROM skill';
+
   const db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
@@ -18,17 +20,17 @@ router.get('/', function (req, res, next) {
 
   async.series({
     aptitudes: function (cb) {
-      db.all(QUERY_APTITUDES, function (error, rows) {
+      db.all(SELECT_APTITUDES, function (error, rows) {
         cb(error, rows);
       });
     },
     characteristics: function (cb) {
-      db.all(QUERY_CHARACTERISTICS, function (error, rows) {
+      db.all(SELECT_CHARACTERISTICS, function (error, rows) {
         cb(error, rows);
       });
     },
     skills: function (cb) {
-      db.all(QUERY_SKILLS, function (error, rows) {
+      db.all(SELECT_SKILLS, function (error, rows) {
         cb(error, rows);
       });
     }
@@ -78,14 +80,14 @@ router.post('/', function (req, res, next) {
   const placeholdersApt = valuesApt.map((key) => valuesApt[0].map((key) => '?').join(',')).join('),(');
   const placeholdersSkl = valuesSkl.map((key) => valuesSkl[0].map((key) => '?').join(',')).join('),(');
 
-  const QUERY_STRING_PJ = 'INSERT INTO character (' + keysListPj.join(',') + ') VALUES (' + placeholdersPj + ')';
-  const QUERY_STRING_CHAR = 'INSERT INTO character_characteristic_set (characterName, characteristic_name, rank) VALUES (' + placeholdersChar + ')';
-  const QUERY_STRING_APT = 'INSERT INTO character_aptitude_set (characterName, aptitude_name, rank) VALUES (' + placeholdersApt + ')';
+  const INSERT_PJ = 'INSERT INTO character (' + keysListPj.join(',') + ') VALUES (' + placeholdersPj + ')';
+  const INSERT_CHAR = 'INSERT INTO character_characteristic_set (characterName, characteristic_name, rank) VALUES (' + placeholdersChar + ')';
+  const INSERT_APT = 'INSERT INTO character_aptitude_set (characterName, aptitude_name, rank) VALUES (' + placeholdersApt + ')';
   const queryList = [
-    [QUERY_STRING_PJ, valuesListPj],
-    [QUERY_STRING_CHAR, valuesChar.join(',').split(',')],
-    [QUERY_STRING_APT, valuesApt.join(',').split(',')],
-    [QUERY_STRING_SKILL, valuesSkl.join(',').split(',')]
+    [INSERT_PJ, valuesListPj],
+    [INSERT_CHAR, valuesChar.join(',').split(',')],
+    [INSERT_APT, valuesApt.join(',').split(',')],
+    [INSERT_SKILL, valuesSkl.join(',').split(',')]
   ];
   const db = new sqlite3.Database('character.db', (err) => {
     if (err) {

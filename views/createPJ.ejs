@@ -81,9 +81,9 @@
                         <% tables.skills.forEach(function(element) {%>
                         <tr>
                             <td><input type="checkbox" name="skl_<%= element.skill_code %>"></td>
-                            <td><%= element.skill_name %></td>
-                            <td><%= element.skill_type %></td>
-                            <td><%= element.skill_description %></td>
+                            <td><%= element.name %></td>
+                            <td><%= element.type %></td>
+                            <td><%= element.description %></td>
                         </tr>
                         <%  }); %>
                     </tbody>

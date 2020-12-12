@@ -9,12 +9,12 @@ router.get('/', function (req, res) {
     if (err) { return console.error(err.message); }
   });
 
-  const QUERY_NAME = 'SELECT * FROM NAME';
+  const SELECT_NAME = 'SELECT * FROM NAME';
 
   async.series({
 
     name: function (cb) {
-      db.all(QUERY_NAME, function (error, rows) {
+      db.all(SELECT_NAME, function (error, rows) {
         cb(error, rows);
       });
     }
