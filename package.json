@@ -26,6 +26,6 @@
     "minimist": ">=0.2.1",
     "morgan": "~1.9.1",
     "skeleton-css": "^2.0.4",
-    "sqlite3": "^4.0.6"
+    "sqlite3": "^4.2.0"
   }
 }
