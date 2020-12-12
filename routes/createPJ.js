@@ -49,43 +49,43 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  const keys_list_pj = [];
-  const values_list_pj = [];
-  const data_characteristics = [];
-  const data_aptitudes = [];
-  const data_skill = [];
+  const keysListPj = [];
+  const valuesListPj = [];
+  const valuesChar = [];
+  const valuesApt = [];
+  const valuesSkl = [];
 
   // create PJ id for unicity on BD
-  const character_name = req.body.pj_name.trim().toLowerCase().replace(' ', '_');
+  const characterName = req.body.pj_name.trim().toLowerCase().replace(' ', '_');
 
   for (const [key, value] of Object.entries(req.body)) {
     if (key.startsWith('pj_')) {
       // Extract pj info
-      keys_list_pj.push(key.substring(3));
-      values_list_pj.push(value);
+      keysListPj.push(key.substring(3));
+      valuesListPj.push(value);
     } else if (key.startsWith('char_')) {
       // Extract Characteristics info
-      data_characteristics.push([character_name, key.substring(5), value]);
+      valuesChar.push([characterName, key.substring(5), value]);
     } else if (key.startsWith('apt_')) {
       // Extract aptitudes info
-      data_aptitudes.push([character_name, key.substring(4), value]);
+      valuesApt.push([characterName, key.substring(4), value]);
     }
   }
 
   // Generate Query depending of database values and key collected
-  const placeholders_pj = keys_list_pj.map((key) => '?').join(',');
-  const placeholders_char = data_characteristics.map((key) => data_characteristics[0].map((key) => '?').join(',')).join('),(');
-  const placeholders_apt = data_aptitudes.map((key) => data_aptitudes[0].map((key) => '?').join(',')).join('),(');
-  const placeholders_skl = data_skill.map((key) => data_skill[0].map((key) => '?').join(',')).join('),(');
+  const placeholdersPj = keysListPj.map((key) => '?').join(',');
+  const placeholdersChar = valuesChar.map((key) => valuesChar[0].map((key) => '?').join(',')).join('),(');
+  const placeholdersApt = valuesApt.map((key) => valuesApt[0].map((key) => '?').join(',')).join('),(');
+  const placeholdersSkl = valuesSkl.map((key) => valuesSkl[0].map((key) => '?').join(',')).join('),(');
 
-  const QUERY_STRING_PJ = 'INSERT INTO character (' + keys_list_pj.join(',') + ') VALUES (' + placeholders_pj + ')';
-  const QUERY_STRING_CHAR = 'INSERT INTO character_characteristic_set (character_name, characteristic_name, rank) VALUES (' + placeholders_char + ')';
-  const QUERY_STRING_APT = 'INSERT INTO character_aptitude_set (character_name, aptitude_name, rank) VALUES (' + placeholders_apt + ')';
-  const query_list = [
-    [QUERY_STRING_PJ, values_list_pj],
-    [QUERY_STRING_CHAR, data_characteristics.join(',').split(',')],
-    [QUERY_STRING_APT, data_aptitudes.join(',').split(',')],
-    [QUERY_STRING_SKILL, data_skill.join(',').split(',')]
+  const QUERY_STRING_PJ = 'INSERT INTO character (' + keysListPj.join(',') + ') VALUES (' + placeholdersPj + ')';
+  const QUERY_STRING_CHAR = 'INSERT INTO character_characteristic_set (characterName, characteristic_name, rank) VALUES (' + placeholdersChar + ')';
+  const QUERY_STRING_APT = 'INSERT INTO character_aptitude_set (characterName, aptitude_name, rank) VALUES (' + placeholdersApt + ')';
+  const queryList = [
+    [QUERY_STRING_PJ, valuesListPj],
+    [QUERY_STRING_CHAR, valuesChar.join(',').split(',')],
+    [QUERY_STRING_APT, valuesApt.join(',').split(',')],
+    [QUERY_STRING_SKILL, valuesSkl.join(',').split(',')]
   ];
   const db = new sqlite3.Database('character.db', (err) => {
     if (err) {
@@ -95,7 +95,7 @@ router.post('/', function (req, res, next) {
   });
 
   // Update database
-  query_list.forEach(function (query) {
+  queryList.forEach(function (query) {
     db.run(query['0'], query['1'], function (err) {
       console.log(query);
       if (err) {
@@ -109,9 +109,7 @@ router.post('/', function (req, res, next) {
 
   // close the database connection
   db.close((err) => {
-    if (err) {
-      return console.error(err.message);
-    }
+    if (err) { return console.error(err.message); }
     console.log('Close the database connection.');
   });
 
