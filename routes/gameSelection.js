@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
   });
 
   db.all(QUERY_STRING, function (err, rows) {
-    if (err) { console.log(error.stack); }
+    if (err) { console.log(err.stack); }
     res.render('gameSelection', { games: rows });
   });
 
