@@ -18,10 +18,10 @@
   "homepage": "https://github.com/cauchyp/NamtarWebApp#readme",
   "dependencies": {
     "async": "^3.2.0",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
+    "ejs": "^2.7.4",
+    "express": "^4.17.1",
     "http-errors": "~1.6.3",
     "minimist": ">=0.2.1",
     "morgan": "~1.9.1",
