@@ -4,7 +4,6 @@ const sqlite3 = require('sqlite3').verbose();
 const async = require('async');
 
 router.get('/', function (req, res, next) {
-
   let QUERY_CHARACTER = "SELECT * FROM character WHERE name='" + req.query.name + "'";
   let QUERY_APTITUDES = "SELECT rank , character_name, aptitude_name, description, type, characteristic_name ,species, biography FROM character_aptitude_set JOIN aptitude ON aptitude.name = character_aptitude_set.aptitude_name JOIN character ON character.name = character_aptitude_set.character_name WHERE character.name='" + req.query.name + "'";
   let QUERY_CHARACTERISTICS = "SELECT rank , character_name, description, characteristic_name ,species, biography FROM character_characteristic_set JOIN character ON character.name = character_characteristic_set.character_name JOIN characteristic ON characteristic.name = character_characteristic_set.characteristic_name WHERE character.name='" + req.query.name + "'";
@@ -14,7 +13,7 @@ router.get('/', function (req, res, next) {
   console.log(QUERY_APTITUDES);
   console.log(QUERY_CHARACTERISTICS);
 
-  let db = new sqlite3.Database('character.db', (err) => {
+  const db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -25,22 +24,22 @@ router.get('/', function (req, res, next) {
     characters: function (cb) {
       db.all(QUERY_CHARACTER, function (error, rows) {
         cb(error, rows);
-      })
+      });
     },
     aptitudes: function (cb) {
       db.all(QUERY_APTITUDES, function (error, rows) {
         cb(error, rows);
-      })
+      });
     },
     characteristics: function (cb) {
       db.all(QUERY_CHARACTERISTICS, function (error, rows) {
-        cb(error, rows)
-      })
+        cb(error, rows);
+      });
     },
     skills: function (cb) {
       db.all(QUERY_SKILLS, function (error, rows) {
-        cb(error, rows)
-      })
+        cb(error, rows);
+      });
     }
   }, function (error, rows) {
     if (!error) {
