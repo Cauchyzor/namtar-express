@@ -71,6 +71,9 @@ router.post('/', function (req, res, next) {
     } else if (key.startsWith('apt_')) {
       // Extract aptitudes info
       valuesApt.push([characterName, key.substring(4), value]);
+    } else if (key.startsWith('skl_')) {
+      // Extract aptitudes info
+      valuesSkl.push([characterName, key.substring(4)]);
     }
   }
 
@@ -81,14 +84,21 @@ router.post('/', function (req, res, next) {
   const placeholdersSkl = valuesSkl.map((key) => valuesSkl[0].map((key) => '?').join(',')).join('),(');
 
   const INSERT_PJ = 'INSERT INTO character (' + keysListPj.join(',') + ') VALUES (' + placeholdersPj + ')';
-  const INSERT_CHAR = 'INSERT INTO character_characteristic_set (characterName, characteristic_name, rank) VALUES (' + placeholdersChar + ')';
-  const INSERT_APT = 'INSERT INTO character_aptitude_set (characterName, aptitude_name, rank) VALUES (' + placeholdersApt + ')';
+  const INSERT_CHAR = 'INSERT INTO character_characteristic_set (character_name, characteristic_name, rank) VALUES (' + placeholdersChar + ')';
+  const INSERT_APT = 'INSERT INTO character_aptitude_set (character_name, aptitude_name, rank) VALUES (' + placeholdersApt + ')';
+
   const queryList = [
     [INSERT_PJ, valuesListPj],
     [INSERT_CHAR, valuesChar.join(',').split(',')],
-    [INSERT_APT, valuesApt.join(',').split(',')],
-    [INSERT_SKILL, valuesSkl.join(',').split(',')]
+    [INSERT_APT, valuesApt.join(',').split(',')]
   ];
+
+  // exclude skill list treatment for null values expectation
+  if (valuesSkl.length > 0) {
+    const INSERT_SKL = 'INSERT INTO character_skill_set (character_name, skill_name) VALUES (' + placeholdersSkl + ')';
+    queryList.push(INSERT_SKL, valuesSkl.join(',').split(','));
+  }
+
   const db = new sqlite3.Database('character.db', (err) => {
     if (err) {
       return console.error(err.message);
