@@ -3,10 +3,7 @@ const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 
 router.get('/', function (req, res, next) {
-  const SELECT_STRING = "SELECT * FROM state WHERE game_id='" + req.query.game_id + "'";
-
-  console.log(req.query);
-  console.log(SELECT_STRING);
+  const SELECT_STRING = "SELECT * FROM state WHERE game_id='" + req.query.game_id + "' ORDER BY id DESC";
 
   const db = new sqlite3.Database('game.db', (err) => {
     if (err) {

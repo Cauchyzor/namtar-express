@@ -1,31 +1,39 @@
 <!--HEAD -->
 <%- include('head'); -%>
 
-<!-- BODY -->
-<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <!-- BODY -->
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link href="\stylesheets\timeline.css" rel="stylesheet">
 
-<body class="code-snippets-visible">
-    <style>
-        .state_block {
-            border: 1px solid #E1E1E1;
-            border-radius: 5px;
-            padding: 5%;
-        }
-    </style>
-    <div class="container">
+    <body class="code-snippets-visible">
+        <div class="container">
+            
+            <%- include('header'); -%>
+            <%- include('navbar'); -%>
 
-        <%- include('header'); -%>
-        <%- include('navbar'); -%>
-        <div class="docs-section row">
-            <h1 class="docs-header">Game status</h1>
 
-            <% states.forEach(function(state) { %>
-            <div class="state_block">
-                <h2><%= state.name %></h2>
-                <p><%= state.description %></p>
+            <div class="docs-section row">
+                <h1 class="docs-header">Game status</h1>
             </div>
-            <% }); %>
 
+            <ul id='timeline'>
+                <% states.forEach(function(state) { %>
+
+                <li class='work'>
+                    <input class='radio' id="work<%= state.id %>" name='works' type='radio' >
+                    <div class="relative">
+                        <label for='work<%= state.id %>'><%= state.creation_date %></label>
+                        <span class='date'><%= state.id %></span>
+                        <span class='circle'></span>
+                    </div>
+                    <div class='content'>
+                        <p>
+                            <%= state.description %>
+                        </p>
+                    </div>
+                </li>
+                <% });  %>
+            </ul>
         </div>
-    </div>
-</body>
+
+    </body>
