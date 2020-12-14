@@ -52,6 +52,31 @@ SELECT 'Et paf une nouvelle peripetie',CURRENT_TIMESTAMP, NULL , game.id
 FROM game
 WHERE game.name='My_SANDBOX';
 
+INSERT INTO comment (content,creation_date,last_modification_date,game_id, poster_username)
+SELECT 'Je suis un commentaire ! Merci de ne JAMAI en tenir compte',CURRENT_TIMESTAMP, NULL , game.id, 'Anonyme'
+FROM game
+WHERE game.name='My_SANDBOX';
+
+INSERT INTO comment (description,creation_date,last_modification_date,game_id, poster_username)
+SELECT 'Lol j''ai répondu...',CURRENT_TIMESTAMP, NULL , game.id, 'Inconnue'
+FROM game
+WHERE game.name='My_SANDBOX';
+
+
+INSERT INTO poster (username,creation_date,last_modification_date)
+VALUES 
+('Anonyme',CURRENT_TIMESTAMP, NULL),
+('Inconnue',CURRENT_TIMESTAMP, NULL);
+
+INSERT INTO comment (content,creation_date,last_modification_date, state_id, poster_username)
+SELECT 'Je suis un commentaire ! Merci de ne JAMAI en tenir compte',CURRENT_TIMESTAMP, NULL , state.id, 'Anonyme'
+FROM state
+WHERE id='1' AND game_id='1';
+
+INSERT INTO comment (content,creation_date,last_modification_date, state_id, poster_username)
+SELECT 'Lol j''ai répondu...',CURRENT_TIMESTAMP, NULL , state.id, 'Inconnue'
+FROM state
+WHERE id='1' AND game_id='1';
 
 -- TEST : To run after the dataset's application
 
