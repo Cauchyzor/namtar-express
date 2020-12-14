@@ -8,225 +8,516 @@
 
 <body class="code-snippets-visible">
 
-    <div class="container">
+	<div class="container">
 
-        <%- include('header'); -%>
-        <%- include('navbar'); -%>
+		<%- include('header'); -%>
+		<%- include('navbar'); -%>
 
-        <div class="docs-section">
+		<div class="docs-section">
 
-            <h1 class="docs-header">Générateur de carte d'escarmouche</h1>    
+			<h1 class="docs-header">Générateur de carte d'escarmouche</h1>    
 
-            <div>
-            	<p style="display: inline; padding-right:8px;">Biome :</p>
+			<div>
+				<p style="display: inline; padding-right:8px;">Biome :</p>
 				<select id="biomeSelector" style="display: inline;">
-						<option value="none" selected>-- Select --</option>
-						<option value="plain">Plaine</option>
-						<option value="forest">Forêt</option>
-						<option value="desert">Désert</option>
-						<option value="rocheux">Rocheux</option>					
-						<option value="underground">Souterrain</option>
-						<option value="urban">Urbain</option>
+					<option value="none" selected>-- Select --</option>
+					<option value="plain">Plaine</option>
+					<option value="forest">Forêt</option>
+					<option value="desert">Désert</option>
+					<option value="rocheux">Rocheux</option>					
+					<option value="underground">Souterrain</option>
+					<option value="urban">Urbain</option>
 				</select>
 				<p style="display: inline; padding-left:10px; padding-right:8px;">Relief :</p>
 				<select id="reliefSelector" style="display: inline;">
-						<option value="none" selected>-- Select --</option>
-						<option value=0>Plat</option>
-						<option value=1>Faible</option>
-						<option value=3>Moyen</option>
-						<option value=5>Important</option>
+					<option value="none" selected>-- Select --</option>
+					<option value=0>Plat</option>
+					<option value=1>Faible</option>
+					<option value=3>Valloné</option>
+					<option value=5>Montagneux</option>
 				</select>
 				<p style="display: inline; padding-left:10px; padding-right:8px;">Eau :</p>
 				<select id="waterSelector" style="display: inline;">
-						<option value="none" selected>-- Select --</option>
-						<option value=0>Absent</option>
-						<option value=3>Petit</option>
-						<option value=12>Moyen</option>
-						<option value=22>Grand</option>
+					<option value="none" selected>-- Select --</option>
+					<option value=0>Absent</option>
+					<option value=3>Petit</option>
+					<option value=12>Moyen</option>
+					<option value=22>Grand</option>
 				</select>
-				<!--<p style="display: inline; padding-left:10px; padding-right:8px;">Arbre :</p>
+				<p style="display: inline; padding-left:10px; padding-right:8px;">Arbre :</p>
 				<select id="objectSelector" style="display: inline;">
-						<option value="none" selected> Select </option>
-						<option value=1>Absent</option>
-						<option value=2>Petit</option>
-						<option value=3>Moyen</option>
-						<option value=4>Grand</option>
-				</select>-->
+					<option value="none" selected> Select </option>
+					<option value=0>Absent</option>
+					<option value=0.2>Solitaire</option>
+					<option value=0.6>Bosquet</option>
+					<option value=1.2>Forêt</option>
+				</select>
 			</div>
 
-            <form method="POST" id="generateRandomMap">
-                <input type="button" value="Generer" onclick="generateRandomMap()">
-            </form>
+			<form method="POST" id="mapOptions">
+				<input type="button" value="Generer" onclick="generateRandomMap()">
+				<input type="button" value="Sauvegarder" onclick="generateRandomMap()">
+				<input type="button" value="Charger" onclick="generateRandomMap()">
+			</form>
 
-            <div id="map"></div>
-            
-        </div>
+			<div id="mapHolder" style="margin-top: -20px; position: relative; overflow: hidden;">
+				<div id="map"></div>
+				<div id="objects"></div>
+				<div id="tokens"></div>
+			</div>
 
-    </div>
+		</div>
+
+	</div>
 
 </body>
 
 <script>
 
+	var mapGenerated = false;
+	var tokenSelected = false;
+
+	var mapHolder = document.getElementById('mapHolder');
 	var map = document.getElementById('map');
+	var objects = document.getElementById('objects');
+	var tokens = document.getElementById('tokens');
 
-	var pixelSize = 30;
-    var mapSize = 20;
+	var mapSize = 32;
+	var pixelSize = 18;
 
-    var mapMatrix = new Array(mapSize);
+	var mapBlurFactor = 1.7; 
+	var objectsBlurFactor = 0.5; 
 
-    var relief;
+	var mapMatrix = new Array(mapSize);
 
-    function generateRandomMap() {
+	document.addEventListener("click", onClickMapEvent);
 
+	function generateRandomMap() {
 
-    	var biomeSelector = document.getElementById("biomeSelector");
+		// Layers positioning : 
+
+		mapHolder.style.width = (pixelSize * mapSize) + "px";
+		mapHolder.style.height = (pixelSize * mapSize) + "px";
+
+		map.style.width = (pixelSize * mapSize)  + "px";
+		map.style.height = (pixelSize * mapSize) + "px";
+
+		objects.style.width = (pixelSize * mapSize) + "px";
+		objects.style.height = (pixelSize * mapSize) + "px";
+
+		tokens.style.width = (pixelSize * mapSize) + "px";
+		tokens.style.height = (pixelSize * mapSize) + "px";
+		
+		map.style.overflow = "hidden";
+		objects.style.overflow = "hidden";
+		tokens.style.overflow = "hidden";
+
+		objects.style["marginTop"] = "-100%";
+		tokens.style["marginTop"] = "-100%";
+
+		map.style.filter = "blur(" + mapBlurFactor + "px)";
+		objects.style.filter = "blur(" + objectsBlurFactor + "px)";
+
+		//
+
+		var horizontalMapMatrix;
+
+		for (let i = 0; i < mapMatrix.length; i++)
+		{
+
+			horizontalMapMatrix = new Array(mapSize).fill(null).map(()=> ({ 'level':0 , 'element':'' }));
+			mapMatrix[i] = horizontalMapMatrix;
+		
+		}
+
+		var biomeSelector = document.getElementById("biomeSelector");
 		var biome = biomeSelector.options[biomeSelector.selectedIndex].value;
 
 		var waterSelector = document.getElementById("waterSelector");
-		var water = waterSelector.options[waterSelector.selectedIndex].value;
+		var maxWater = waterSelector.options[waterSelector.selectedIndex].value;
 
 		var reliefSelector = document.getElementById("reliefSelector");
-		relief = reliefSelector.options[reliefSelector.selectedIndex].value;		
+		var maxRelief = reliefSelector.options[reliefSelector.selectedIndex].value;
 
-		if(biome == "none" || water == "none" || relief == "none")
+		var treeSelector = document.getElementById("objectSelector");
+		var maxTree= objectSelector.options[objectSelector.selectedIndex].value;	
+
+		if(biome == "none" || maxWater == "none" || maxRelief == "none")
 		{
 			return; 
 		}
 
 		// Refief generation routine :
 
-		var reliefList = new Array(relief);
+		let numberOfReliefs = (Math.floor(Math.random() * ( 4 * maxRelief  - 3 )) + 3 );
 
-		for (i=0; i<=relief; i++){
-			reliefList[i] = new Array(3);
-			if(i==0){
-				for (j=0; j<3; j++){
-					var position = { x: "", y: "", radius: "" };				
-					position.x = Math.floor(Math.random() * mapSize );
-					position.y = Math.floor(Math.random() * mapSize );
-					position.radius = (Math.floor(Math.random() * (10 - 5 )) + 5 );
-					reliefList[i][j] = position;
-				}
-			}else{
-				for (j=0; j<3; j++){
-					var position = { x: "", y: "", radius: "" };				
-					position.x = reliefList[i-1][j].x;
-					position.y = reliefList[i-1][j].y;
-					position.radius = (Math.floor(Math.random() * (reliefList[i-1][j].radius - 5 )) + 5 );
-					reliefList[i][j] = position;
-				}
-			}
-		}
-
-    	// Fill the map with basics pixels based on the biome selected and the relief:
-    	
-    	for (var i = 0; i < mapSize; i++)
+		for (let i=0; i<numberOfReliefs; i++)
 		{
- 			mapMatrix[i] = new Array(mapSize);
- 			for (var j = 0; j < mapSize; j++)
-			{
-				var pixel = { element: "", colorH: "", colorS: "", colorL: "", level: 0 };
 
-				if( biome == "plain" ){pixel.element="grass"; pixel.colorH=97; pixel.colorS=52; pixel.colorL=55; pixel.level=0;}
-				if( biome == "forest" ){pixel.element="forestGrass"; pixel.colorH=96; pixel.colorS=38; pixel.colorL=27; pixel.level=0;}
-				if( biome == "desert" ){pixel.element="sand"; pixel.colorH=45; pixel.colorS=35; pixel.colorL=63; pixel.level=0;}
-				if( biome == "rocheux" ){pixel.element="rock"; pixel.colorH=35; pixel.colorS=60; pixel.colorL=37; pixel.level=0;}
-				if( biome == "underground" ){pixel.element="dirt"; pixel.colorH=29; pixel.colorS=28; pixel.colorL=23; pixel.level=0;}
-				if( biome == "urban" ){pixel.element="asphalte"; pixel.colorH=0; pixel.colorS=0; pixel.colorL=55; pixel.level=0;}
+			let x = Math.floor(Math.random() * mapSize );
+			let y = Math.floor(Math.random() * mapSize );
+			let radius = (Math.floor(Math.random() * ( maxRelief * 4.3 - maxRelief * 4 )) + maxRelief * 4 );
 
-				for (k=0;k<relief;k++){
-					for (l=0;l<3;l++){
-						var distance = Math.sqrt(Math.pow(i-(reliefList[k][l].x),2)+Math.pow(j-(reliefList[k][l].y),2));
-						if( distance < reliefList[k][l].radius)
-						{
-							pixel.colorL += 3;
-							pixel.level += 1;
-							break;
-						}
+			let cursorX = 0;
+			let cursorY = 0;
+			let d = 1;
+			let m = 1;
+
+			// Fill the relief with a spiral pattern : 
+
+			while ( m < radius) {
+				while ( 2 * cursorX * d < m ) {
+					if(cursorX+x<mapSize && cursorY+y<mapSize && cursorX+x >= 0 && cursorY+y >= 0 )
+					{
+						mapMatrix[cursorX+x][cursorY+y].level += 1;
 					}
+					cursorX = cursorX + d;
 				}
-
-				mapMatrix[i][j] = pixel;
+				while ( 2 * cursorY * d < m ) {
+					if(cursorX+x<mapSize && cursorY+y<mapSize && cursorX+x >= 0 && cursorY+y >= 0 )
+					{
+						mapMatrix[cursorX+x][cursorY+y].level += 1;
+					}
+					cursorY = cursorY + d;
+				}
+				d = -1 * d;
+				m = m + 1;
 			}
+
+			for (let j=0; j<=maxRelief-1; j++)
+			{
+
+				radius = (Math.floor(Math.random() * (radius - 5 )) + 5 );
+
+				cursorX = 0;
+				cursorY = 0;
+				d = 1;
+				m = 1; 
+
+				while ( m < radius) {
+					while ( 2 * cursorX * d < m ) {
+						if(cursorX+x<mapSize && cursorY+y<mapSize && cursorX+x >= 0 && cursorY+y >= 0 )
+						{
+							mapMatrix[cursorX+x][cursorY+y].level += 1;
+						}
+						cursorX = cursorX + d;
+					}
+					while ( 2 * cursorY * d < m ) {
+						if(cursorX+x<mapSize && cursorY+y<mapSize && cursorX+x >= 0 && cursorY+y >= 0 )
+						{
+							mapMatrix[cursorX+x][cursorY+y].level += 1;
+						}
+						cursorY = cursorY + d;
+					}
+					d = -1 * d;
+					m = m + 1;
+				}
+			}		
 		}
 
-    	// Water pixel generation :
+		//Water pixel generation :
 
-    	var max = water;
-    	var min = water-10;
-    	if(min<0){min=0};
+		let min = maxWater-10;
+		if(min<0){min=0;}
 
-    	var randomNumberWaterPixel = (Math.floor(Math.random() * (max - min )) + min );
+		let randomNumberWaterPixel = (Math.floor(Math.random() * (maxWater - min)) + min );
 
-    	var waterPixelPositionList = new Array(randomNumberWaterPixel);
-
-    	for (var i = 0; i < randomNumberWaterPixel; i++)
+		for (let i = 0; i < randomNumberWaterPixel; i++)
 		{
-			var position = { x: "", y: "" };
 
-			position.x = Math.floor(Math.random() * mapSize );
-    		position.y = Math.floor(Math.random() * mapSize );
+			let x = Math.floor(Math.random() * mapSize );
+			let y = Math.floor(Math.random() * mapSize );
 
-    		recursivelyGenerateWater(position.x, position.y, 0);
+			recursivelyGenerateWater(x, y, 0);
 
-    	}
+		}
 
     	// Drawing the map :
 
-    	map.innerHTML = "";
-    	for (let mapXPixel = 0; mapXPixel < mapSize; mapXPixel++) {
-    		for (let mapYPixel = 0; mapYPixel < mapSize; mapYPixel++) {
-    			map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + mapMatrix[mapXPixel][mapYPixel].colorH + ", " + mapMatrix[mapXPixel][mapYPixel].colorS + "%, " + mapMatrix[mapXPixel][mapYPixel].colorL + "%); top: " + (380 + (mapYPixel * pixelSize)) + "px; left: " + (mapXPixel * pixelSize) + "px; \"></div>";
-    		}
-    	}
+    	let colorH;
+    	let colorS;
+    	let colorL;
 
-    }
+    	map.innerHTML = "";
+    	
+    	for (let x = 0; x < mapSize; x++)
+    	{
+    		for (let y = 0; y < mapSize; y++)
+    		{
+
+				// Select the color : 
+
+				if(mapMatrix[x][y].element == "")
+				{
+					if ( biome == "plain"  ){mapMatrix[x][y].element="grass";colorH=97;colorS=52;colorL=55+(2*mapMatrix[x][y].level);}
+					else if ( biome == "forest" ){mapMatrix[x][y].element="forestGrass";colorH=96;colorS=38;colorL=27+(2*mapMatrix[x][y].level);}
+					else if ( biome == "desert" ){mapMatrix[x][y].element="sand";colorH=45;colorS=35;colorL=63+(2*mapMatrix[x][y].level);}
+					else if ( biome == "rocheux" ){mapMatrix[x][y].element="rock";colorH=35;colorS=60;colorL=37+(2*mapMatrix[x][y].level);}
+					else if ( biome == "underground" ){mapMatrix[x][y].element="dirt";colorH=29;colorS=28;colorL=23+(2*mapMatrix[x][y].level);}
+					else if ( biome == "urban" ){mapMatrix[x][y].element="asphalte";colorH=0;colorS=0;colorL=55+(2*mapMatrix[x][y].level);}
+				}
+				else if (mapMatrix[x][y].element == "water")
+				{
+					colorH=202;colorS=71;colorL=78+(2*mapMatrix[x][y].level);
+				}
+
+				// Detecting corners : 
+
+				if(mapMatrix[x][y].level > 0 && x > 0 && y > 0 && x < mapSize - 1 && y < mapSize - 1)
+				{
+
+					let minSurroundingRelief = 0;
+
+					for(let i = -1 ; i < 2 ; i++)
+					{
+						for(let j = -1 ; j < 2 ; j++)
+						{
+							if(i != j && mapMatrix[x+i][y+j].level > minSurroundingRelief && mapMatrix[x+i][y+j].level < mapMatrix[x][y].level)
+							{
+								minSurroundingRelief = mapMatrix[x+i][y+j].level;
+							}
+						}
+					}
+
+					if(mapMatrix[x-1][y].level == mapMatrix[x][y+1].level && mapMatrix[x-1][y].level == mapMatrix[x][y].level && mapMatrix[x+1][y].level != mapMatrix[x][y+1].level && mapMatrix[x-1][y].level != mapMatrix[x][y-1].level && mapMatrix[x-1][y].level + mapMatrix[x][y+1].level + mapMatrix[x][y].level > mapMatrix[x+1][y].level + mapMatrix[x][y-1].level + mapMatrix[x+1][y-1].level)
+					{
+
+						// Top-right corner case
+
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + ( colorL - 2 * (mapMatrix[x][y].level - minSurroundingRelief)) + "%); top: " +(y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";	
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; border-radius: 0 " + pixelSize + "px 0 0; background-color: hsl(" + colorH + ", " + colorS + "%, " + colorL + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";
+
+
+					}
+					else if (mapMatrix[x+1][y].level == mapMatrix[x][y+1].level && mapMatrix[x+1][y].level == mapMatrix[x][y].level && mapMatrix[x+1][y].level != mapMatrix[x][y-1].level && mapMatrix[x-1][y].level != mapMatrix[x][y+1].level && mapMatrix[x+1][y].level + mapMatrix[x][y+1].level + mapMatrix[x][y].level > mapMatrix[x-1][y].level + mapMatrix[x][y-1].level + mapMatrix[x-1][y-1].level) 
+					{
+
+						// Top-left corner case
+
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + ( colorL - 2 * (mapMatrix[x][y].level - minSurroundingRelief)) + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";	
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; border-radius: " + pixelSize + "px 0 0 0; background-color: hsl(" + colorH + ", " + colorS + "%, " + colorL + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";
+
+					}
+					else if (mapMatrix[x-1][y].level == mapMatrix[x][y-1].level && mapMatrix[x-1][y].level == mapMatrix[x][y].level && mapMatrix[x-1][y].level != mapMatrix[x][y+1].level && mapMatrix[x+1][y].level != mapMatrix[x][y-1].level && mapMatrix[x-1][y].level + mapMatrix[x][y-1].level + mapMatrix[x][y].level > mapMatrix[x+1][y].level + mapMatrix[x][y+1].level + mapMatrix[x+1][y+1].level)
+					{
+
+						// Bottom-right corner case
+
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + ( colorL - 2 * (mapMatrix[x][y].level - minSurroundingRelief)) + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";	
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; border-radius: 0 0 " + pixelSize + "px 0; background-color: hsl(" + colorH + ", " + colorS + "%, " + colorL + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";
+
+
+					}
+					else if (mapMatrix[x+1][y].level == mapMatrix[x][y-1].level && mapMatrix[x+1][y].level == mapMatrix[x][y].level && mapMatrix[x-1][y].level != mapMatrix[x][y-1].level && mapMatrix[x+1][y].level != mapMatrix[x][y+1].level && mapMatrix[x+1][y].level + mapMatrix[x][y-1].level + mapMatrix[x][y].level > mapMatrix[x-1][y].level + mapMatrix[x][y+1].level + mapMatrix[x-1][y+1].level)
+					{
+
+						// Bottom-left corner case
+
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + ( colorL - 2 * (mapMatrix[x][y].level - minSurroundingRelief)) + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";	
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; border-radius: 0 0 0 " + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + colorL + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";
+
+					}
+					else
+					{
+						map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + colorL + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";		
+					}
+	
+				}
+				else
+				{
+					map.innerHTML += "<div style=\"position: absolute; width:" + pixelSize + "px; height:" + pixelSize + "px; background-color: hsl(" + colorH + ", " + colorS + "%, " + colorL + "%); top: " + (y * pixelSize) + "px; left: " + (x * pixelSize) + "px;\"></div>";		
+				}
+			}
+		}
+
+		//objets generation :
+
+		objects.innerHTML = "";
+
+		numberOfObjetcs = mapSize * mapSize * (Math.floor(Math.random() * (maxTree * 4 - maxTree * 3 )) + maxTree * 3 ) / 100;
+
+		for (let i = 0; i < numberOfObjetcs; i++)
+		{
+
+			let x = (Math.floor(Math.random() * ( mapSize / ( maxTree * 5 ))));
+			let y = (Math.floor(Math.random() * ( mapSize / ( maxTree * 5 ))));
+
+			let random = (Math.floor(Math.random() * (8 - 1 )) + 1 );
+			let randomSizeFactor = 1.3 * (Math.floor(Math.random() * (random * 1.4 - 2 )) + 2 );
+			let randomRotation = (Math.floor(Math.random() * 360 ));
+
+			let objectName ="Tree_" + random + ".png";
+
+			if(mapMatrix[x][y].element != "water")
+			{
+
+				objects.innerHTML += "<img src=\"images/map/" + objectName
+				+ "\" width=\"" + pixelSize * randomSizeFactor
+				+ "\" height=\"" + pixelSize * randomSizeFactor
+				+ "\" style=\"position: relative;"
+					+ "top: " + y * pixelSize + "px; " 
+					+ "left: " + x * pixelSize + "px; " 
+					+ "transform: rotate(" + randomRotation + "deg); " 
+					+ "margin: 0 0 0 0;\""
+				+">";
+
+			}
+
+		}
+
+		// Token positioning : 
+
+		tokens.innerHTML = "";
+
+		let x = (Math.floor(Math.random() * mapSize));
+		let y = (Math.floor(Math.random() * mapSize));
+
+		tokens.innerHTML += "<img src=\"images/map/Token.png\""
+		+ " id=\"tokenID\""
+		+ " width=\"" + pixelSize * 3 + "\""
+		+ " height=\"" + pixelSize * 3 + "\""
+		+ " style=\"position: relative; "
+			+ "top: " + y * pixelSize + "px; " 
+			+ "left: " + x * pixelSize + "px; " 
+			+ "border-radius:" + pixelSize * 3 + "px;\""
+		+">";
+
+		let token = document.getElementById('tokenID');
+		let positionsToken = elementPosition(token);
+		let positionsMap = elementPosition(map);
+
+		tokens.innerHTML += "<div"
+		+ " id=\"tokenRotationSelector\""
+		+ " style=\"position: absolute; "
+			+ "width: " + (pixelSize / 2) + "px; " 
+			+ "height: " + (pixelSize / 2) + "px; " 
+			+ "top: " + (positionsToken.viewportY - positionsMap.viewportY + pixelSize * 3 + 10) + "px; "
+			+ "left: " + (positionsToken.viewportX -  positionsMap.viewportX + pixelSize * 1.5 - pixelSize / 4) + "px; "
+			+ "border-radius:" + (pixelSize / 2) + "px; "
+			+ "background-color: rgba(0, 0, 0, 0.0);\""
+		+"></div>";
+
+		// Map generated : 
+
+		mapGenerated = true;
+
+	}
 
     function recursivelyGenerateWater(xPixel, yPixel, spreading) {
 
-    	if (mapMatrix[xPixel][yPixel].element != "water")
-    	{
-    	    mapMatrix[xPixel][yPixel].element = "water";
-    		mapMatrix[xPixel][yPixel].colorH = 202;
-    		mapMatrix[xPixel][yPixel].colorS = 71;
-    		mapMatrix[xPixel][yPixel].colorL = 78 - ( relief - mapMatrix[xPixel][yPixel].level ) * 3 ;	
+		if (mapMatrix[xPixel][yPixel].element != "water")
+		{
+
+			mapMatrix[xPixel][yPixel].element = "water";
 
 			for(let x=-1; x<=1; x++){
-    			for(let y=-1; y<=1; y++){
-    				if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
-    					if((mapMatrix[xPixel+x][yPixel+y].level < mapMatrix[xPixel][yPixel].level) && (x == 0 | y == 0)){
-    						recursivelyGenerateWater(xPixel+x, yPixel+y, 0);
-    					}
-    				}
-    			}
-    		}
+				for(let y=-1; y<=1; y++){
+					if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
+						if((mapMatrix[xPixel+x][yPixel+y].level < mapMatrix[xPixel][yPixel].level) && (x == 0 | y == 0)){
+							recursivelyGenerateWater(xPixel+x, yPixel+y, 0);
+						}
+					}
+				}
+			}
 
-    		if(spreading == 0){
-    			for(let x=-1; x<=1; x++){
-    				for(let y=-1; y<=1; y++){			
-    					if(x == 0 | x == 0){
-    						if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
-    							if(mapMatrix[xPixel+x][yPixel+y].level == mapMatrix[xPixel][yPixel].level){
-    								recursivelyGenerateWater(xPixel+x, yPixel+y, 1);
-    							}
-    						}							
-    					}
-    					else
-    					{
-    						var randomNumberWaterDiffusion = (Math.floor(Math.random() * 10));
-    						if(randomNumberWaterDiffusion <= 3){
-    							if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
-    								if(mapMatrix[xPixel+x][yPixel+y].level == mapMatrix[xPixel][yPixel].level){
-    									recursivelyGenerateWater(xPixel+x, yPixel+y, 1);
-    								}
-    							}	
-    						}
-    					}
-    				}
-    			} 
-    		}
-    	}   				
-    }
+			if(spreading == 0){
+				for(let x=-1; x<=1; x++){
+					for(let y=-1; y<=1; y++){			
+						if(x == 0 | x == 0){
+							if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
+								if(mapMatrix[xPixel+x][yPixel+y].level == mapMatrix[xPixel][yPixel].level){
+									recursivelyGenerateWater(xPixel+x, yPixel+y, 1);
+								}
+							}							
+						}
+						else
+						{
+							var randomNumberWaterDiffusion = (Math.floor(Math.random() * 10));
+							if(randomNumberWaterDiffusion <= 3){
+								if(xPixel+x >= 0 && yPixel+y >= 0 && xPixel+x < mapSize && yPixel+y < mapSize){
+									if(mapMatrix[xPixel+x][yPixel+y].level == mapMatrix[xPixel][yPixel].level){
+										recursivelyGenerateWater(xPixel+x, yPixel+y, 1);
+									}
+								}	
+							}
+						}
+					}
+				} 
+			}
+		}   				
+	}
+
+	function onClickMapEvent(event) {
+
+		if(!mapGenerated)
+		{
+			return;
+		}
+
+		let x = event.clientX
+		let y = event.clientY;
+
+		let token = document.getElementById('tokenID');
+		let tokenRotationSelector = document.getElementById('tokenRotationSelector');
+		let positionsToken = elementPosition(token);
+		let positionsMap = elementPosition(mapHolder);
+
+		if(x > positionsMap.viewportX && y > positionsMap.viewportY && x < positionsMap.viewportX + pixelSize * mapSize && y < positionsMap.viewportY + pixelSize * mapSize)
+		{
+			if(x > positionsToken.viewportX && y > positionsToken.viewportY && x < positionsToken.viewportX + pixelSize * 3 && y < positionsToken.viewportY + pixelSize  * 3) 
+			{
+
+				if(tokenSelected)
+				{
+					// Token deselection :
+
+					token.style["backgroundColor"] = "rgba(0, 0, 0, 0.0)";
+					tokenRotationSelector.style["backgroundColor"] = "rgba(0, 0, 0, 0.0)";
+					tokenSelected = false;
+				}
+				else
+				{
+					// Token selection : 
+
+					token.style["backgroundColor"] = "rgba(210, 0, 255, 0.3)";
+					tokenRotationSelector.style["backgroundColor"] = "rgba(210, 0, 255, 0.3)";
+					tokenSelected = true;		
+
+				}		
+			}
+			else if(tokenSelected)
+			{
+
+				// Token moved : 
+
+				tokenSelected = false;
+
+				token.style["backgroundColor"] = "rgba(0, 0, 0, 0.0)";
+				token.style.top = y - positionsMap.viewportY - pixelSize * 1.5 + "px";
+				token.style.left = x - positionsMap.viewportX - pixelSize * 1.5 + "px";
+
+				tokenRotationSelector.style["backgroundColor"] = "rgba(0, 0, 0, 0.0)";
+				tokenRotationSelector.style.top = (y - positionsMap.viewportY + pixelSize * 1.5 + 10) + "px";
+				tokenRotationSelector.style.left =(x - positionsMap.viewportX - pixelSize / 4) + "px";
+
+			}
+			else
+			{
+				tokenSelected = false;
+			}
+		}
+	}
+
+	function elementPosition (a) {
+
+  		var b = a.getBoundingClientRect();
+
+ 		return {
+ 			clientX: a.offsetLeft,
+    		clientY: a.offsetTop,
+    		viewportX: (b.x || b.left),
+    		viewportY: (b.y || b.top)
+  		}
+	}
 
 </script>
