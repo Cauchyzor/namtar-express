@@ -16,23 +16,26 @@
                 <h1 class="docs-header">Game status</h1>
             </div>
 
-            <ul id='timeline'>
-                <% states.forEach(function(state) { %>
+            <div class="docs-section row">
+                <form action="game?_id=<%= gameId %>" method="POST">
+                    <button class="button-primary" type="submit">Create Next Status</button>
+                </form>
+            </div>
 
+            <ul id='timeline'>
+                <% states.forEach(function(state,index) { %>
                 <li class='work'>
-                    <input class='radio' id="work<%= state.id %>" name='works' type='radio' >
+                    <input class='radio' id="work<%= index %>" name='works' type='radio' >
                     <div class="relative">
-                        <label for='work<%= state.id %>'><%= state.creation_date %></label>
-                        <span class='date'><%= state.id %></span>
+                        <label for='work<%= index %>'><%= state.title %></label>
+                        <span class='date'><%= state.createdAt %></span>
                         <span class='circle'></span>
                     </div>
                     <div class='content'>
-                        <p>
-                            <%= state.description %>
-                        </p>
+                        <p><%= state.body %></p>
                     </div>
                 </li>
-                <% });  %>
+                <% }); %>
             </ul>
         </div>
 

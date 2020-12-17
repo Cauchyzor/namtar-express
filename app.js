@@ -26,6 +26,16 @@ const gameSelectionRouter = require('./routes/gameSelection');
 const gameRouter = require('./routes/game');
 
 const app = express();
+const mongoose = require('mongoose');
+const password = 'DqknscTrNqtBS9sX9i7m5h8Fk6jaeDCzhSrPKmMR';
+
+mongoose.connect('mongodb+srv://dev-generic:' + password + '@dev.6dqam.mongodb.net/<dbname>?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

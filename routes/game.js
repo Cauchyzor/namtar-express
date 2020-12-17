@@ -1,29 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const sqlite3 = require('sqlite3').verbose();
+const State = require('../models/State');
 
 router.get('/', function (req, res, next) {
-  const SELECT_STRING = "SELECT * FROM state WHERE game_id='" + req.query.game_id + "' ORDER BY id DESC";
+  console.log();
+  State.find({ gameId: req.query._id })
+    .sort('-createdAt')
+    .then((states) => { res.render('game', { states: states, gameId: req.query._id }); })
+    .catch((error) => { res.status(400).json({ error: error }); });
+});
 
-  const db = new sqlite3.Database('game.db', (err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Connected to the in-memory SQlite database.');
-  });
-
-  db.all(SELECT_STRING, function (err, rows) {
-    if (err) { console.log(err.stack); }
-    res.render('game', { states: rows });
-  });
-
-  // close the database connection
-  db.close((err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Close the database connection.');
-  });
+router.post('/', function (req, res, next) {
+  console.log(req.query._id);
+  const state = new State({ gameId: req.query._id, title: 'Nouveau Status' });
+  state.save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
+    .catch(error => res.status(500).json({ error }));
 });
 
 module.exports = router;
