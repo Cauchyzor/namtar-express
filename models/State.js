@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const stateSchema = mongoose.Schema({
   title: { type: String },
   body: { type: String },
-  comments: [{ type: String }],
-  gameId: { type: String, required: true }
+  gameId: { type: String, required: true },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 },
 {
   timestamps: true

@@ -11,7 +11,6 @@
             <%- include('header'); -%>
             <%- include('navbar'); -%>
 
-
             <div class="docs-section row">
                 <h1 class="docs-header">Game status</h1>
             </div>
@@ -25,14 +24,25 @@
             <ul id='timeline'>
                 <% states.forEach(function(state,index) { %>
                 <li class='work'>
-                    <input class='radio' id="work<%= index %>" name='works' type='radio' >
+                        <input class='radio' id="work-<%= index %>" name='works' type='radio'>
                     <div class="relative">
-                        <label for='work<%= index %>'><%= state.title %></label>
-                        <span class='date'><%= state.createdAt %></span>
+                            <label for='work-<%= index %>'>
+                                <%= state.title %>
+                            </label>
+                            <span class='date'>
+                                <%= state.createdAt %>
+                            </span>
                         <span class='circle'></span>
                     </div>
-                    <div class='content'>
+                        <div class='content' id="<%= state.id %>">
                         <p><%= state.body %></p>
+                            <% state.comments.forEach(function(comment) { %>
+                                <p><%= comment.body %></p>
+                            <% }); %>
+                            <input type="button" value="Action">
+                            <input type="button" value="Question">
+                            <input type="text" placeholder="Leave your comment..." name="newComment" />
+                            <input type="button" value="Post" name="postComment">
                     </div>
                 </li>
                 <% }); %>
