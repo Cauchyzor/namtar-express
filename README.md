@@ -13,3 +13,4 @@ http://localhost:3000
 
 TODO: Implementer les session/account
 TODO: Implementer la partie Forum/partie
+TODO: Creer une fenetre d'erreure pour l'ensemble de l'application
