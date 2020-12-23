@@ -7,174 +7,185 @@
  * General Style
  * ------------------------------------- */
 
- @import url(https://fonts.googleapis.com/css?family=Noto+Sans);
- /* -------------------------------------
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans);
+/* -------------------------------------
   * timeline
   * ------------------------------------- */
 
- #timeline {
-   list-style: none;
-   margin: 50px 0 30px 20px;
-   padding-left: 30px;
-   border-left: 8px solid #000000;
- }
+#timeline {
+  list-style: none;
+  margin: 50px 0 30px 20px;
+  padding-left: 30px;
+  border-left: 8px solid #000000;
+}
 
- #timeline li {
-   margin: 40px 0;
-   position: relative;
- }
+#timeline li {
+  margin: 40px 0;
+  position: relative;
+}
 
- #timeline p {
-   margin: 0 0 15px;
- }
- 
- #timeline .date {
-   margin-top: -10px;
-   top: 50%;
-   left: -158px;
-   font-size: 0.95em;
-   line-height: 20px;
-   position: inherit;
- }
- 
- #timeline .circle {
-   margin-top: -10px;
-   top: 50%;
-   left: -44px;
-   width: 10px;
-   height: 10px;
-   background: #ffffff;
-   border: 5px solid #000000;
-   border-radius: 50%;
-   display: block;
-   position: absolute;
- }
- 
- #timeline .content {
-   max-height: 20px;
-   padding: 50px 20px 0;
-   border-color: transparent;
-   border-width: 2px;
-   border-style: solid;
-   border-radius: 0.5em;
-   position: relative;
- }
+#timeline p {
+  margin: 0 0 15px;
+}
 
- #timeline .content:before, .content:after {
-   content: "";
-   width: 0;
-   height: 0;
-   border: solid transparent;
-   position: absolute;
-   pointer-events: none;
-   right: 100%;
- }
+#timeline input {
+  margin: 0 0 15px;
+  visibility: hidden;
+}
 
- #timeline .content:before {
-   border-right-color: inherit;
-   border-width: 20px;
-   top: 50%;
-   margin-top: -20px;
- }
+#timeline .date {
+  margin-top: -10px;
+  top: 50%;
+  left: -158px;
+  font-size: 0.95em;
+  line-height: 20px;
+  position: inherit;
+}
 
- #timeline .content:after {
-   border-right-color: #ffffff;
-   border-width: 17px;
-   top: 50%;
-   margin-top: -17px;
- }
+#timeline .circle {
+  margin-top: -10px;
+  top: 50%;
+  left: -44px;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border: 5px solid #000000;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+}
 
- #timeline .content p {
-   max-height: 0;
-   color: transparent;
-   text-align: justify;
-   word-break: break-word;
-   hyphens: auto;
-   overflow: hidden;
- }
- 
- #timeline label {
-   font-size: 1.3em;
-   position: absolute;
-   z-index: 100;
-   cursor: pointer;
-   top: 20px;
-   transition: transform 0.2s linear;
- }
- 
- #timeline .radio {
-   display: none;
- }
- 
- #timeline .radio:checked + .relative label {
-   cursor: auto;
-   transform: translateX(42px);
- }
- #timeline .radio:checked + .relative .circle {
-   background: #f98262;
- }
- #timeline .radio:checked ~ .content {
-   max-height: inherit;
-   border-color: #000000;
-   margin-right: 20px;
-   transform: translateX(20px);
-   transition: max-height 0.4s linear, border-color 0.5s linear, transform 0.2s linear;
- }
- #timeline .radio:checked ~ .content p {
-   max-height: inherit;
-   color: #000000;
-   transition: color 0.3s linear 0.3s;
- }
- 
- /* -------------------------------------
+#timeline .content {
+  max-height: 20px;
+  padding: 50px 20px 0;
+  border-color: transparent;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 0.5em;
+  position: relative;
+}
+
+#timeline .content:before, .content:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border: solid transparent;
+  position: absolute;
+  pointer-events: none;
+  right: 100%;
+}
+
+#timeline .content:before {
+  border-right-color: inherit;
+  border-width: 20px;
+  top: 50%;
+  margin-top: -20px;
+}
+
+#timeline .content:after {
+  border-right-color: #ffffff;
+  border-width: 17px;
+  top: 50%;
+  margin-top: -17px;
+}
+
+#timeline .content p {
+  max-height: 0;
+  color: transparent;
+  text-align: justify;
+  word-break: break-word;
+  hyphens: auto;
+  overflow: hidden;
+}
+
+#timeline label {
+  font-size: 1.3em;
+  position: absolute;
+  z-index: 100;
+  cursor: pointer;
+  top: 20px;
+  transition: transform 0.2s linear;
+}
+
+#timeline .radio {
+  display: none;
+}
+
+#timeline .radio:checked+.relative label {
+  cursor: auto;
+  transform: translateX(42px);
+}
+
+#timeline .radio:checked+.relative .circle {
+  background: #f98262;
+}
+
+#timeline .radio:checked~.content {
+  max-height: inherit;
+  border-color: #000000;
+  margin-right: 20px;
+  transform: translateX(20px);
+  transition: max-height 0.4s linear, border-color 0.5s linear, transform 0.2s linear;
+}
+
+#timeline .radio:checked~.content p {
+  max-height: inherit;
+  color: #000000;
+  transition: color 0.3s linear 0.3s;
+}
+
+#timeline .radio:checked~.content input {
+  visibility: visible;
+}
+/* -------------------------------------
   * mobile phones (vertical version only)
   * ------------------------------------- */
 
- @media screen and (max-width: 767px) {
-   #timeline {
-     margin-left: 0;
-     padding-left: 0;
-     border-left: none;
-   }
-   #timeline li {
-     margin: 50px 0;
-   }
+@media screen and (max-width: 767px) {
+  #timeline {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+  #timeline li {
+    margin: 50px 0;
+  }
   #timeline label {
-     width: 85%;
-     font-size: 1.1em;
-     white-space: nowrap;
-     text-overflow: ellipsis;
-     overflow: hidden;
-     display: block;
-     transform: translateX(18px);
-   }
+    width: 85%;
+    font-size: 1.1em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    transform: translateX(18px);
+  }
   #timeline .content {
-     padding-top: 45px;
-     border-color: #000000;
-   }
+    padding-top: 45px;
+    border-color: #000000;
+  }
   #timeline .content:before, .content:after {
-     border: solid transparent;
-     bottom: 100%;
-   }
+    border: solid transparent;
+    bottom: 100%;
+  }
   #timeline .content:before {
-     border-bottom-color: inherit;
-     border-width: 17px;
-     top: -16px;
-     left: 50px;
-     margin-left: -17px;
-   }
+    border-bottom-color: inherit;
+    border-width: 17px;
+    top: -16px;
+    left: 50px;
+    margin-left: -17px;
+  }
   #timeline .content:after {
-     border-bottom-color: #48b379;
-     border-width: 20px;
-     top: -20px;
-     left: 50px;
-     margin-left: -20px;
-   }
+    border-bottom-color: #48b379;
+    border-width: 20px;
+    top: -20px;
+    left: 50px;
+    margin-left: -20px;
+  }
   #timeline .content p {
-     font-size: 0.9em;
-     line-height: 1.4;
-   }
+    font-size: 0.9em;
+    line-height: 1.4;
+  }
   #timeline .circle, .date {
-     display: none;
-   }
- }
+    display: none;
+  }
+}
