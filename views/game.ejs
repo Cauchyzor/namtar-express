@@ -23,19 +23,19 @@
 
             <ul id='timeline'>
                 <% states.forEach(function(state,index) { %>
-                <li class='work'>
+                    <li class='work'>
                         <input class='radio' id="work-<%= index %>" name='works' type='radio'>
-                    <div class="relative">
+                        <div class="relative">
                             <label for='work-<%= index %>'>
                                 <%= state.title %>
                             </label>
                             <span class='date'>
                                 <%= state.createdAt %>
                             </span>
-                        <span class='circle'></span>
-                    </div>
+                            <span class='circle'></span>
+                        </div>
                         <div class='content' id="<%= state.id %>">
-                        <p><%= state.body %></p>
+                            <p><%= state.body %></p>
                             <% state.comments.forEach(function(comment) { %>
                                 <p><%= comment.body %></p>
                             <% }); %>
@@ -43,10 +43,35 @@
                             <input type="button" value="Question">
                             <input type="text" placeholder="Leave your comment..." name="newComment" />
                             <input type="button" value="Post" name="postComment">
-                    </div>
-                </li>
+                        </div>
+                    </li>
                 <% }); %>
             </ul>
         </div>
+
+        <script>
+            $(document).ready(function () {
+                //TODO Changer la methode GET pour du POST
+                $('input[name=postComment]').click( function (e) {
+                    $stateId = $(this).parent().attr('id');
+                    $commentBody = $(this).prev().val();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/game/comment',
+                        data: {commentBody: $commentBody},
+                        dataType: 'text',
+                        success: function (replyJSON, status) {
+                            var reply = jQuery.parseJSON(replyJSON)
+                           //select the last paragraph from the div of concerned states, and add a new paragraph with comment content.
+                            $('div#'+$stateId ).children('p:last').after('<p>' + reply.newComment +'</p>');
+                        },
+                        error: function (replyJSON, status) {
+                            alert('Something went wrong ... Code ' + status);
+                        }
+                    });
+                });
+            });
+
+        </script>
 
     </body>
