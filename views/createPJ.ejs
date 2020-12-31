@@ -65,30 +65,7 @@
                         <%  }); %>
                     </tbody>
                 </table>
-            </div>
-            <div class="docs-section">
-                <h1 class="docs-header">Compétences</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Nom</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% tables.skills.forEach(function(element) {%>
-                        <tr>
-                            <td><input type="checkbox" name="skl_<%= element.name %>"></td>
-                            <td><%= element.name %></td>
-                            <td><%= element.type %></td>
-                            <td><%= element.description %></td>
-                        </tr>
-                        <%  }); %>
-                    </tbody>
-                </table>
-            </div>
+            </fieldset>
 
             <input class="button-primary" type="submit" value="Submit">
 
