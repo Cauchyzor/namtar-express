@@ -13,10 +13,14 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-  console.log(req.query._id);
-  const state = new State({ gameId: req.query._id, title: 'Nouveau Status' });
-  state.save()
-    .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
+  const newComment = new Comment({ body: req.body.commentBody });
+  State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } }, function (res, err) {
+    // if (res !== null) console.log(res);
+    // if (err !== null) console.log(err);
+  });
+
+  newComment.save()
+    .then(() => res.status(201).json({ newComment: newComment.body, message: 'Comment enregistré !' }))
     .catch(error => res.status(500).json({ error }));
 });
 

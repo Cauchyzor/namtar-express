@@ -51,14 +51,13 @@
 
         <script>
             $(document).ready(function () {
-                //TODO Changer la methode GET pour du POST
                 $('input[name=postComment]').click( function (e) {
                     $stateId = $(this).parent().attr('id');
                     $commentBody = $(this).prev().val();
                     $.ajax({
-                        type: 'GET',
-                        url: '/game/comment',
-                        data: {commentBody: $commentBody},
+                        type: 'POST',
+                        url: '/game',
+                        data: {commentBody: $commentBody, stateId: $stateId},
                         dataType: 'text',
                         success: function (replyJSON, status) {
                             var reply = jQuery.parseJSON(replyJSON)
