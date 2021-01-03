@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const stateSchema = mongoose.Schema({
-  title: { type: String },
+  title: { type: String, required: true },
   body: { type: String },
   gameId: { type: String, required: true },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]

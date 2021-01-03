@@ -12,8 +12,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/status/', function (req, res, next) {
-  console.log(req.query);
-  const newStats = new State({ gameId: req.query._id });
+  const newStats = new State({ title: req.body.stateTitle, gameId: req.query._id });
   newStats.save()
     .then(() => res.status(201).json({ message: 'State enregistré !' }))
     .catch(error => res.status(500).json({ error }));
