@@ -16,7 +16,7 @@
             </div>
 
             <div class="docs-section row">
-                <form action="game?_id=<%= gameId %>" method="POST">
+                <form action="game/status?_id=<%= gameId %>" method="POST">
                     <button class="button-primary" type="submit">Create Next Status</button>
                 </form>
             </div>
@@ -56,7 +56,7 @@
                     $commentBody = $(this).prev().val();
                     $.ajax({
                         type: 'POST',
-                        url: '/game',
+                        url: '/game/comment',
                         data: {commentBody: $commentBody, stateId: $stateId},
                         dataType: 'text',
                         success: function (replyJSON, status) {

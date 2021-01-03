@@ -4,7 +4,6 @@ const State = require('../models/State');
 const Comment = require('../models/Comment');
 
 router.get('/', function (req, res, next) {
-  console.log();
   State.find({ gameId: req.query._id })
     .populate('comments')
     .sort('-createdAt')
@@ -12,7 +11,15 @@ router.get('/', function (req, res, next) {
     .catch((error) => { res.status(400).json({ error: error }); });
 });
 
-router.post('/', function (req, res, next) {
+router.post('/status/', function (req, res, next) {
+  console.log(req.query);
+  const newStats = new State({ gameId: req.query._id });
+  newStats.save()
+    .then(() => res.status(201).json({ message: 'State enregistré !' }))
+    .catch(error => res.status(500).json({ error }));
+});
+
+router.post('/comment/', function (req, res, next) {
   const newComment = new Comment({ body: req.body.commentBody });
   State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } }, function (res, err) {
     // if (res !== null) console.log(res);
