@@ -29,13 +29,13 @@
                 </div>
             </fieldset>
             <fieldset class="docs-section">
-                <h1 class="docs-header">Caracteristiques</h1>
+                <h1 class="docs-header">Caractéristiques</h1>
 
                 <div class="row">
-                    <% tables.characteristics.forEach(function(element) {%>
+                    <% characteristics.forEach(function(element) {%>
                     <div class="two columns">
                         <label for="<%= element.key %>"><%= element.name %></label>
-                        <input type="number" min="0" max="3" name="char_<%= element.name %>" value="2">
+                        <input id="<%= element.key %>" name="char_<%= element.name %>" type="number" min="1" max="3"  value="2">
                     </div>
                     <%  }); %>
                 </div>
@@ -53,20 +53,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% tables.aptitudes.forEach(function(element) { %>
+                        <% aptitudes.forEach(function(element) { %>
                         <tr>
                             <td><%= element.type %></td>
                             <td><%= element.name %></td>
-                            <td><%= element.characteristic_name %></td>
+                            <td><%= element.characteristic %></td>
                             <td><%= element.description %></td>
-                            <td><input type="number" min="0" max="3" name="apt_<%= element.name %>" value="0">
+                            <td><input id="<%= element.name %>" name="apt_<%= element.name %>" type="number" min="0" max="3"  value="0">
                             <td>
                         </tr>
                         <%  }); %>
                     </tbody>
                 </table>
             </fieldset>
-
+            
             <input class="button-primary" type="submit" value="Submit">
 
         </form>

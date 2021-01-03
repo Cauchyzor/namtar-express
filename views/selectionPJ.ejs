@@ -24,21 +24,21 @@
       <div class="two columns">
         <div class="row">
           <label>Nom</label>
-          <p><%= pj.name %></p>
+          <p><%= pj.nom %></p>
         </div>
         <div class="row">
           <label>Espèces</label>
-          <p><%= pj.species %></p>
+          <p><%= pj.espèce %></p>
         </div>
       </div>
       <div class="six columns">
         <div class="row">
           <label><strong>Bio</strong></label>
-          <p><%= pj.biography %></p>
+          <p><%= pj.bio %></p>
         </div>
       </div>
       <div class="two columns">
-        <a class="button" href="/character?name=<%= pj.name %>">Ouvrir la fiche</a>
+        <a class="button" href="/character?_id=<%= pj._id %>">Ouvrir la fiche</a>
       </div>
     </div>
 

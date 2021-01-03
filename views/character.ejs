@@ -13,134 +13,67 @@
 
     <!-- TODO : Remanier le layout pour avoir une ficher compact et minimaliste-->
     <div class="docs-section">
+      <h1 class="docs-header">Infos générales</h1>
 
       <div class="row">
-        <div class="four columns">
-          <img class="value-img" src="images/pixabay_default_avatar.png" width="230" height="230" ;>
-        </div>
-
-        <div class="eight columns">
-          <div class="row">
-            <label class="two columns">Nom</label>
-            <div class="ten columns"><%= tables.characters[0].name %></div>
-          </div>
-          <div class="row">
-            <label class="two columns">Espèces</label>
-            <div class="ten columns"><%= tables.characters[0].species %></div>
-          </div>
-          <div class="row">
-            <label class="two columns"><strong>Bio</strong></label>
-            <p class="ten columns"><%= tables.characters[0].biography %></p>
-          </div>
-        </div>
-
+        <label class="two columns">Nom</label>
+        <div class="four columns"><%= character.nom %></div>
+        
+        <label class="two columns">Espèces</label>
+        <div class="four columns"><%= character.espèce %></div>
       </div>
       <div class="row">
-        <% tables.characteristics.forEach(function(characteristic){ %>
-        <h1 class="two columns"><%= characteristic.rank %></h1>
+        <label class="two columns"><strong>Bio</strong></label>
+        <p class="ten columns"><%= character.bio %></p>
+      </div>
+
+    </div>
+
+    <div class="docs-section">
+      <h1 class="docs-header">Caractéristiques</h1>
+
+      <div class="row">
+        <% characteristics.forEach(function([name, rank]){ %>
+        <h1 class="two columns"><%= rank %></h1>
         <% }); %>
       </div>
       <div class="row">
-        <% tables.characteristics.forEach(function(characteristic){ %>
-        <label class="two columns"><%= characteristic.characteristic_name %></label>
+        <% characteristics.forEach(function([name, rank]){ %>
+        <label class="two columns"><%= name %></label>
         <% }); %>
       </div>
 
+    </div>
+
+    <div class="docs-section">
+      <h1 class="docs-header">Aptitudes</h1>
+
       <div class="row">
-        <table class="six columns">
+        <table class="twelve columns">
           <thead>
             <tr>
               <th>Aptitude</th>
-              <th>Carac.</th>
               <th>Rang</th>
             </tr>
           </thead>
-          <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='Général'){ %>
+          <% aptitudes.forEach(function([name, rank]){  %>
           <tbody>
             <tr>
-              <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_name %></td>
-              <td><%= aptitude.rank %></td>
+              <td><%= name %></td>
+              <td><%= rank %></td>
             </tr>
           </tbody>
-          <% }
-         }); %>
-        </table>
-        <table class="six columns">
-          <thead>
-            <tr>
-              <th>Aptitude</th>
-              <th>Carac.</th>
-              <th>Rang</th>
-            </tr>
-          </thead>
-          <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='Combat'){ %>
-          <tbody>
-            <tr>
-              <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_name %></td>
-              <td><%= aptitude.rank %></td>
-            </tr>
-          </tbody>
-          <% }
-         }); %>
-        </table>
-      </div>
-      <div class="row">
-        <table class="six columns">
-          <thead>
-            <tr>
-              <th>Aptitude</th>
-              <th>Carac.</th>
-              <th>Rang</th>
-            </tr>
-          </thead>
-          <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='Utilitaire'){ %>
-          <tbody>
-            <tr>
-              <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_name %></td>
-              <td><%= aptitude.rank %></td>
-            </tr>
-          </tbody>
-          <% }
-         }); %>
-        </table>
-        <table class="six columns">
-          <thead>
-            <tr>
-              <th>Aptitude</th>
-              <th>Carac.</th>
-              <th>Rang</th>
-            </tr>
-          </thead>
-          <% tables.aptitudes.forEach(function(aptitude){ 
-            if(aptitude.type=='Social'){ %>
-          <tbody>
-            <tr>
-              <td><%= aptitude.aptitude_name %></td>
-              <td><%= aptitude.characteristic_name %></td>
-              <td><%= aptitude.rank %></td>
-            </tr>
-          </tbody>
-          <% }
-         }); %>
+          <% }); %>
         </table>
       </div>
     </div>
 
     <div class=docs-section>
       <h1 class="docs-header">Compétences</h1>
-      <% tables.skills.forEach(function(skill){ %>
+
+      <% skills.forEach(function(skill){ %>
       <div class="row">
-        <div class="two columns"><img src="images/skills/<%= skill.skill_code %>.jpg" style="float: left;
-          padding-right:20px; padding-bottom:20px;"></div>
-        <div class="two columns"><%= skill.skill_name %></div>
-        <div class="two columns"><%= skill.type %></div>
-        <div class="six columns"><%= skill.description %></div>
+        <div class="two columns"><%= skill %></div>
       </div>
       <% }); %>
     </div>
