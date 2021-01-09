@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
     .catch((error) => { res.status(400).json({ error: error }); });
 });
 
-router.post('/status/', function (req, res, next) {
+router.post('/state/', function (req, res, next) {
   const newStats = new State({ title: req.body.stateTitle, gameId: req.query._id });
   newStats.save()
     .then(() => res.status(201).json({ message: 'State enregistré !' }))
