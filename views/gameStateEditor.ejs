@@ -17,6 +17,9 @@
             <div class="docs-section row">
                 <form method="post" action="gameStateEditor">
                     <input type="hidden" name="stateId" value="<%= state._id %>" readonly>
+                    <label>Titre</label>
+                    <input type="text" name="stateTitle" value="<%= state.title %>">
+                    <label>Contenu</label>
                     <textarea name="stateContent" class="u-full-width" style="height: 50%;"><%= state.body %></textarea>
                     <input type="submit" value="Valider"> 
                 </form>

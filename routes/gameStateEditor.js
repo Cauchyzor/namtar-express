@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
   console.log(req.body);
-  State.updateOne({ _id: req.body.stateId }, { body: req.body.stateContent }, function (res, err) {
+  State.updateOne({ _id: req.body.stateId }, { title: req.body.stateTitle, body: req.body.stateContent }, function (res, err) {
     // if (res !== null) console.log(res);
     // if (err !== null) console.log(err);
   });
