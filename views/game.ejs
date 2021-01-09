@@ -36,12 +36,11 @@
                             <span class='circle'></span>
                         </div>
                         <div class='content' id="<%= state.id %>">
-                            <p><%= state.body %></p>
+                            <p id="<%= state.id %>-content"><%= state.body %></p>
+                            <a class="button" href="/gameStateEditor?_id=<%= state.id %>">Editer le State</a>
                             <% state.comments.forEach(function(comment) { %>
                                 <p><%= comment.body %></p>
                             <% }); %>
-                            <input type="button" value="Action">
-                            <input type="button" value="Question">
                             <input type="text" placeholder="Leave your comment..." name="newComment" />
                             <input type="button" value="Post" name="postComment">
                         </div>
