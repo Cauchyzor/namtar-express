@@ -83,8 +83,28 @@ aptDescMap.set('Negociation', 'La compétence Négociation gère le marchandage,
 aptDescMap.set('Commandement', 'Commandement correspond à la capacité à prendre les bonnes décisions, à se montrer ferme et décisif ce faisant, et à susciter la loyauté et le respect. Cette compétence peut également servir à pousser une foule à l’action, à galvaniser les alliés quand la situation paraît désespérée et à reprendre l’ascendant sur un subalterne récalcitrant.');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/Chap1', function (req, res, next) {
   res.render('rulesChap1.ejs', { aptitudes: aptDescMap, aptitudesCar: aptCharMap});
+});
+
+router.get('/Chap2', function (req, res, next) {
+  res.render('rulesChap2', { title: 'Express' });
+});
+
+router.get('/Chap3', function (req, res, next) {
+  res.render('rulesChap3', { title: 'Express' });
+});
+
+router.get('/Chap4', function (req, res, next) {
+  res.render('rulesChap4', { title: 'Express' });
+});
+
+router.get('/Chap5', function (req, res, next) {
+  res.render('rulesChap5', { title: 'Express' });
+});
+
+router.get('/Chap6', function (req, res, next) {
+  res.render('rulesChap6', { title: 'Express' });
 });
 
 module.exports = router;

@@ -6,12 +6,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
-const rulesChap1Router = require('./routes/rulesChap1');
-const rulesChap2Router = require('./routes/rulesChap2');
-const rulesChap3Router = require('./routes/rulesChap3');
-const rulesChap4Router = require('./routes/rulesChap4');
-const rulesChap5Router = require('./routes/rulesChap5');
-const rulesChap6Router = require('./routes/rulesChap6');
+const rulesRouter = require('./routes/rules');
 const historyRouter = require('./routes/history');
 const bestiaryRouter = require('./routes/bestiary');
 const effectsRouter = require('./routes/effects');
@@ -51,12 +46,7 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-app.use('/rulesChap1', rulesChap1Router);
-app.use('/rulesChap2', rulesChap2Router);
-app.use('/rulesChap3', rulesChap3Router);
-app.use('/rulesChap4', rulesChap4Router);
-app.use('/rulesChap5', rulesChap5Router);
-app.use('/rulesChap6', rulesChap6Router);
+app.use('/rules', rulesRouter);
 app.use('/history', historyRouter);
 app.use('/bestiary', bestiaryRouter);
 app.use('/generator', generatorRouter);
