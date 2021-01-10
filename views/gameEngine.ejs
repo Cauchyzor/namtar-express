@@ -16,7 +16,7 @@
             </div>
 
             <div class="docs-section row">
-                <form action="game/state?_id=<%= gameId %>" method="POST">
+                <form action="/game/createState?_id=<%= gameId %>" method="POST">
                     <input id="stateTitle" name="stateTitle" type="text" placeholder="Titre">
                     <button class="button-primary" type="submit">Create Next state</button>
                 </form>
@@ -37,7 +37,7 @@
                         </div>
                         <div class='content' id="<%= state.id %>">
                             <p id="<%= state.id %>-content"><%= state.body %></p>
-                            <a class="button" href="/gameStateEditor?_id=<%= state.id %>">Editer le State</a>
+                            <a class="button" href="/game/stateEditor?_id=<%= state.id %>">Editer le State</a>
                             <% state.comments.forEach(function(comment) { %>
                                 <p><%= comment.body %></p>
                             <% }); %>

@@ -17,8 +17,6 @@ const characterRouter = require('./routes/character');
 const createPJRouter = require('./routes/createPJ');
 const selectionPJRouter = require('./routes/selectionPJ');
 const skillsRouter = require('./routes/skills');
-const gameSelectionRouter = require('./routes/gameSelection');
-const gameStateEditorRouter = require('./routes/gameStateEditor');
 const gameRouter = require('./routes/game');
 
 const app = express();
@@ -57,8 +55,6 @@ app.use('/character', characterRouter);
 app.use('/createPJ', createPJRouter);
 app.use('/selectionPJ', selectionPJRouter);
 app.use('/skills', skillsRouter);
-app.use('/gameSelection', gameSelectionRouter);
-app.use('/gameStateEditor', gameStateEditorRouter);
 app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler

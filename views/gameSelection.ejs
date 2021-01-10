@@ -14,7 +14,7 @@
 
 
     <div class="docs-section row" >
-      <form action="gameSelection" method="post" >
+      <form action="/game/selection" method="post" >
         <label>Game Name : </label>
         <input type="text" name="gameName" id="gameName">
         <button class="button-primary" type="submit">Create New Game</button>
@@ -35,7 +35,7 @@
         <p><%= game.last_modification_date %></p>
       </div>
       <div class="two columns">
-        <a class="button" href="/game?_id=<%= game._id %>">Ouvrir la fiche</a>
+        <a class="button" href="/game/engine?_id=<%= game._id %>">Ouvrir la fiche</a>
       </div>
     </div>
 
