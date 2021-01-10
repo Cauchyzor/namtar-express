@@ -1,0 +1,57 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+    <!-- BODY -->
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link href="\stylesheets\timeline.css" rel="stylesheet">
+
+    <body class="code-snippets-visible">
+        <div class="container">
+
+            <%- include('header'); -%>
+            <%- include('navbar'); -%>
+
+            <div class="docs-section">
+                <div id="login">
+                    <h1>Welcome Back!</h1>
+
+                    <form action="user/login" method="post">
+
+                        <div>
+                            <label>Pseudo<span class="req">*</span></label>
+                            <input name="pseudo" type="text" required autocomplete="off" />
+                        </div>
+
+                        <div>
+                            <label>Password<span class="req">*</span></label>
+                            <input name="password" type="password" required autocomplete="off" placeholder="Mot de passe" />
+                        </div>
+
+                        <button class="button button-block" >Log In</button>
+
+                    </form>
+
+                </div>
+                <div id="signup">
+                    <h1>Create an account ?</h1>
+
+                    <form action="user/signup" method="post">
+
+                        <div>
+                            <label>Pseudo<span class="req">*</span></label>
+                            <input name="pseudo" type="text" required autocomplete="off" />
+                        </div>
+
+                        <div>
+                            <label>Password<span class="req">*</span></label>
+                            <input name="password" type="password" required autocomplete="off" placeholder="Mot de passe" />
+                        </div>
+
+                        <button class="button button-block" >Log In</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </body>
