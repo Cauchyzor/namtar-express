@@ -14,8 +14,6 @@ const generatorRouter = require('./routes/generator');
 const speciesRouter = require('./routes/species');
 const mapRouter = require('./routes/map');
 const characterRouter = require('./routes/character');
-const createPJRouter = require('./routes/createPJ');
-const selectionPJRouter = require('./routes/selectionPJ');
 const skillsRouter = require('./routes/skills');
 const gameRouter = require('./routes/game');
 
@@ -52,8 +50,6 @@ app.use('/species', speciesRouter);
 app.use('/map', mapRouter);
 app.use('/effects', effectsRouter);
 app.use('/character', characterRouter);
-app.use('/createPJ', createPJRouter);
-app.use('/selectionPJ', selectionPJRouter);
 app.use('/skills', skillsRouter);
 app.use('/game', gameRouter);
 
