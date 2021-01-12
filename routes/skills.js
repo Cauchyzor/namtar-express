@@ -1,28 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const sqlite3 = require('sqlite3').verbose();
+const Skill = require('../models/Skill');
 
 router.get('/', function (req, res, next) {
-  const SELECT_STRING = 'SELECT * FROM skill ORDER BY type';
-  const db = new sqlite3.Database('character.db', (err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Connected to the in-memory SQlite database.');
-  });
-
-  db.all(SELECT_STRING, function (err, rows) {
-    if (err) { console.log(err.stack); }
-    res.render('skills', { skills: rows });
-  });
-
-  // close the database connection
-  db.close((err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log('Close the database connection.');
-  });
+  Skill.find()
+    .then((skills) => { res.render('skills', { skills: skills }); })
+    .catch((error) => { res.status(400).json({ error: error }); });
 });
 
 module.exports = router;
