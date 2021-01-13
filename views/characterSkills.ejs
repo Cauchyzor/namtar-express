@@ -1,0 +1,38 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<body class="code-snippets-visible">
+
+  <div class="container">
+    <%- include('header'); -%>
+    <%- include('navbar'); -%>
+
+    <div class="docs-section">
+
+      <h1 class="docs-header">Tables des Competences</h1>
+
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Coût</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% skills.forEach(function(skill) { %>
+          <tr>
+            <!--TODO: Afficher les image en fond derriere le texte. Utiliser des codes couleurs pour trier les competences-->
+            <td><%= skill.nom %></td>
+            <td><%= skill.type %></td>
+            <td><%= skill.description %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>

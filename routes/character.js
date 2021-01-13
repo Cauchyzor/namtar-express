@@ -1,5 +1,6 @@
 const express = require('express');
 const Character = require('../models/Character');
+const Skill = require('../models/Skill');
 const router = express.Router();
 const aptCharMap = require('../models/AptitudeCharacteristics');
 const aptTypeMap = require('../models/AptitudesAttributes');
@@ -8,6 +9,12 @@ const aptDescMap = require('../models/AptitudesDescription');
 router.get('/selection', function (req, res, next) {
   Character.find()
     .then((characters) => { res.render('characterSelection', { characters: characters }); })
+    .catch((error) => { res.status(400).json({ error: error }); });
+});
+
+router.get('/skills', function (req, res, next) {
+  Skill.find()
+    .then((skills) => { res.render('characterSkills', { skills: skills }); })
     .catch((error) => { res.status(400).json({ error: error }); });
 });
 

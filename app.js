@@ -14,7 +14,6 @@ const generatorRouter = require('./routes/generator');
 const speciesRouter = require('./routes/species');
 const mapRouter = require('./routes/map');
 const characterRouter = require('./routes/character');
-const skillsRouter = require('./routes/skills');
 const gameRouter = require('./routes/game');
 
 const app = express();
@@ -50,7 +49,6 @@ app.use('/species', speciesRouter);
 app.use('/map', mapRouter);
 app.use('/effects', effectsRouter);
 app.use('/character', characterRouter);
-app.use('/skills', skillsRouter);
 app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
