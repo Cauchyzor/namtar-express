@@ -39,7 +39,7 @@ const characterSchema = mongoose.Schema({
     Survie: { type: Number, default: 0, min: 0, max: 5 },
     Vigilance: { type: Number, default: 0, min: 0, max: 5 }
   },
-  compétences: [{ type: mongoose.Types.ObjectId }]
+  compétences: [{ type: mongoose.Types.ObjectId, ref: 'Skill'}]
 },
 {
   timestamps: true

@@ -20,15 +20,14 @@ router.get('/skills', function (req, res, next) {
 
 router.get('/sheet', function (req, res, next) {
   Character.findOne({ _id: req.query._id })
+    .populate('compétences')
     .then((character) => {
       const aptitudes = Object.entries(character.aptitudes);
       const characteristics = Object.entries(character.caractéristiques);
-      const skills = Object.entries(character.compétences);
 
       aptitudes.shift();
       characteristics.shift();
-
-      res.render('characterSheet', { character: character, characteristics: characteristics, aptitudes: aptitudes, skills: skills });
+      res.render('characterSheet', { character: character, characteristics: characteristics, aptitudes: aptitudes, skills: character.compétences });
     })
     .catch((error) => { res.status(400).json({ error: error }); });
 });
