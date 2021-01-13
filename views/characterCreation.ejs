@@ -67,6 +67,30 @@
                 </table>
             </fieldset>
             
+            <fieldset class="docs-section">
+                <h1 class="docs-header">Compétences</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% skills.forEach(function(skill) { %>
+                        <tr>
+                            <td><input type="checkbox" name="skl_<%= skill._id %>"></td>
+                            <td><%= skill.nom %></td>
+                            <td><%= skill.type %></td>
+                            <td><%= skill.description %></td>
+                        </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </fieldset>
+
+
             <input class="button-primary" type="submit" value="Submit">
 
         </form>

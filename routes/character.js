@@ -34,25 +34,28 @@ router.get('/sheet', function (req, res, next) {
 });
 
 router.get('/create', function (req, res, next) {
-  const characteristics = [];
-  const aptitudes = [];
+  Skill.find()
+    .then((skills) => {
+      const characteristics = [];
+      const aptitudes = [];
 
-  Character.schema.eachPath((path) => {
-    if (/^caractéristiques.*/.test(path)) {
-      return characteristics.push({
-        name: path.replace(/^(caractéristiques.)*/, '')
+      Character.schema.eachPath((path) => {
+        if (/^caractéristiques.*/.test(path)) {
+          return characteristics.push({
+            name: path.replace(/^(caractéristiques.)*/, '')
+          });
+        } else if (/^aptitudes.*/.test(path)) {
+          return aptitudes.push({
+            name: path.replace(/^(aptitudes.)*/, ''),
+            characteristic: aptCharMap.get(path.replace(/^(aptitudes.)*/, '')),
+            type: aptTypeMap.get(path.replace(/^(aptitudes.)*/, '')),
+            description: aptDescMap.get(path.replace(/^(aptitudes.)*/, ''))
+          });
+        }
       });
-    } else if (/^aptitudes.*/.test(path)) {
-      return aptitudes.push({
-        name: path.replace(/^(aptitudes.)*/, ''),
-        characteristic: aptCharMap.get(path.replace(/^(aptitudes.)*/, '')),
-        type: aptTypeMap.get(path.replace(/^(aptitudes.)*/, '')),
-        description: aptDescMap.get(path.replace(/^(aptitudes.)*/, ''))
-      });
-    }
-  });
-
-  res.render('characterCreation', { characteristics: characteristics, aptitudes: aptitudes });
+      res.render('characterCreation', { characteristics: characteristics, aptitudes: aptitudes, skills: skills });
+    })
+    .catch((error) => { res.status(400).json({ error: error }); });
 });
 
 router.post('/create', function (req, res, next) {
@@ -66,6 +69,7 @@ router.post('/create', function (req, res, next) {
 
   const characteristics = Object.filterAndTransform(req.body, /^char_*/);
   const aptitudes = Object.filterAndTransform(req.body, /^apt_*/);
+  const skill = Object.filterAndTransform(req.body, /^skl_*/);
 
   const character = new Character({
     nom: req.body.pj_name,
@@ -73,7 +77,7 @@ router.post('/create', function (req, res, next) {
     bio: req.body.pj_biography,
     caractéristiques: characteristics,
     aptitudes: aptitudes,
-    compétences: []
+    compétences: Object.keys(skill)
   });
 
   character.save()
