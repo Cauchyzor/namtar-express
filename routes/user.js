@@ -57,7 +57,7 @@ router.post('/signup', function (req, res, next) {
 router.get('/character/selection', auth, function (req, res, next) {
   User.findOne({ _id: req.userId })
     .populate('characters')
-    .then(user => { console.log(user); res.render('characterSelection', { user: user }); })
+    .then(user => { res.render('characterSelection', { user: user }); })
     .catch(error => { res.status(400).json({ error: error }); });
 });
 
@@ -107,7 +107,6 @@ router.get('/character/create', auth, function (req, res, next) {
 });
 
 router.post('/character/create', auth, function (req, res, next) {
-  console.log(req.body);
   Object.filterAndTransform = (obj, regExp) => {
     const entries = Object.entries(obj)
       .filter(([name, score]) => regExp.test(name))
