@@ -11,9 +11,7 @@
     <%- include('navbar'); -%>
 
 
-    <% 
-    characters.forEach(function(pj){
-      %>
+    <%  user.characters.forEach(function(pj){ %>
 
 
     <div class="docs-section row" id="<%= pj.name %>">
@@ -35,7 +33,7 @@
         </div>
       </div>
       <div class="two columns">
-        <a class="button" href="/character/sheet?_id=<%= pj._id %>">Ouvrir la fiche</a>
+        <a class="button" href="/user/character/sheet?_id=<%= pj._id %>">Ouvrir la fiche</a>
       </div>
     </div>
 
