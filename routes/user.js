@@ -128,9 +128,11 @@ router.post('/character/create', auth, function (req, res, next) {
   });
 
   character.save()
-    .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
+    .then(character =>
+      User.updateOne({ _id: req.userId }, { $push: { characters: character._id } })
+        .then(() => res.status(201).json({ message: 'Personnage créé avec succès' }))
+        .catch(error => res.status(500).json({ error })))
     .catch(error => res.status(500).json({ error }));
-  // res.status(201).json({ message: 'Requête envoyée !' });
 });
 
 module.exports = router;
