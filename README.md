@@ -11,6 +11,6 @@ And then access the web interface at
 
 http://localhost:3000
 
-TODO: Implementer les session/account
-TODO: Implementer la partie Forum/partie
-TODO: Creer une fenetre d'erreure pour l'ensemble de l'application
+TODO: Creer une fenetre de gestion d'erreures pour l'ensemble de l'application
+TODO: Les States n'interpretent pas les saut de lignes et tablations : a fixer
+TODO: Checker les deprecations
