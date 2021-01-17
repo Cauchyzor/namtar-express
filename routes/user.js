@@ -3,9 +3,17 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
 router.get('/', function (req, res) {
   res.render('login');
+});
+
+router.get('/profil', auth, function (req, res) {
+  // req.user should be populated by a middleware auth
+  User.findOne({ _id: req.user })
+    .then(user => res.status(200).render('userProfil', { user: user }))
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.post('/login', function (req, res, next) {
@@ -19,10 +27,8 @@ router.post('/login', function (req, res, next) {
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect!' });
           }
-          res.status(200).json({
-            userId: user._id,
-            token: jwt.sign({ userId: user._id }, 'RANDOM_SECRET', { expiresIn: '24h' })
-          });
+          req.session.token = jwt.sign({ userId: user._id }, 'RANDOM_SECRET', { expiresIn: '24h' });
+          res.status(200).redirect('/user/profil');
         });
     })
     .catch(error => res.status(500).json({ error }));

@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -38,6 +39,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
+app.use(
+  session({
+    secret: 'thisisasecret',
+    saveUninitialized: false,
+    resave: false,
+    token: undefined
+  })
+);
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
