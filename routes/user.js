@@ -9,6 +9,7 @@ const Skill = require('../models/Skill');
 const aptCharMap = require('../models/AptitudeCharacteristics');
 const aptTypeMap = require('../models/AptitudesAttributes');
 const aptDescMap = require('../models/AptitudesDescription');
+const Game = require('../models/Game');
 
 router.get('/', function (req, res) {
   res.render('login');
@@ -82,26 +83,30 @@ router.get('/character/sheet', auth, function (req, res, next) {
 });
 
 router.get('/character/create', auth, function (req, res, next) {
-  Skill.find()
-    .then((skills) => {
-      const characteristics = [];
-      const aptitudes = [];
+  Game.find()
+    .then((games) => {
+      Skill.find()
+        .then((skills) => {
+          const characteristics = [];
+          const aptitudes = [];
 
-      Character.schema.eachPath((path) => {
-        if (/^caractéristiques.*/.test(path)) {
-          return characteristics.push({
-            name: path.replace(/^(caractéristiques.)*/, '')
+          Character.schema.eachPath((path) => {
+            if (/^caractéristiques.*/.test(path)) {
+              return characteristics.push({
+                name: path.replace(/^(caractéristiques.)*/, '')
+              });
+            } else if (/^aptitudes.*/.test(path)) {
+              return aptitudes.push({
+                name: path.replace(/^(aptitudes.)*/, ''),
+                characteristic: aptCharMap.get(path.replace(/^(aptitudes.)*/, '')),
+                type: aptTypeMap.get(path.replace(/^(aptitudes.)*/, '')),
+                description: aptDescMap.get(path.replace(/^(aptitudes.)*/, ''))
+              });
+            }
           });
-        } else if (/^aptitudes.*/.test(path)) {
-          return aptitudes.push({
-            name: path.replace(/^(aptitudes.)*/, ''),
-            characteristic: aptCharMap.get(path.replace(/^(aptitudes.)*/, '')),
-            type: aptTypeMap.get(path.replace(/^(aptitudes.)*/, '')),
-            description: aptDescMap.get(path.replace(/^(aptitudes.)*/, ''))
-          });
-        }
-      });
-      res.render('characterCreation', { characteristics: characteristics, aptitudes: aptitudes, skills: skills });
+          res.render('characterCreation', { games: games, characteristics: characteristics, aptitudes: aptitudes, skills: skills });
+        })
+        .catch((error) => { res.status(400).json({ error: error }); });
     })
     .catch((error) => { res.status(400).json({ error: error }); });
 });
@@ -117,6 +122,7 @@ router.post('/character/create', auth, function (req, res, next) {
   const characteristics = Object.filterAndTransform(req.body, /^char_*/);
   const aptitudes = Object.filterAndTransform(req.body, /^apt_*/);
   const skill = Object.filterAndTransform(req.body, /^skl_*/);
+  const game = Object.filterAndTransform(req.body, /^game_*/);
 
   const character = new Character({
     nom: req.body.pj_name,
@@ -128,10 +134,15 @@ router.post('/character/create', auth, function (req, res, next) {
   });
 
   character.save()
-    .then(character =>
+    .then(character => {
       User.updateOne({ _id: req.userId }, { $push: { characters: character._id } })
-        .then(() => res.status(201).json({ message: 'Personnage créé avec succès' }))
-        .catch(error => res.status(500).json({ error })))
+        .then(() => console.log('Personnage rataché au user avec succès'))
+        .catch(error => res.status(500).json({ error }));
+      Game.updateOne({ _id: Object.keys(game).pop() }, { $push: { charactersPlaying: character._id } })
+        .then(() => console.log("Personnage rattaché à l'aventure avec succès"))
+        .catch(error => res.status(500).json({ error }));
+      res.status(201).json({ message: 'Personnage créé avec succès' });
+    })
     .catch(error => res.status(500).json({ error }));
 });
 

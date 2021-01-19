@@ -11,8 +11,22 @@
         <%- include('navbar'); -%>
 
         <form action="/user/character/create" method="POST">
+            <h1 class="docs-header">Création de personnage</h1>
             <fieldset class="docs-section">
-                <h1 class="docs-header">Création de personnage</h1>
+                <h2 class="docs-header">Aventure concernée</h2>
+                <% games.forEach(function(game) { %>
+                    <div class="row">
+                        <div class="four columns">
+                            <input type="checkbox" name="game_<%= game._id %>">
+                        </div>
+                        <div class="eight columns">
+                            <label name="game_<%= game.name %>"><%= game.name %></label>
+                        </div>
+                    </div>
+                <%  }); %>
+            </fieldset>
+            <fieldset class="docs-section">
+                <h2 class="docs-header">Information Générales</h2>
                 <div class="row">
                     <div class="six columns">
                         <label for="name">Nom</label>
@@ -29,7 +43,7 @@
                 </div>
             </fieldset>
             <fieldset class="docs-section">
-                <h1 class="docs-header">Caractéristiques</h1>
+                <h2 class="docs-header">Caractéristiques</h2>
 
                 <div class="row">
                     <% characteristics.forEach(function(element) {%>
@@ -41,7 +55,7 @@
                 </div>
             </fieldset>
             <fieldset class="docs-section">
-                <h1 class="docs-header">Aptitudes</h1>
+                <h2 class="docs-header">Aptitudes</h2>
                 <table>
                     <thead>
                         <tr>
@@ -68,7 +82,7 @@
             </fieldset>
             
             <fieldset class="docs-section">
-                <h1 class="docs-header">Compétences</h1>
+                <h2 class="docs-header">Compétences</h2>
                 <table>
                     <thead>
                         <tr>
