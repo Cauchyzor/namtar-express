@@ -22,25 +22,36 @@
     </div>
 
     <% games.forEach(function(game){%>
+    <form action="/game/engine" method="GET">
 
-    <div class="docs-section row" id="<%= game.id %>">
+      <div class="docs-section" id="<%= game.id %>">
+      <input name="gameId" value="<%= game.id %>" hidden readonly>
+        <div class="row">
+          <div class="four columns">
+            <p><%= game.name %></p>
+          </div>
+          <div class="four columns">
+            <p><%= game.creation_date %></p>
+          </div>
+          <div class="four columns">
+            <p><%= game.last_modification_date %></p>
+          </div>
+        </div>
 
-      <div class="four columns">
-        <p><%= game.name %></p>
+        <div class="row">
+          <select class="six columns" id="characterSelector" name="characterId" required>
+          <% game.charactersPlaying.forEach( character => { %>
+            <option value="<%= character._id %>"><%= character.nom %></option>
+          <% }); %>
+          </select>
+          <input class="button six columns" type="submit" value="Rejoindre la partie" >
+        </div>
+
       </div>
-      <div class="two columns">
-        <p><%= game.creation_date %></p>
-      </div>
-      <div class="two columns">
-        <p><%= game.last_modification_date %></p>
-      </div>
-      <div class="two columns">
-        <a class="button" href="/game/engine?_id=<%= game._id %>">Ouvrir la fiche</a>
-      </div>
-    </div>
+      
+    </form>
 
     <% }); %>
-
   </div>
 
 </body>

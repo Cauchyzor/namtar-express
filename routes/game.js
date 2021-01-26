@@ -4,9 +4,13 @@ const auth = require('../middleware/auth');
 const State = require('../models/State');
 const Comment = require('../models/Comment');
 const Game = require('../models/Game');
+const Character = require('../models/Character');
 
-router.get('/selection', auth, function (req, res, next) {
+// TODO: Trouver une requete filtre sur Game et User qui remonte les games et les Characters 
+
+router.get('/selection', function (req, res, next) {
   Game.find()
+    .populate('charactersPlaying')
     .then((games) => { res.render('gameSelection', { games: games }); })
     .catch((error) => { res.status(400).json({ error: error }); });
 });
@@ -19,11 +23,15 @@ router.post('/selection', auth, function (req, res, next) {
 });
 
 router.get('/engine', auth, function (req, res, next) {
-  State.find({ gameId: req.query._id })
-    .populate('comments')
-    .sort('-createdAt')
-    .then((states) => { res.render('gameEngine', { states: states, gameId: req.query._id }); })
-    .catch((error) => { res.status(400).json({ error: error }); });
+  Character.findById(req.query.characterId)
+    .then(character => {
+      State.find({ gameId: req.query.gameId })
+        .populate('comments')
+        .sort('-createdAt')
+        .then(states => res.render('gameEngine', { states: states, gameId: req.query.gameId, character: character }))
+        .catch(error => res.status(400).json({ error: error }));
+    })
+    .catch(error => res.status(400).json({ error: error }));
 });
 
 router.post('/createState', auth, function (req, res, next) {
@@ -34,13 +42,15 @@ router.post('/createState', auth, function (req, res, next) {
 });
 
 router.post('/comment/', auth, function (req, res, next) {
-  const newComment = new Comment({ body: req.body.commentBody });
+  console.log(req.body);
+  const newComment = new Comment({ body: req.body.commentBody, characterPosting: req.body.posterId });
   State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } })
     .then(() => {
       newComment.save()
         .then(() => res.status(201).json({ newComment: newComment.body, message: 'Comment enregistré !' }))
         .catch(error => res.status(500).json({ error }));
-    });
+    })
+    .catch(error => res.status(500).json({ error }));
 });
 
 router.get('/stateEditor', auth, function (req, res, next) {

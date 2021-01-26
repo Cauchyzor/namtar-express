@@ -22,6 +22,11 @@
                 </form>
             </div>
 
+            <!-- 
+            TODO: Trouver une traduction pour "State" 
+            TODO: Afficher le nom du character devant le Commentaire
+            TODO: Lister les Character impliqué sur la partie Game
+            -->  
             <ul id='timeline'>
                 <% states.forEach(function(state,index) { %>
                     <li class='work'>
@@ -39,8 +44,10 @@
                             <p id="<%= state.id %>-content"><%= state.body %></p>
                             <a class="button" href="/game/stateEditor?_id=<%= state.id %>">Editer le State</a>
                             <% state.comments.forEach(function(comment) { %>
+                                <p><%= comment.characterPosting %></p>
                                 <p><%= comment.body %></p>
                             <% }); %>
+                            <input type="text" name="posterId" value="<%= character._id %>" hidden/>
                             <input type="text" class="u-full-width" placeholder="<%= character.nom %>, que faite vous ? " name="newComment" />
                             <input type="button" value="Post" name="postComment">
                         </div>
@@ -54,10 +61,11 @@
                 $('input[name=postComment]').click( function (e) {
                     $stateId = $(this).parent().attr('id');
                     $commentBody = $(this).prev().val();
+                    $posterId = $('input[name=posterId]').val();
                     $.ajax({
                         type: 'POST',
                         url: '/game/comment',
-                        data: {commentBody: $commentBody, stateId: $stateId},
+                        data: {commentBody: $commentBody, stateId: $stateId, posterId: $posterId },
                         dataType: 'text',
                         success: function (replyJSON, status) {
                             var reply = jQuery.parseJSON(replyJSON)
