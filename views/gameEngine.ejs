@@ -44,7 +44,7 @@
                             <p id="<%= state.id %>-content"><%= state.body %></p>
                             <a class="button" href="/game/stateEditor?_id=<%= state.id %>">Editer le State</a>
                             <% state.comments.forEach(function(comment) { %>
-                                <p><%= comment.characterPosting %></p>
+                                <p><%= comment.characterPostingId %></p>
                                 <p><%= comment.body %></p>
                             <% }); %>
                             <input type="text" name="posterId" value="<%= character._id %>" hidden/>

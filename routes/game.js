@@ -43,7 +43,7 @@ router.post('/createState', auth, function (req, res, next) {
 
 router.post('/comment/', auth, function (req, res, next) {
   console.log(req.body);
-  const newComment = new Comment({ body: req.body.commentBody, characterPosting: req.body.posterId });
+  const newComment = new Comment({ body: req.body.commentBody, characterPostingId: req.body.posterId });
   State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } })
     .then(() => {
       newComment.save()
