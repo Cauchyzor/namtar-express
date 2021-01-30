@@ -23,15 +23,18 @@ router.post('/selection', auth, function (req, res, next) {
 });
 
 router.get('/engine', auth, function (req, res, next) {
-  Character.findById(req.query.characterId)
-    .then(character => {
+  let states;
+  let game;
       State.find({ gameId: req.query.gameId })
         .populate('comments')
         .sort('-createdAt')
-        .then(states => res.render('gameEngine', { states: states, gameId: req.query.gameId, character: character }))
-        .catch(error => res.status(400).json({ error: error }));
+    .then(premiseStates => { states = premiseStates; return Game.findById(req.query.gameId).populate('charactersPlaying'); })
+    .then(premiseGame => { game = premiseGame; return Character.findById(req.query.characterId); })
+    .then(premiseCharacter => {
+      // console.log(game.charactersPlaying.find(({ _id }) => _id.toString() === '600729dc4f9d5f512c81fede'));
+      res.render('gameEngine', { states: states, game: game, characterPlaying: premiseCharacter });
     })
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.post('/createState', auth, function (req, res, next) {

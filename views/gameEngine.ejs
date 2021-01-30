@@ -16,7 +16,7 @@
             </div>
 
             <div class="docs-section row">
-                <form action="/game/createState?_id=<%= gameId %>" method="POST">
+                <form action="/game/createState?_id=<%= game._id %>" method="POST">
                     <input id="stateTitle" name="stateTitle" type="text" placeholder="Titre">
                     <button class="button-primary" type="submit">Create Next state</button>
                 </form>
@@ -43,13 +43,13 @@
                         <div class='content' id="<%= state.id %>">
                             <p id="<%= state.id %>-content"><%= state.body %></p>
                             <a class="button" href="/game/stateEditor?_id=<%= state.id %>">Editer le State</a>
-                            <% state.comments.forEach(function(comment) { %>
-                                <p><%= comment.characterPostingId %></p>
-                                <p><%= comment.body %></p>
+                            <% state.comments.forEach(function(comment) { 
+                                let characterPosting = game.charactersPlaying.find(({ _id }) => _id.toString() === comment.characterPostingId.toString());
+                                console.log(characterPosting);  %>
+                                <p><strong><%= characterPosting.nom %></strong> : <%= comment.body %></p>
                             <% }); %>
-                            <input type="text" name="posterId" value="<%= character._id %>" hidden/>
-                            <input type="text" class="u-full-width" placeholder="<%= character.nom %>, que faite vous ? " name="newComment" />
-                            <input type="button" value="Post" name="postComment">
+                            <input type="text" class="u-full-width" placeholder="<%= characterPlaying.nom %>, que faite vous ? " name="newComment" />
+                            <input type="button" value="Post" name="postComment" character_id="<%= characterPlaying._id %>" character_name="<%= characterPlaying.nom %>" >
                         </div>
                     </li>
                 <% }); %>
@@ -61,16 +61,18 @@
                 $('input[name=postComment]').click( function (e) {
                     $stateId = $(this).parent().attr('id');
                     $commentBody = $(this).prev().val();
-                    $posterId = $('input[name=posterId]').val();
+                    $posterId = $(this).attr('character_id');
+                    $posterName = $(this).attr('character_name');
                     $.ajax({
                         type: 'POST',
                         url: '/game/comment',
                         data: {commentBody: $commentBody, stateId: $stateId, posterId: $posterId },
                         dataType: 'text',
                         success: function (replyJSON, status) {
+                            console.log(replyJSON);
                             var reply = jQuery.parseJSON(replyJSON)
                            //select the last paragraph from the div of concerned states, and add a new paragraph with comment content.
-                            $('div#'+$stateId ).children('p:last').after('<p>' + reply.newComment +'</p>');
+                            $('div#'+$stateId ).children('p:last').after('<p>' + '<strong>' + $posterName + '</strong> : ' + reply.newComment +'</p>');
                         },
                         error: function (replyJSON, status) {
                             alert('Something went wrong ... Code ' + status);
