@@ -59,13 +59,13 @@ router.get('/character/selection', auth, function (req, res, next) {
   User.findOne({ _id: req.userId })
     .populate('characters')
     .then(user => { res.render('characterSelection', { user: user }); })
-    .catch(error => { res.status(400).json({ error: error }); });
+    .catch(error => { res.status(400).json({ error }); });
 });
 
 router.get('/character/skills', auth, function (req, res, next) {
   Skill.find()
     .then(skills => res.render('characterSkills', { skills: skills }))
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.get('/character/sheet', auth, function (req, res, next) {
@@ -79,7 +79,7 @@ router.get('/character/sheet', auth, function (req, res, next) {
       characteristics.shift();
       res.render('characterSheet', { character: character, characteristics: characteristics, aptitudes: aptitudes, skills: character.compétences });
     })
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.get('/character/create', auth, function (req, res, next) {
@@ -106,9 +106,9 @@ router.get('/character/create', auth, function (req, res, next) {
           });
           res.render('characterCreation', { games: games, characteristics: characteristics, aptitudes: aptitudes, skills: skills });
         })
-        .catch(error => res.status(400).json({ error: error }));
+        .catch(error => res.status(400).json({ error }));
     })
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.post('/character/create', auth, function (req, res, next) {

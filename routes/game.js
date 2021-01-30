@@ -12,7 +12,7 @@ router.get('/selection', function (req, res, next) {
   Game.find()
     .populate('charactersPlaying')
     .then(games => res.render('gameSelection', { games: games }))
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.post('/selection', auth, function (req, res, next) {
@@ -25,9 +25,9 @@ router.post('/selection', auth, function (req, res, next) {
 router.get('/engine', auth, function (req, res, next) {
   let states;
   let game;
-      State.find({ gameId: req.query.gameId })
-        .populate('comments')
-        .sort('-createdAt')
+  State.find({ gameId: req.query.gameId })
+    .populate('comments')
+    .sort('-createdAt')
     .then(premiseStates => { states = premiseStates; return Game.findById(req.query.gameId).populate('charactersPlaying'); })
     .then(premiseGame => { game = premiseGame; return Character.findById(req.query.characterId); })
     .then(premiseCharacter => {
@@ -44,7 +44,7 @@ router.post('/createState', auth, function (req, res, next) {
     .catch(error => res.status(500).json({ error }));
 });
 
-router.post('/comment/', auth, function (req, res, next) {
+router.post('/comment/', function (req, res, next) {
   console.log(req.body);
   const newComment = new Comment({ body: req.body.commentBody, characterPostingId: req.body.posterId });
   State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } })
@@ -59,13 +59,13 @@ router.post('/comment/', auth, function (req, res, next) {
 router.get('/stateEditor', auth, function (req, res, next) {
   State.findOne({ _id: req.query._id })
     .then(state => res.render('gameStateEditor', { state: state }))
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 router.post('/stateEditor', auth, function (req, res, next) {
   State.updateOne({ _id: req.body.stateId }, { title: req.body.stateTitle, body: req.body.stateContent })
     .then(() => res.redirect('/game/selection'))
-    .catch(error => res.status(400).json({ error: error }));
+    .catch(error => res.status(400).json({ error }));
 });
 
 module.exports = router;
