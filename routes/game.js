@@ -30,10 +30,7 @@ router.get('/engine', auth, function (req, res, next) {
     .sort('-createdAt')
     .then(premiseStates => { states = premiseStates; return Game.findById(req.query.gameId).populate('charactersPlaying'); })
     .then(premiseGame => { game = premiseGame; return Character.findById(req.query.characterId); })
-    .then(premiseCharacter => {
-      // console.log(game.charactersPlaying.find(({ _id }) => _id.toString() === '600729dc4f9d5f512c81fede'));
-      res.render('gameEngine', { states: states, game: game, characterPlaying: premiseCharacter });
-    })
+    .then(premiseCharacter => res.render('gameEngine', { states: states, game: game, characterPlaying: premiseCharacter }))
     .catch(error => res.status(400).json({ error }));
 });
 
@@ -45,14 +42,10 @@ router.post('/createState', auth, function (req, res, next) {
 });
 
 router.post('/comment/', function (req, res, next) {
-  console.log(req.body);
   const newComment = new Comment({ body: req.body.commentBody, characterPostingId: req.body.posterId });
-  State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } })
-    .then(() => {
-      newComment.save()
-        .then(() => res.status(201).json({ newComment: newComment.body, message: 'Comment enregistré !' }))
-        .catch(error => res.status(500).json({ error }));
-    })
+  newComment.save()
+    .then(() => State.updateOne({ _id: req.body.stateId }, { $push: { comments: newComment._id } }))
+    .then(() => res.status(201).json({ newComment: newComment.body, message: 'Comment enregistré !' }))
     .catch(error => res.status(500).json({ error }));
 });
 

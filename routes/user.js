@@ -83,30 +83,30 @@ router.get('/character/sheet', auth, function (req, res, next) {
 });
 
 router.get('/character/create', auth, function (req, res, next) {
+  let games;
   Game.find()
-    .then((games) => {
-      Skill.find()
-        .then((skills) => {
-          const characteristics = [];
-          const aptitudes = [];
-
-          Character.schema.eachPath((path) => {
-            if (/^caractéristiques.*/.test(path)) {
-              return characteristics.push({
-                name: path.replace(/^(caractéristiques.)*/, '')
-              });
-            } else if (/^aptitudes.*/.test(path)) {
-              return aptitudes.push({
-                name: path.replace(/^(aptitudes.)*/, ''),
-                characteristic: aptCharMap.get(path.replace(/^(aptitudes.)*/, '')),
-                type: aptTypeMap.get(path.replace(/^(aptitudes.)*/, '')),
-                description: aptDescMap.get(path.replace(/^(aptitudes.)*/, ''))
-              });
-            }
+    .then(premiseGame => {
+      games = premiseGame;
+      return Skill.find();
+    })
+    .then((skills) => {
+      const characteristics = [];
+      const aptitudes = [];
+      Character.schema.eachPath((path) => {
+        if (/^caractéristiques.*/.test(path)) {
+          return characteristics.push({
+            name: path.replace(/^(caractéristiques.)*/, '')
           });
-          res.render('characterCreation', { games: games, characteristics: characteristics, aptitudes: aptitudes, skills: skills });
-        })
-        .catch(error => res.status(400).json({ error }));
+        } else if (/^aptitudes.*/.test(path)) {
+          return aptitudes.push({
+            name: path.replace(/^(aptitudes.)*/, ''),
+            characteristic: aptCharMap.get(path.replace(/^(aptitudes.)*/, '')),
+            type: aptTypeMap.get(path.replace(/^(aptitudes.)*/, '')),
+            description: aptDescMap.get(path.replace(/^(aptitudes.)*/, ''))
+          });
+        }
+      });
+      res.render('characterCreation', { games: games, characteristics: characteristics, aptitudes: aptitudes, skills: skills });
     })
     .catch(error => res.status(400).json({ error }));
 });
@@ -134,15 +134,9 @@ router.post('/character/create', auth, function (req, res, next) {
   });
 
   character.save()
-    .then(character => {
-      User.updateOne({ _id: req.userId }, { $push: { characters: character._id } })
-        .then(() => console.log('Personnage rataché au user avec succès'))
-        .catch(error => res.status(500).json({ error }));
-      Game.updateOne({ _id: Object.keys(game).pop() }, { $push: { charactersPlaying: character._id } })
-        .then(() => console.log("Personnage rattaché à l'aventure avec succès"))
-        .catch(error => res.status(500).json({ error }));
-      res.status(201).json({ message: 'Personnage créé avec succès' });
-    })
+    .then(character => User.updateOne({ _id: req.userId }, { $push: { characters: character._id } }))
+    .then(() => Game.updateOne({ _id: Object.keys(game).pop() }, { $push: { charactersPlaying: character._id } }))
+    .then(() => res.status(201).json({ message: 'Personnage créé avec succès' }))
     .catch(error => res.status(500).json({ error }));
 });
 
