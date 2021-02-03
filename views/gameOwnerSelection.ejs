@@ -1,0 +1,37 @@
+<!--HEAD -->
+<%- include('head'); -%>
+
+<!-- BODY -->
+
+<body class="code-snippets-visible">
+
+  <div class="container">
+
+    <%- include('header'); -%>
+    <%- include('navbar'); -%>
+    
+    <div class="docs-section row" >
+      <form action="/game/owner/selection" method="post" >
+        <label>Game Name : </label>
+        <input type="text" name="gameName" id="gameName">
+        <button class="button-primary" type="submit">Create New Game</button>
+      </form>
+    </div>
+    <% games.forEach(function(game){%>
+    <form action="/game/owner/engine" method="GET">
+
+      <div class="docs-section" id="<%= game.id %>">
+        <div class="row">
+          <input name="gameId" value="<%= game.id %>" hidden readonly>
+          <label><%= game.name %></p>
+          <p><%= game.creation_date %></p>
+          <p><%= game.last_modification_date %></p>
+          <input class="button" type="submit" value="Gerer la partie" >
+        </div>
+      </div>
+      
+    </form>
+    <% }); %>
+  </div>
+
+</body>

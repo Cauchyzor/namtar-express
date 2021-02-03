@@ -15,6 +15,13 @@
                 <h1 class="docs-header">Game status</h1>
             </div>
 
+            <div class="docs-section row">
+                <form action="/game/owner/createState?_id=<%= game._id %>" method="POST">
+                    <input id="stateTitle" name="stateTitle" type="text" placeholder="Titre">
+                    <button class="button-primary" type="submit">Create Next state</button>
+                </form>
+            </div>
+
             <!-- 
             TODO: Trouver une traduction pour "State" 
             TODO: Afficher le nom du character devant le Commentaire
@@ -35,44 +42,15 @@
                         </div>
                         <div class='content' id="<%= state.id %>">
                             <p id="<%= state.id %>-content"><%= state.body %></p>
+                            <a class="button" href="/game/owner/stateEditor?_id=<%= state.id %>">Editer le State</a>
                             <% state.comments.forEach(function(comment) { 
                                 let characterPosting = game.charactersPlaying.find(({ _id }) => _id.toString() === comment.characterPostingId.toString());
                                 console.log(characterPosting);  %>
                                 <p><strong><%= characterPosting.nom %></strong> : <%= comment.body %></p>
                             <% }); %>
-                            <input type="text" name="newComment" class="u-full-width" placeholder="<%= characterPlaying.nom %>, que faite vous ? " />
-                            <input type="button" name="postComment" value="Post" character_id="<%= characterPlaying._id %>" character_name="<%= characterPlaying.nom %>" >
                         </div>
                     </li>
                 <% }); %>
             </ul>
         </div>
-
-        <script>
-            $(document).ready(function () {
-                $('input[name=postComment]').click( function (e) {
-                    $stateId = $(this).parent().attr('id');
-                    $commentBody = $(this).prev().val();
-                    $posterId = $(this).attr('character_id');
-                    $posterName = $(this).attr('character_name');
-                    $.ajax({
-                        type: 'POST',
-                        url: '/game/comment',
-                        data: {commentBody: $commentBody, stateId: $stateId, posterId: $posterId },
-                        dataType: 'text',
-                        success: function (replyJSON, status) {
-                            console.log(replyJSON);
-                            var reply = jQuery.parseJSON(replyJSON)
-                           //select the last paragraph from the div of concerned states, and add a new paragraph with comment content.
-                            $('div#'+$stateId ).children('p:last').after('<p>' + '<strong>' + $posterName + '</strong> : ' + reply.newComment +'</p>');
-                        },
-                        error: function (replyJSON, status) {
-                            alert('Something went wrong ... Code ' + status);
-                        }
-                    });
-                });
-            });
-
-        </script>
-
     </body>

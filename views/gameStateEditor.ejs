@@ -15,7 +15,7 @@
                 <h1 class="docs-header">State edition : <%= state.title %> </h1>
             </div>
             <div class="docs-section row">
-                <form method="post" action="/game/stateEditor">
+                <form method="post" action="/game/owner/stateEditor">
                     <input type="hidden" name="stateId" value="<%= state._id %>" readonly>
                     <label>Titre</label>
                     <input type="text" name="stateTitle" value="<%= state.title %>">

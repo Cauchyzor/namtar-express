@@ -10,17 +10,6 @@
     <%- include('header'); -%>
     <%- include('navbar'); -%>
 
-
-
-
-    <div class="docs-section row" >
-      <form action="/game/selection" method="post" >
-        <label>Game Name : </label>
-        <input type="text" name="gameName" id="gameName">
-        <button class="button-primary" type="submit">Create New Game</button>
-      </form>
-    </div>
-
     <% games.forEach(function(game){%>
     <form action="/game/engine" method="GET">
 
