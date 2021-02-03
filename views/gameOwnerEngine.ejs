@@ -22,11 +22,19 @@
                 </form>
             </div>
 
-            <!-- 
-            TODO: Trouver une traduction pour "State" 
-            TODO: Afficher le nom du character devant le Commentaire
-            TODO: Lister les Character impliqué sur la partie Game
-            -->  
+            <div class="docs-section row">
+                <div class="six columns">
+                    <label>Aventuriers :</label>
+                </div>
+                <div class="six columns">
+                    <p>
+                    <% game.charactersPlaying.forEach(function(character) {  %>
+                        <strong><%= character.nom %></strong><br>
+                    <% }); %>
+                    </p>
+                </div>
+            </div>
+
             <ul id='timeline'>
                 <% states.forEach(function(state,index) { %>
                     <li class='work'>
