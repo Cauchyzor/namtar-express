@@ -12,13 +12,13 @@ exports.selectCharacter = (req, res, next) => {
     User.findOne({ _id: req.userId })
         .populate('characters')
         .then(user => { res.render('characterSelection', { user: user }); })
-        .catch(error => { res.status(400).json({ error }); });
+        .catch(next);
 };
 
 exports.getAllSkill = (req, res, next) => {
     Skill.find()
         .then(skills => res.render('characterSkills', { skills: skills }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(next);
 };
 
 exports.getCharacterInfo = (req, res, next) => {
@@ -32,7 +32,7 @@ exports.getCharacterInfo = (req, res, next) => {
             characteristics.shift();
             res.render('characterSheet', { character: character, characteristics: characteristics, aptitudes: aptitudes, skills: character.compétences });
         })
-        .catch(error => res.status(400).json({ error }));
+        .catch(next);
 };
 
 exports.getCharacterCreation = (req, res, next) => {
@@ -43,7 +43,7 @@ exports.getCharacterCreation = (req, res, next) => {
             games = premiseGame;
             return Skill.find();
         })
-        .then((skills) => {
+        .then(skills => {
             const characteristics = [];
             const aptitudes = [];
             Character.schema.eachPath((path) => {
@@ -62,7 +62,7 @@ exports.getCharacterCreation = (req, res, next) => {
             });
             res.render('characterCreation', { games: games, characteristics: characteristics, aptitudes: aptitudes, skills: skills });
         })
-        .catch(error => res.status(400).json({ error }));
+        .catch(next);
 };
 
 exports.createCharacter = (req, res, next) => {
@@ -91,5 +91,5 @@ exports.createCharacter = (req, res, next) => {
         .then(character => User.updateOne({ _id: req.userId }, { $push: { characters: character._id } }))
         .then(() => Game.updateOne({ _id: Object.keys(game).pop() }, { $push: { charactersPlaying: character._id } }))
         .then(() => res.status(201).json({ message: 'Personnage créé avec succès' }))
-        .catch(error => res.status(500).json({ error }));
+        .catch(next);
 };

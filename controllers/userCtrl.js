@@ -6,7 +6,7 @@ exports.findUser = (req, res) => {
     // req.userId should be populated by a middleware auth
     User.findOne({ _id: req.userId })
         .then(user => res.status(200).render('userInfo', { user: user }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(next);
 };
 
 exports.loging = (req, res, next) => {
@@ -24,7 +24,7 @@ exports.loging = (req, res, next) => {
                     res.status(200).redirect('/user/profil');
                 });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(next);
 };
 
 /* GET users listing. */
@@ -37,7 +37,7 @@ exports.signup = (req, res, next) => {
             });
             user.save()
                 .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                .catch(error => res.status(400).json({ error }));
+                .catch(next);
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(next);
 };
