@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 
-const gameCtrl = require('../controller/gameCtrl');
+const gameCtrl = require('../controllers/gameCtrl');
 
 router.get('/selection', auth, gameCtrl.findAllGames);
 router.get('/engine', auth, gameCtrl.populateGameStates);
