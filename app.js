@@ -9,11 +9,11 @@ const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
 const rulesRouter = require('./routes/rules');
 const historyRouter = require('./routes/history');
-const bestiaryRouter = require('./routes/bestiary');
-const effectsRouter = require('./routes/effects');
-const generatorRouter = require('./routes/generator');
-const speciesRouter = require('./routes/species');
-const mapRouter = require('./routes/map');
+// const bestiaryRouter = require('./routes/bestiary');
+// const effectsRouter = require('./routes/effects');
+// const generatorRouter = require('./routes/generator');
+// const speciesRouter = require('./routes/species');
+// const mapRouter = require('./routes/map');
 const gameRouter = require('./routes/game');
 
 const app = express();
@@ -51,11 +51,11 @@ app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/rules', rulesRouter);
 app.use('/history', historyRouter);
-app.use('/bestiary', bestiaryRouter);
-app.use('/generator', generatorRouter);
-app.use('/species', speciesRouter);
-app.use('/map', mapRouter);
-app.use('/effects', effectsRouter);
+// app.use('/bestiary', bestiaryRouter);
+// app.use('/generator', generatorRouter);
+// app.use('/species', speciesRouter);
+// app.use('/map', mapRouter);
+// app.use('/effects', effectsRouter);
 app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler

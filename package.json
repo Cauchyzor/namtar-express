@@ -31,8 +31,7 @@
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.6",
-    "skeleton-css": "^2.0.4",
-    "sqlite3": "^4.2.0"
+    "skeleton-css": "^2.0.4"
   },
   "devDependencies": {
     "eslint": "^7.15.0",
