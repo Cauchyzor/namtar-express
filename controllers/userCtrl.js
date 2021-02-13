@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-exports.findUser = (req, res) => {
+exports.findUser = (req, res, next) => {
     // req.userId should be populated by a middleware auth
     User.findOne({ _id: req.userId })
         .then(user => res.status(200).render('userInfo', { user: user }))
